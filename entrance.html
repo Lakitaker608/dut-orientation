@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大连理工大学 · 新生入口</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+:root{
+  --primary:#003F88;--primary-2:#0052B4;--primary-light:#E8F0FB;--accent:#00A3E0;
+  --text-1:#0F1B2D;--text-2:#4A5A70;--text-3:#8A98AC;
+  --surface:#FFFFFF;--border:#E4E8EE;
+  --radius:18px;--radius-lg:24px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--text-1);overflow:hidden}
+
+/* ===== 背景渐变 + 装饰 ===== */
+.bg{position:fixed;inset:0;background:linear-gradient(135deg,#003F88 0%,#0052B4 45%,#0078D4 100%);z-index:0}
+.bg::before{content:"";position:absolute;top:-120px;right:-120px;width:420px;height:420px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%}
+.bg::after{content:"";position:absolute;bottom:-160px;left:10%;width:360px;height:360px;background:radial-gradient(circle,rgba(255,255,255,.10),transparent 70%);border-radius:50%}
+.bg .grid-deco{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+
+/* ===== 居中卡片 ===== */
+.stage{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:100%;max-width:520px;background:var(--surface);border-radius:var(--radius-lg);padding:44px 40px 36px;box-shadow:0 30px 80px rgba(0,31,64,.35);animation:rise .6s cubic-bezier(.16,1,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== 头部 ===== */
+.head{text-align:center;margin-bottom:32px}
+.logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:24px;margin:0 auto 18px;box-shadow:0 10px 24px rgba(0,63,136,.3);letter-spacing:-.02em}
+.head h1{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.head .sub{font-size:13px;color:var(--text-3);margin-top:6px;letter-spacing:.04em}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:24px 0}
+.prompt{font-size:15px;color:var(--text-2);text-align:center;margin-bottom:24px;line-height:1.6}
+.prompt b{color:var(--text-1);font-weight:600}
+
+/* ===== 选项 ===== */
+.opts{display:flex;flex-direction:column;gap:14px}
+.opt{position:relative;display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s ease;text-align:left;width:100%;font-family:inherit;overflow:hidden}
+.opt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);transform:scaleY(0);transform-origin:center;transition:transform .25s ease}
+.opt:hover{border-color:var(--primary);box-shadow:0 12px 28px rgba(0,63,136,.12);transform:translateY(-2px)}
+.opt:hover::before{transform:scaleY(1)}
+.opt-ico{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.opt-ico svg{width:24px;height:24px}
+.opt-primary .opt-ico{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.opt-ghost .opt-ico{background:var(--primary-light);color:var(--primary)}
+.opt-txt{flex:1;min-width:0}
+.opt-txt .t{font-size:16px;font-weight:600;color:var(--text-1);display:flex;align-items:center;gap:8px}
+.opt-txt .d{font-size:12.5px;color:var(--text-3);margin-top:3px;line-height:1.5}
+.opt-arrow{width:22px;height:22px;color:var(--text-3);flex-shrink:0;transition:all .2s}
+.opt:hover .opt-arrow{color:var(--primary);transform:translateX(4px)}
+.opt-primary{background:linear-gradient(135deg,#F5F9FF,#EFF4FC)}
+.opt-primary:hover{background:linear-gradient(135deg,#EDF4FF,#E4EEFB)}
+
+/* tag */
+.tag{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--primary-light);color:var(--primary);letter-spacing:.02em}
+.tag-ghost{background:#F0F2F5;color:var(--text-3)}
+
+/* ===== 底部 ===== */
+.foot{margin-top:28px;text-align:center;font-size:11.5px;color:var(--text-3);letter-spacing:.04em}
+.foot .dot{display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;vertical-align:middle;margin:0 8px}
+
+/* ===== 响应式 ===== */
+@media (max-width:480px){
+  .card{padding:36px 24px 28px}
+  .head h1{font-size:21px}
+  .opt{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="bg"><div class="grid-deco"></div></div>
+
+<div class="stage">
+  <div class="card">
+    <div class="head">
+      <div class="logo">大工</div>
+      <h1>大连理工大学</h1>
+      <div class="sub">新生入学助手 · 报到引导</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="prompt">欢迎使用新生入学助手<br>请先选择您的<b>报到状态</b>，我们将为您呈现对应内容</div>
+
+    <div class="opts">
+      <button class="opt opt-primary" onclick="location.href='campus-life.html?skip=1'">
+        <div class="opt-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+        </div>
+        <div class="opt-txt">
+          <div class="t">我已报到 <span class="tag">校园生活</span></div>
+          <div class="d">已报到新生，进入校园生活与学科竞赛指南</div>
+        </div>
+        <svg class="opt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+
+      <button class="opt opt-ghost" onclick="location.href='dut-orientation.html?skip=1'">
+        <div class="opt-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="opt-txt">
+          <div class="t">我还未报到 <span class="tag tag-ghost">入学助手</span></div>
+          <div class="d">未报到新生，进入新生入学助手主页，查看报到指南</div>
+        </div>
+        <svg class="opt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+
+    <div class="foot">大连理工大学 欢迎您<span class="dot"></span>祝您学业顺利</div>
+  </div>
+</div>
+<script src="protect.js"></script>
+</body>
+</html>

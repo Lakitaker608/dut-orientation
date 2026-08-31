@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大连理工大学 · 新生入学助手</title>
+<script>(function(){var p=new URLSearchParams(location.search);if(!p.get('skip')){location.replace('entrance.html');}})();</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+:root{
+--bg:#F7F8FA;--surface:#FFFFFF;--surface-2:#F2F4F7;
+--primary:#003F88;--primary-2:#0052B4;--primary-light:#E8F0FB;--accent:#00A3E0;
+--text-1:#0F1B2D;--text-2:#4A5A70;--text-3:#8A98AC;
+--border:#E4E8EE;--border-strong:#D0D6DE;
+--success:#16A34A;--warning:#E8A317;--danger:#E5484D;
+--shadow-sm:0 1px 2px rgba(15,27,45,.04);
+--shadow-md:0 6px 20px rgba(15,27,45,.06);
+--shadow-lg:0 20px 50px rgba(15,27,45,.10);
+--radius:14px;--radius-lg:20px;
+--font:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spacing:-.005em;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+img{max-width:100%;display:block}
+
+/* ===== Layout ===== */
+.app{display:flex;min-height:100vh}
+.sidebar{width:248px;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;position:fixed;height:100vh;display:flex;flex-direction:column;z-index:30;transition:transform .3s ease}
+.main{flex:1;margin-left:248px;min-width:0}
+
+/* ===== Sidebar ===== */
+.brand{display:flex;align-items:center;gap:12px;padding:8px 8px 24px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.brand-logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,63,136,.25)}
+.brand-text .brand-name{font-size:15px;font-weight:600;color:var(--text-1);line-height:1.3}
+.brand-text .brand-sub{font-size:11px;color:var(--text-3);margin-top:2px;letter-spacing:.02em}
+
+.nav{flex:1;overflow-y:auto}
+.nav-group{margin-bottom:8px}
+.nav-label{font-size:11px;color:var(--text-3);font-weight:600;padding:12px 12px 6px;letter-spacing:.05em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:14px;color:var(--text-2);cursor:pointer;transition:all .15s ease;width:100%;text-align:left}
+.nav-item:hover{background:var(--surface-2);color:var(--text-1)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+
+.sidebar-foot{padding:12px 8px 4px;border-top:1px solid var(--border);margin-top:8px}
+.side-link{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-3);padding:6px 8px;border-radius:8px}
+.side-link:hover{color:var(--primary);background:var(--surface-2)}
+
+/* ===== Topbar ===== */
+.topbar{height:64px;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:sticky;top:0;z-index:20}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.topbar-title{font-size:18px;font-weight:600}
+.topbar-crumb{font-size:13px;color:var(--text-3)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.icon-btn{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--text-2);transition:all .15s}
+.icon-btn:hover{background:var(--surface-2);color:var(--text-1)}
+.icon-btn svg{width:18px;height:18px}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FF8A3D,#FF5C7C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600}
+
+/* ===== Content ===== */
+.content{padding:32px;max-width:1180px;margin:0 auto}
+.view{display:none;animation:fade .35s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Hero ===== */
+.hero{background:linear-gradient(135deg,#003F88 0%,#0052B4 45%,#0078D4 100%);border-radius:var(--radius-lg);padding:40px;color:#fff;position:relative;overflow:hidden;margin-bottom:28px}
+.hero::before{content:"";position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%}
+.hero::after{content:"";position:absolute;bottom:-80px;left:30%;width:220px;height:220px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);border-radius:50%}
+.hero-inner{position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;margin-bottom:16px;backdrop-filter:blur(8px)}
+.hero-tag .dot{width:6px;height:6px;background:#7BE495;border-radius:50%;box-shadow:0 0 8px #7BE495}
+.hero h1{font-size:30px;font-weight:700;line-height:1.25;margin-bottom:10px;letter-spacing:-.02em}
+.hero p{font-size:15px;color:rgba(255,255,255,.82);max-width:560px;line-height:1.6}
+.hero-actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-size:14px;font-weight:500;transition:all .15s}
+.btn-primary{background:#fff;color:var(--primary)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn-ghost:hover{background:rgba(255,255,255,.2)}
+.btn svg{width:16px;height:16px}
+
+/* ===== Stats ===== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:20px;transition:all .2s}
+.stat:hover{border-color:var(--border-strong);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.stat-num{font-size:26px;font-weight:700;color:var(--primary);letter-spacing:-.02em}
+.stat-num .unit{font-size:14px;font-weight:500;color:var(--text-3);margin-left:2px}
+.stat-label{font-size:13px;color:var(--text-2);margin-top:6px}
+
+/* ===== Cards grid ===== */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.section-title{font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px}
+.section-title .bar{width:4px;height:20px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px}
+.section-more{font-size:13px;color:var(--primary);font-weight:500;display:flex;align-items:center;gap:4px;cursor:pointer}
+.section-more:hover{text-decoration:underline}
+
+.grid{display:grid;gap:16px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+
+.card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:22px;transition:all .2s}
+.card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-md)}
+.card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.card-icon svg{width:22px;height:22px}
+.card h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.card p{font-size:13px;color:var(--text-2);line-height:1.6}
+.card-link{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:500;color:var(--primary);margin-top:12px;padding:6px 14px;border-radius:8px;background:var(--primary-light);transition:all .15s}
+.card-link:hover{background:var(--primary);color:#fff;gap:8px}
+
+/* ===== Timeline ===== */
+.timeline{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:28px;margin-bottom:28px}
+.tl-list{position:relative;padding-left:8px}
+.tl-list::before{content:"";position:absolute;left:23px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl-item{display:flex;gap:20px;padding:14px 0;position:relative}
+.tl-dot{width:32px;height:32px;border-radius:50%;background:var(--surface-2);border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--text-3);flex-shrink:0;z-index:1;transition:all .2s}
+.tl-item.done .tl-dot{background:var(--success);border-color:var(--success);color:#fff}
+.tl-item.now .tl-dot{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 4px rgba(0,163,224,.2)}
+.tl-body{flex:1;padding-top:4px}
+.tl-body .tl-date{font-size:12px;color:var(--text-3);font-weight:500}
+.tl-body .tl-title{font-size:15px;font-weight:600;margin:2px 0 4px}
+.tl-body .tl-desc{font-size:13px;color:var(--text-2);line-height:1.5}
+.tl-badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;margin-left:8px;font-weight:500}
+.badge-done{background:#E6F4EA;color:var(--success)}
+.badge-now{background:#E0F5FC;color:var(--accent)}
+.badge-todo{background:var(--surface-2);color:var(--text-3)}
+
+/* ===== Campus ===== */
+.campus-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;transition:all .2s}
+.campus-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.campus-banner{height:120px;position:relative;display:flex;align-items:flex-end;padding:18px;color:#fff}
+.campus-banner.c1{background:linear-gradient(135deg,#003F88,#0078D4)}
+.campus-banner.c2{background:linear-gradient(135deg,#0B6E4F,#16A34A)}
+.campus-banner.c3{background:linear-gradient(135deg,#7C2D12,#E8A317)}
+.campus-banner h3{font-size:18px;font-weight:600;position:relative;z-index:1}
+.campus-body{padding:20px}
+.campus-body .addr{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start}
+.campus-body .addr svg{width:16px;height:16px;color:var(--text-3);flex-shrink:0;margin-top:1px}
+.campus-tags{display:flex;flex-wrap:wrap;gap:6px}
+.campus-tag{font-size:11px;padding:3px 10px;border-radius:6px;background:var(--surface-2);color:var(--text-2)}
+.campus-geo{margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.campus-geo .geo-coord{font-size:11px;color:var(--text-3);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0}
+.campus-geo .geo-coord b{color:var(--text-2);font-weight:600;margin-right:4px}
+.campus-geo .geo-link{font-size:12px;color:var(--primary);font-weight:500;display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:8px;background:var(--primary-light);transition:all .15s}
+.campus-geo .geo-link:hover{background:var(--primary);color:#fff}
+.campus-geo .geo-link svg{width:13px;height:13px}
+
+/* ===== Climate ===== */
+.climate{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:24px;margin-bottom:28px}
+.climate-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+.season{text-align:center;padding:16px 8px;border-radius:12px;background:var(--surface-2);transition:all .2s}
+.season:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.season-icon{font-size:28px;margin-bottom:6px}
+.season-name{font-size:13px;font-weight:600;color:var(--text-1)}
+.season-temp{font-size:12px;color:var(--text-3);margin-top:2px}
+
+/* ===== Realtime Weather ===== */
+.rt-weather{margin-top:22px;padding-top:20px;border-top:1px dashed var(--border)}
+.rt-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.rt-title{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.rt-title svg{width:18px;height:18px;color:var(--accent)}
+.rt-select{padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-size:13px;color:var(--text-1);cursor:pointer;outline:none;transition:all .15s;font-family:inherit}
+.rt-select:hover{border-color:var(--border-strong)}
+.rt-select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.rt-content{display:flex;flex-direction:column;gap:14px}
+.rt-now{display:flex;align-items:center;gap:22px;padding:22px;border-radius:14px;background:linear-gradient(135deg,var(--primary-light),#F0F7FF);border:1px solid var(--border)}
+.rt-now-icon{font-size:56px;flex-shrink:0;line-height:1}
+.rt-now-info{flex:1;min-width:0}
+.rt-now-area{font-size:13px;color:var(--text-3);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.rt-now-temp{font-size:34px;font-weight:700;color:var(--primary);letter-spacing:-.02em;line-height:1.1}
+.rt-now-temp .unit{font-size:16px;font-weight:500;color:var(--text-2);margin-left:4px}
+.rt-now-desc{font-size:13px;color:var(--text-2);margin-top:8px;display:flex;gap:16px;flex-wrap:wrap}
+.rt-now-desc span{display:inline-flex;align-items:center;gap:4px}
+.rt-future{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rt-day{padding:12px 8px;border-radius:10px;background:var(--surface-2);text-align:center;transition:all .2s}
+.rt-day:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.rt-day-date{font-size:11px;color:var(--text-3);font-weight:500}
+.rt-day-icon{font-size:24px;margin:6px 0 4px}
+.rt-day-temp{font-size:13px;font-weight:600;color:var(--text-1)}
+.rt-day-temp .lo{color:var(--text-3);font-weight:400;margin-left:4px}
+.rt-update{font-size:11px;color:var(--text-3);margin-top:12px;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:4px}
+.rt-update .dot{width:6px;height:6px;background:var(--success);border-radius:50%}
+
+/* ===== Checklist ===== */
+.checklist{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:24px;margin-bottom:28px}
+.cl-progress{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.cl-progress-bar{flex:1;height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.cl-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:4px;transition:width .4s ease}
+.cl-progress-text{font-size:13px;color:var(--text-2);font-weight:500;white-space:nowrap}
+.cl-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.cl-item:last-child{border-bottom:none}
+.cl-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s}
+.cl-check:hover{border-color:var(--primary)}
+.cl-item.checked .cl-check{background:var(--success);border-color:var(--success)}
+.cl-item.checked .cl-check svg{opacity:1}
+.cl-check svg{width:14px;height:14px;color:#fff;opacity:0;transition:opacity .15s}
+.cl-text{flex:1;font-size:14px;transition:all .15s}
+.cl-item.checked .cl-text{color:var(--text-3);text-decoration:line-through}
+.cl-cat{font-size:11px;padding:2px 8px;border-radius:6px;background:var(--primary-light);color:var(--primary);font-weight:500}
+
+/* ===== Chat ===== */
+.chat-wrap{display:grid;grid-template-columns:1fr 280px;gap:20px}
+.chat-box{background:var(--surface);border:2px solid var(--primary);border-radius:var(--radius);display:flex;flex-direction:column;height:600px;overflow:hidden;box-shadow:0 0 0 3px rgba(0,63,136,.08),0 6px 20px rgba(0,63,136,.12)}
+.chat-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.chat-bot-av{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff}
+.chat-bot-av svg{width:22px;height:22px}
+.chat-header .ch-title{font-size:15px;font-weight:600}
+.chat-header .ch-sub{font-size:12px;color:var(--success);display:flex;align-items:center;gap:5px}
+.chat-header .ch-sub .dot{width:6px;height:6px;background:var(--success);border-radius:50%}
+.chat-msgs{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px}
+.msg{display:flex;gap:10px;max-width:80%}
+.msg.bot{align-self:flex-start}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-av{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:600}
+.msg.bot .msg-av{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.msg.user .msg-av{background:linear-gradient(135deg,#FF8A3D,#FF5C7C);color:#fff}
+.msg-bubble{padding:12px 16px;border-radius:14px;font-size:14px;line-height:1.6}
+.msg.bot .msg-bubble{background:var(--surface-2);color:var(--text-1);border-bottom-left-radius:4px}
+.msg.user .msg-bubble{background:var(--primary);color:#fff;border-bottom-right-radius:4px}
+.msg-bubble strong{font-weight:600}
+.msg-bubble ul{margin:6px 0 0;padding-left:18px}
+.msg-bubble li{margin:2px 0}
+.chat-examples{display:flex;align-items:center;gap:10px;padding:12px 22px;border-top:1px solid var(--border)}
+.ex-label{font-size:12px;color:var(--text-3);font-weight:500;flex-shrink:0}
+.ex-track{flex:1;overflow:hidden}
+.ex-slides{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.ex-slide{flex:0 0 100%;display:flex;gap:8px;align-items:center;min-width:0}
+.ex-chip{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;padding:8px 10px;border-radius:9px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all .15s;text-align:center;min-width:0}
+.ex-chip:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);transform:translateY(-1px)}
+.ex-next{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);cursor:pointer;flex-shrink:0;transition:all .15s}
+.ex-next:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ex-next:active{transform:scale(.92)}
+.ex-next svg{width:16px;height:16px}
+.chat-input{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:10px}
+.chat-input input{flex:1;padding:11px 14px;border-radius:10px;border:1px solid var(--border);font-size:14px;outline:none;transition:border .15s}
+.chat-input input:focus{border-color:var(--primary)}
+.chat-send{padding:11px 18px;background:var(--primary);color:#fff;border-radius:10px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px}
+.chat-send:hover{background:var(--primary-2)}
+.chat-send svg{width:16px;height:16px}
+
+.chat-side{display:flex;flex-direction:column;gap:14px}
+.chat-side-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:18px}
+.chat-side-card h4{font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.chat-side-card h4 svg{width:16px;height:16px;color:var(--primary)}
+.topic-list{display:flex;flex-direction:column;gap:8px}
+.topic-item{font-size:13px;color:var(--text-2);padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px}
+.topic-item:hover{background:var(--primary-light);color:var(--primary)}
+.topic-item svg{width:14px;height:14px;color:var(--text-3)}
+
+/* ===== Links ===== */
+.link-tile{display:flex;align-items:center;gap:14px;padding:16px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);transition:all .2s;cursor:pointer}
+.link-tile:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.link-tile .lt-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.link-tile .lt-icon svg{width:20px;height:20px}
+.link-tile .lt-text{flex:1;min-width:0}
+.link-tile .lt-name{font-size:14px;font-weight:600}
+.link-tile .lt-desc{font-size:12px;color:var(--text-3);margin-top:2px}
+.links-cat-title{font-size:14px;font-weight:600;color:var(--primary);margin:20px 0 12px;display:flex;align-items:center;gap:8px}
+.links-cat-title .bar-sm{width:3px;height:15px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px}
+.links-cat-title:first-child{margin-top:0}
+
+/* ===== Academy ===== */
+.academy-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--surface-2);color:var(--text-2);transition:all .15s;cursor:pointer}
+.academy-tag:hover{background:var(--primary-light);color:var(--primary)}
+.academy-tag .a-dot{width:6px;height:6px;border-radius:50%}
+.academy-tag svg.a-ext{width:13px;height:13px;margin-left:2px;opacity:.7}
+.card-site{display:inline-flex;align-items:center;gap:5px;margin-top:14px;padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:500;background:var(--primary-light);color:var(--primary);transition:all .15s}
+.card-site:hover{background:var(--primary);color:#fff;transform:translateY(-1px)}
+.card-site svg{width:14px;height:14px}
+.more-trigger{cursor:pointer;position:relative}
+.more-trigger .more-arrow{display:inline-block;transition:transform .25s;font-size:13px;color:var(--primary);margin-left:6px}
+.more-trigger.open .more-arrow{transform:rotate(180deg)}
+.more-trigger.open{border-color:var(--primary);box-shadow:var(--shadow-md)}
+.more-wrap{grid-column:1/-1;display:none;margin-top:4px}
+.more-wrap.open{display:block}
+.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.more-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;transition:all .15s}
+.more-item:hover{background:var(--primary-light);border-color:var(--primary)}
+.more-item .mi-name{font-size:13px;font-weight:500;color:var(--text-1);flex:1;min-width:0}
+.more-item .mi-btn{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;color:var(--primary);font-weight:500;padding:5px 10px;border-radius:7px;background:var(--surface);transition:all .15s;flex-shrink:0}
+.more-item .mi-btn:hover{background:var(--primary);color:#fff}
+.more-item .mi-btn svg{width:12px;height:12px}
+
+/* ===== Toast ===== */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text-1);color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;box-shadow:var(--shadow-lg);z-index:100;transition:transform .3s ease;display:flex;align-items:center;gap:8px}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast svg{width:16px;height:16px;color:#7BE495}
+
+/* ===== Search Modal ===== */
+.search-modal{position:fixed;inset:0;z-index:90;display:none;align-items:flex-start;justify-content:center;padding:80px 20px 20px}
+.search-modal.open{display:flex}
+.search-mask{position:absolute;inset:0;background:rgba(15,27,45,.45);backdrop-filter:blur(2px)}
+.search-panel{position:relative;width:100%;max-width:640px;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden;animation:searchIn .25s ease}
+@keyframes searchIn{from{opacity:0;transform:translateY(-12px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.search-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--border)}
+.search-head svg.s-ico{width:20px;height:20px;color:var(--text-3);flex-shrink:0}
+.search-head input{flex:1;border:none;outline:none;font-size:16px;color:var(--text-1);background:none;font-family:inherit}
+.search-head input::placeholder{color:var(--text-3)}
+.search-close{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-3);flex-shrink:0}
+.search-close:hover{background:var(--surface-2);color:var(--text-1)}
+.search-close svg{width:16px;height:16px}
+.search-body{max-height:440px;overflow-y:auto;padding:8px 0}
+.search-sec-title{font-size:11px;color:var(--text-3);font-weight:600;padding:10px 20px 6px;letter-spacing:.05em;text-transform:uppercase}
+.search-result{display:flex;align-items:center;gap:14px;padding:10px 20px;cursor:pointer;transition:background .15s}
+.search-result:hover,.search-result.focus{background:var(--surface-2)}
+.search-result .sr-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.search-result .sr-icon svg{width:18px;height:18px}
+.search-result .sr-text{flex:1;min-width:0}
+.search-result .sr-name{font-size:14px;font-weight:600;color:var(--text-1);display:flex;align-items:center;gap:8px}
+.search-result .sr-desc{font-size:12px;color:var(--text-3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-result .sr-go{color:var(--text-3);flex-shrink:0}
+.search-result .sr-go svg{width:16px;height:16px}
+.sr-tag{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:500}
+.sr-tag.site{background:var(--primary-light);color:var(--primary)}
+.sr-tag.account{background:#FFF4E5;color:#E8A317}
+.sr-platform{font-size:11px;color:var(--text-3);font-weight:500}
+.search-empty{text-align:center;padding:40px 20px;color:var(--text-3);font-size:14px}
+.search-empty svg{width:36px;height:36px;color:var(--border-strong);margin-bottom:10px}
+.search-hint{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-top:1px solid var(--border);font-size:12px;color:var(--text-3)}
+.search-hint kbd{font-size:11px;padding:2px 6px;border-radius:5px;background:var(--surface-2);border:1px solid var(--border);font-family:inherit}
+
+/* ===== Mobile ===== */
+.menu-toggle{display:none}
+.overlay{display:none}
+@media(max-width:960px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}
+.chat-wrap{grid-template-columns:1fr}
+.chat-side{display:none}
+}
+@media(max-width:720px){
+.sidebar{transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.main{margin-left:0}
+.menu-toggle{display:flex}
+.overlay{display:block;position:fixed;inset:0;background:rgba(15,27,45,.4);z-index:25;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.show{opacity:1;pointer-events:auto}
+.content{padding:20px}
+.grid-3,.grid-4,.grid-2{grid-template-columns:1fr}
+.stats{grid-template-columns:repeat(2,1fr)}
+.climate-grid{grid-template-columns:repeat(2,1fr)}
+.rt-future{grid-template-columns:repeat(2,1fr)}
+.rt-now{flex-direction:column;text-align:center;gap:14px}
+.hero{padding:28px}
+.hero h1{font-size:24px}
+.topbar{padding:0 18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">大工</div>
+      <div class="brand-text">
+        <div class="brand-name">大连理工大学</div>
+        <div class="brand-sub">新生入学助手 · 2026</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-group">
+        <div class="nav-label">主导航</div>
+        <button class="nav-item active" data-view="home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
+          首页
+        </button>
+        <button class="nav-item" data-view="guide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4zM4 12h16v8H4z"/><circle cx="8" cy="16" r="1"/></svg>
+          入学指南
+        </button>
+        <button class="nav-item" data-view="campus">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+          校区介绍
+        </button>
+        <button class="nav-item" data-view="checklist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          报到清单
+        </button>
+        <button class="nav-item" data-view="chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          智能问答
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">了解大工</div>
+        <button class="nav-item" data-view="academy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/></svg>
+          书院学院
+        </button>
+        <button class="nav-item" data-view="links">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1"/><path d="M14 11a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1"/></svg>
+          快速链接
+        </button>
+      </div>
+    </nav>
+    <div class="sidebar-foot">
+      <a class="side-link" href="campus-life.html?skip=1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        校园生活助手
+      </a>
+      <a class="side-link" href="https://yx.dlut.edu.cn" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+        迎新网官网
+      </a>
+      <a class="side-link" href="https://dutyx.dlut.edu.cn/yxwz/" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M15 3h6v6M10 14L21 3"/><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/></svg>
+        迎新系统登录
+      </a>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ===== Main ===== -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn menu-toggle" id="menuToggle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <div>
+          <div class="topbar-title" id="viewTitle">首页</div>
+          <div class="topbar-crumb">大连理工大学 · 新生入学助手</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" id="searchBtn" title="搜索">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4-4"/></svg>
+        </button>
+        <button class="icon-btn" title="通知">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>
+        </button>
+        <div class="avatar">新</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- ===== Home View ===== -->
+      <section class="view active" id="view-home">
+        <div class="hero">
+          <div class="hero-inner">
+            <div class="hero-tag"><span class="dot"></span>2026级新生 · 入学通道已开放</div>
+            <h1>欢迎来到大连理工大学<br>开启你的大工时光</h1>
+            <p>大连理工大学是教育部直属全国重点大学，"双一流"建设高校。坐落于"北方明珠"大连，一校两地三区办学格局。本助手将帮助你顺利完成入学报到。</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="switchView('guide')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                查看入学指南
+              </button>
+              <button class="btn btn-ghost" onclick="switchView('chat')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                智能问答
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="stat-num">1949<span class="unit">年</span></div><div class="stat-label">建校时间</div></div>
+          <div class="stat"><div class="stat-num">50000<span class="unit">+</span></div><div class="stat-label">在校学生</div></div>
+          <div class="stat"><div class="stat-num">77<span class="unit">个</span></div><div class="stat-label">本科招生专业</div></div>
+          <div class="stat"><div class="stat-num">3<span class="unit">个</span></div><div class="stat-label">双一流学科</div></div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>入学关键时间节点</div>
+        </div>
+        <div class="timeline">
+          <div class="tl-list" id="timelineList"></div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>快速入口</div>
+        </div>
+        <div class="grid grid-3">
+          <div class="card" onclick="switchView('guide')" style="cursor:pointer">
+            <div class="card-icon" style="background:#E8F0FB;color:#003F88">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            </div>
+            <h3>入学攻略</h3>
+            <p>地理位置、内部设施、入学必备、交通路线等报到全流程指引。</p>
+            <div class="card-link">查看详情 →</div>
+          </div>
+          <div class="card" onclick="switchView('checklist')" style="cursor:pointer">
+            <div class="card-icon" style="background:#E6F4EA;color:#16A34A">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            </div>
+            <h3>报到清单</h3>
+            <p>逐项核对入学所需材料与手续，确保报到当日万无一失。</p>
+            <div class="card-link">开始核对 →</div>
+          </div>
+          <div class="card" onclick="switchView('chat')" style="cursor:pointer">
+            <div class="card-icon" style="background:#FFF4E5;color:#E8A317">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </div>
+            <h3>智能问答</h3>
+            <p>关于报到、住宿、缴费、户口迁移等问题，随时向我提问。</p>
+            <div class="card-link">立即提问 →</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Guide View ===== -->
+      <section class="view" id="view-guide">
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>入学攻略</div>
+        </div>
+
+        <div class="grid grid-3" style="margin-bottom:28px">
+          <div class="card" onclick="switchView('campus')" style="cursor:pointer">
+            <div class="card-icon" style="background:#E8F0FB;color:#003F88">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <h3>地理位置</h3>
+            <p>一校两地三区办学格局：大连凌水主校区、开发区校区、盘锦校区。</p>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="background:#E6F4EA;color:#16A34A">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+            </div>
+            <h3>内部设施</h3>
+            <p>教学楼、图书馆、实验室、体育场馆、食堂、宿舍等校园设施分布。</p>
+          </div>
+          <div class="card" onclick="switchView('checklist')" style="cursor:pointer">
+            <div class="card-icon" style="background:#FFF4E5;color:#E8A317">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2l3 6 9 3-9 3-3 6-3-6-9-3 9-3z"/></svg>
+            </div>
+            <h3>入学必备</h3>
+            <p>录取通知书、身份证、户口本、照片、档案、党团关系等材料清单。</p>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>大连气候早知道</div>
+        </div>
+        <div class="climate">
+          <p style="font-size:14px;color:var(--text-2);line-height:1.7">大连地处辽东半岛南端，属<strong>暖温带半湿润季风性海洋气候</strong>，四季分明、气候温和。冬无严寒，夏无酷暑，是国内排名第4的宜居城市，全年空气质量优良天数300+。</p>
+          <div class="climate-grid">
+            <div class="season"><div class="season-icon">🌸</div><div class="season-name">春季</div><div class="season-temp">10-18℃ · 多风</div></div>
+            <div class="season"><div class="season-icon">☀️</div><div class="season-name">夏季</div><div class="season-temp">25℃ · 凉爽</div></div>
+            <div class="season"><div class="season-icon">🍂</div><div class="season-name">秋季</div><div class="season-temp">12-20℃ · 宜人</div></div>
+            <div class="season"><div class="season-icon">❄️</div><div class="season-name">冬季</div><div class="season-temp">-3℃ · 温和</div></div>
+          </div>
+
+          <div class="rt-weather">
+            <div class="rt-head">
+              <div class="rt-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                三校区实时天气
+              </div>
+              <select id="campusSelect" class="rt-select">
+                <option value="lingshui">凌水主校区 · 甘井子区</option>
+                <option value="kaifa">开发区校区 · 金州区</option>
+                <option value="panjin">盘锦校区 · 大洼区</option>
+              </select>
+            </div>
+            <div id="rtContent" class="rt-content"></div>
+            <div class="rt-update"><span class="dot"></span>数据来源：高德地图 · 更新于 2026-08-28</div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>入学必备材料</div>
+        </div>
+        <div class="checklist" style="margin-bottom:28px">
+          <div class="grid grid-2" style="gap:12px 32px">
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">录取通知书（原件）</div><span class="cl-cat">必备</span></div>
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">本人身份证及正反面复印件</div><span class="cl-cat">必备</span></div>
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">户口迁移证（自愿迁移）</div><span class="cl-cat">可选</span></div>
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">近期免冠彩色照片若干</div><span class="cl-cat">必备</span></div>
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">党/团组织关系转接材料</div><span class="cl-cat">必备</span></div>
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">个人档案（密封）<span style="color:var(--danger);font-weight:500"> · 通过邮政EMS邮寄，不可自带</span></div><span class="cl-cat">必备</span></div>
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">银行卡（用于缴费扣款）</div><span class="cl-cat">必备</span></div>
+            <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">《国家助学金申请表》</div><span class="cl-cat">按需</span></div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>交通路线指引</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;color:var(--text-3)">选择校区</span>
+            <select id="transitCampusSelect" class="rt-select">
+              <option value="lingshui">凌水主校区</option>
+              <option value="kaifa">开发区校区</option>
+              <option value="panjin">盘锦校区</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-3" id="transitCards" style="margin-bottom:28px"></div>
+
+
+      </section>
+
+      <!-- ===== Campus View ===== -->
+      <section class="view" id="view-campus">
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>一校两地三区</div>
+          <div class="section-more" onclick="window.open('http://map.dlut.edu.cn')">校园地图 →</div>
+        </div>
+        <div class="grid grid-3" style="margin-bottom:28px">
+          <div class="campus-card">
+            <div class="campus-banner c1"><h3>大连凌水主校区</h3></div>
+            <div class="campus-body">
+              <div class="addr">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                辽宁省大连市甘井子区凌工路2号<br>邮编：116024
+              </div>
+              <div class="campus-tags">
+                <span class="campus-tag">主校区</span><span class="campus-tag">黄海之滨</span><span class="campus-tag">本科·研究生</span>
+              </div>
+              <div class="campus-geo">
+                <span class="geo-coord"><b>经纬度</b>121.528449, 38.880709</span>
+                <a class="geo-link" target="_blank" href="https://uri.amap.com/marker?position=121.528449,38.880709&name=大连理工大学凌水主校区&coordinate=gaode&callnative=1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>高德地图
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="campus-card">
+            <div class="campus-banner c2"><h3>开发区校区</h3></div>
+            <div class="campus-body">
+              <div class="addr">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                辽宁省大连市金普新区图强路321号<br>邮编：116620
+              </div>
+              <div class="campus-tags">
+                <span class="campus-tag">软件·微电子</span><span class="campus-tag">金普新区</span>
+              </div>
+              <div class="campus-geo">
+                <span class="geo-coord"><b>经纬度</b>121.813890, 39.085050</span>
+                <a class="geo-link" target="_blank" href="https://uri.amap.com/marker?position=121.813890,39.085050&name=大连理工大学开发区校区&coordinate=gaode&callnative=1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>高德地图
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="campus-card">
+            <div class="campus-banner c3"><h3>盘锦校区</h3></div>
+            <div class="campus-body">
+              <div class="addr">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                辽宁省盘锦市辽东湾新区大工路2号<br>邮编：124221
+              </div>
+              <div class="campus-tags">
+                <span class="campus-tag">辽东湾</span><span class="campus-tag">石油化工特色</span>
+              </div>
+              <div class="campus-geo">
+                <span class="geo-coord"><b>经纬度</b>122.124016, 40.690242</span>
+                <a class="geo-link" target="_blank" href="https://uri.amap.com/marker?position=122.124016,40.690242&name=大连理工大学盘锦校区&coordinate=gaode&callnative=1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>高德地图
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>大工数据一览</div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num">356.81<span class="unit">万㎡</span></div><div class="stat-label">占地面积</div></div>
+          <div class="stat"><div class="stat-num">397<span class="unit">万册</span></div><div class="stat-label">图书馆馆藏</div></div>
+          <div class="stat"><div class="stat-num">18.1<span class="unit">万㎡</span></div><div class="stat-label">运动场馆</div></div>
+          <div class="stat"><div class="stat-num">15<span class="unit">位</span></div><div class="stat-label">两院院士</div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num">4500<span class="unit">+</span></div><div class="stat-label">教职工</div></div>
+          <div class="stat"><div class="stat-num">393<span class="unit">人</span></div><div class="stat-label">国家级人才</div></div>
+          <div class="stat"><div class="stat-num">57<span class="unit">个</span></div><div class="stat-label">一流本科专业</div></div>
+          <div class="stat"><div class="stat-num">4<span class="unit">个</span></div><div class="stat-label">全国重点实验室</div></div>
+        </div>
+      </section>
+
+      <!-- ===== Checklist View ===== -->
+      <section class="view" id="view-checklist">
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>报到清单</div>
+        </div>
+        <div class="checklist">
+          <div class="cl-progress">
+            <div class="cl-progress-bar"><div class="cl-progress-fill" id="clFill" style="width:0%"></div></div>
+            <div class="cl-progress-text" id="clText">已完成 0 / 12 项</div>
+          </div>
+          <div id="checklistItems"></div>
+        </div>
+      </section>
+
+      <!-- ===== Chat View ===== -->
+      <section class="view" id="view-chat">
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>智能问答助手</div>
+        </div>
+        <div class="chat-wrap">
+          <div class="chat-box">
+            <div class="chat-header">
+              <div class="chat-bot-av">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-3 3 3 3 0 01-3-3V5a3 3 0 013-3z"/><path d="M5 12a7 7 0 0014 0M12 19v3"/></svg>
+              </div>
+              <div>
+                <div class="ch-title">大工迎新小助手</div>
+                <div class="ch-sub"><span class="dot"></span>在线 · 随时为你解答</div>
+              </div>
+            </div>
+            <div class="chat-msgs" id="chatMsgs"></div>
+            <div class="chat-examples">
+              <div class="ex-label" id="exLabel">试试问</div>
+              <div class="ex-track"><div class="ex-slides" id="exSlides"></div></div>
+              <button class="ex-next" id="exNext" title="换一批示例">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+            <div class="chat-input">
+              <input type="text" id="chatInput" placeholder="输入你的问题，按 Enter 发送..." onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="chat-send" onclick="sendChat()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+                发送
+              </button>
+            </div>
+          </div>
+          <div class="chat-side">
+            <div class="chat-side-card">
+              <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>热门话题</h4>
+              <div class="topic-list">
+                <div class="topic-item" onclick="askQuick('军训安排')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>军训安排</div>
+                <div class="topic-item" onclick="askQuick('校园网怎么办理')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>校园网办理</div>
+                <div class="topic-item" onclick="askQuick('银行卡用什么')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>银行卡要求</div>
+                <div class="topic-item" onclick="askQuick('团组织关系转接')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>团组织关系</div>
+                <div class="topic-item" onclick="askQuick('绿色通道')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>绿色通道</div>
+              </div>
+            </div>
+            <div class="chat-side-card">
+              <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>咨询电话</div>
+              <div style="font-size:13px;color:var(--text-2);line-height:1.8">
+                学生处：0411-84708320<br>
+                网信中心：0411-84708000<br>
+                后勤处：0411-84708200
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Academy View ===== -->
+      <section class="view" id="view-academy">
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>书院风采</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px">
+          <span class="academy-tag" onclick="window.open('https://futureschool.dlut.edu.cn/')" title="未来书院官网"><span class="a-dot" style="background:#003F88"></span>未来书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('http://dgc.dlut.edu.cn/sywh/bcsy1.htm')" title="伯川书院官网"><span class="a-dot" style="background:#16A34A"></span>伯川书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('http://dgc.dlut.edu.cn/sywh/qssy1.htm')" title="求实书院官网"><span class="a-dot" style="background:#E8A317"></span>求实书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('http://dgc.dlut.edu.cn/sywh/hdsy1.htm')" title="厚德书院官网"><span class="a-dot" style="background:#E5484D"></span>厚德书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('http://dgc.dlut.edu.cn/sywh/zxsy.htm')" title="知行书院官网"><span class="a-dot" style="background:#7C3AED"></span>知行书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('http://dgc.dlut.edu.cn/sywh/dxsy.htm')" title="笃学书院官网"><span class="a-dot" style="background:#0EA5E9"></span>笃学书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('http://dgc.dlut.edu.cn/sywh/dysy1.htm')" title="大煜书院官网"><span class="a-dot" style="background:#DB2777"></span>大煜书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('http://dgc.dlut.edu.cn/sywh/lxsy1.htm')" title="令希书院官网"><span class="a-dot" style="background:#059669"></span>令希书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+          <span class="academy-tag" onclick="window.open('https://xsgzb.dlut.edu.cn/zqsy1.htm')" title="自强书院官网"><span class="a-dot" style="background:#EA580C"></span>自强书院<svg class="a-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></span>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>学院风采</div>
+        </div>
+        <div class="grid grid-3">
+          <div class="card"><h3>控制科学与工程学院</h3><p>以自动化、控制科学为核心，欢迎2026级新同学。</p><a class="card-site" target="_blank" href="http://scse.dlut.edu.cn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
+          <div class="card"><h3>能源与动力学院</h3><p>能源动力领域人才培养与科研重镇。</p><a class="card-site" target="_blank" href="http://power.dlut.edu.cn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
+          <div class="card"><h3>集成电路学院</h3><p>聚焦集成电路设计与集成系统前沿。</p><a class="card-site" target="_blank" href="http://ice.dlut.edu.cn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
+          <div class="card"><h3>经济管理学院</h3><p>经济管理类复合型人才培养基地。</p><a class="card-site" target="_blank" href="http://sem.dlut.edu.cn/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
+          <div class="card"><h3>白俄罗斯国立大学联合学院</h3><p>国际化中外合作办学机构。</p><a class="card-site" target="_blank" href="http://dbji.dlut.edu.cn/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
+          <div class="card more-trigger" id="moreTrigger"><h3>更多学院<span class="more-arrow">▾</span></h3><p>化工、机械、材料、电信、计算机、建工、数学、物理等，点击展开全部学院官网入口。</p></div>
+          <div class="more-wrap" id="moreWrap"><div class="more-grid" id="moreAcademies"></div></div>
+        </div>
+      </section>
+
+      <!-- ===== Links View ===== -->
+      <section class="view" id="view-links">
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>快速链接</div>
+        </div>
+
+        <div id="linksContainer"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+  <span id="toastText">操作成功</span>
+</div>
+
+<!-- ===== Search Modal ===== -->
+<div class="search-modal" id="searchModal">
+  <div class="search-mask" id="searchMask"></div>
+  <div class="search-panel">
+    <div class="search-head">
+      <svg class="s-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4-4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索大工官方网站、官方账号..." autocomplete="off">
+      <button class="search-close" id="searchClose" title="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="search-body" id="searchBody"></div>
+    <div class="search-hint">
+      <kbd>↑</kbd><kbd>↓</kbd>选择
+      <kbd>Enter</kbd>打开
+      <kbd>Esc</kbd>关闭
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== Navigation =====
+const viewTitles={home:'首页',guide:'入学指南',campus:'校区介绍',checklist:'报到清单',chat:'智能问答',academy:'书院学院',links:'快速链接'};
+// ===== 更多学院展开 =====
+const MORE_ACADEMIES=[
+  {name:'化工学院',url:'http://chemeng.dlut.edu.cn/'},
+  {name:'机械工程学院',url:'http://me.dlut.edu.cn'},
+  {name:'材料科学与工程学院',url:'http://mse.dlut.edu.cn'},
+  {name:'信息与通信工程学院',url:'http://ice.dlut.edu.cn'},
+  {name:'计算机科学与技术学院',url:'http://cs.dlut.edu.cn'},
+  {name:'建设工程学院',url:'https://sche.dlut.edu.cn/'},
+  {name:'数学科学学院',url:'http://math.dlut.edu.cn/'},
+  {name:'物理学院',url:'http://physics.dlut.edu.cn/'},
+  {name:'化学学院',url:'http://chem.dlut.edu.cn/'},
+  {name:'环境学院',url:'http://est.dlut.edu.cn'},
+  {name:'生物工程学院',url:'http://biotech.dlut.edu.cn'},
+  {name:'电气工程学院',url:'http://ee.dlut.edu.cn'},
+  {name:'力学与航空航天学院',url:'http://lihang.dlut.edu.cn/'},
+  {name:'船舶工程学院',url:'http://naoe.dlut.edu.cn/'},
+  {name:'建筑与艺术学院',url:'http://aaschool.dlut.edu.cn/'},
+  {name:'外国语学院',url:'http://fld.dlut.edu.cn/'},
+  {name:'光电工程与仪器科学学院',url:'http://oeis.dlut.edu.cn/'},
+  {name:'人工智能学院',url:'https://robot.dlut.edu.cn/'},
+  {name:'未来技术学院',url:'https://futureschool.dlut.edu.cn/'},
+  {name:'人文学院',url:'http://fhss.dlut.edu.cn/'},
+  {name:'公共管理学院',url:'https://spap.dlut.edu.cn/'},
+  {name:'体育与健康学院',url:'http://kh.dlut.edu.cn/'},
+  {name:'创新创业学院',url:'http://chuangxin.dlut.edu.cn/'},
+  {name:'国家卓越工程师学院',url:'https://ngce.dlut.edu.cn/index.htm'}
+];
+const EXT_ICO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
+document.getElementById('moreAcademies').innerHTML=MORE_ACADEMIES.map(a=>'<div class="more-item"><span class="mi-name">'+a.name+'</span><a class="mi-btn" target="_blank" href="'+a.url+'">'+EXT_ICO+'官网</a></div>').join('');
+document.getElementById('moreTrigger').addEventListener('click',function(){
+  this.classList.toggle('open');
+  document.getElementById('moreWrap').classList.toggle('open');
+});
+function switchView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item[data-view="'+name+'"]').classList.add('active');
+  document.getElementById('viewTitle').textContent=viewTitles[name];
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>switchView(item.dataset.view));
+});
+document.getElementById('menuToggle').addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+});
+document.getElementById('overlay').addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+});
+
+// ===== URL view param (分流页跳入时定位视图) =====
+(function(){
+  var p=new URLSearchParams(location.search);
+  var v=p.get('view');
+  if(v&&viewTitles[v]&&v!=='home') switchView(v);
+})();
+
+// ===== Toast =====
+function showToast(text){
+  const t=document.getElementById('toast');
+  document.getElementById('toastText').textContent=text;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ===== Checklist =====
+const checklistData=[
+  {cat:'材料',text:'录取通知书原件'},
+  {cat:'材料',text:'身份证及正反面复印件'},
+  {cat:'材料',text:'近期免冠彩色照片（一寸、二寸各若干）'},
+  {cat:'材料',text:'个人档案（密封，不可拆封）<span style="color:var(--danger);font-weight:500"> · 通过邮政EMS邮寄，不可自带</span>'},
+  {cat:'手续',text:'党/团组织关系转接'},
+  {cat:'手续',text:'户口迁移证（自愿迁移）'},
+  {cat:'系统',text:'登录迎新系统完善个人信息'},
+  {cat:'系统',text:'上传校园卡照片'},
+  {cat:'系统',text:'完成网上缴费'},
+  {cat:'生活',text:'准备被褥等生活用品'},
+  {cat:'生活',text:'办理银行卡'},
+  {cat:'报到',text:'报到当日到指定地点注册'}
+];
+function renderChecklist(){
+  const saved=JSON.parse(localStorage.getItem('dut_checklist_checked')||'[]');
+  const wrap=document.getElementById('checklistItems');
+  wrap.innerHTML=checklistData.map((d,i)=>
+    `<div class="cl-item${saved.includes(i)?' checked':''}" data-idx="${i}">
+      <div class="cl-check" onclick="toggleCheck(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="cl-text">${d.text}</div>
+      <span class="cl-cat">${d.cat}</span>
+    </div>`
+  ).join('');
+  updateProgress();
+}
+function toggleCheck(i){
+  const item=document.querySelector('.cl-item[data-idx="'+i+'"]');
+  item.classList.toggle('checked');
+  const checked=Array.from(document.querySelectorAll('.cl-item.checked')).map(el=>+el.dataset.idx);
+  localStorage.setItem('dut_checklist_checked',JSON.stringify(checked));
+  updateProgress();
+}
+function updateProgress(){
+  const total=checklistData.length;
+  const done=document.querySelectorAll('.cl-item.checked').length;
+  document.getElementById('clFill').style.width=(done/total*100)+'%';
+  document.getElementById('clText').textContent='已完成 '+done+' / '+total+' 项';
+  if(done===total)showToast('恭喜！报到清单已全部完成 🎉');
+}
+
+// ===== Links =====
+const linksData=[
+  {name:'迎新网',desc:'大连理工大学迎新网官方',url:'https://yx.dlut.edu.cn',color:'#003F88',bg:'#E8F0FB',icon:'<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>'},
+  {name:'迎新系统',desc:'登录办理入学手续',url:'https://dutyx.dlut.edu.cn/yxwz/',color:'#16A34A',bg:'#E6F4EA',icon:'<path d="M15 3h6v6M10 14L21 3"/><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>'},
+  {name:'学生处',desc:'学生事务管理服务',url:'http://xsc.dlut.edu.cn/',color:'#E8A317',bg:'#FFF4E5',icon:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>'},
+  {name:'校团委',desc:'共青团大连理工大学委员会',url:'http://tuanwei.dlut.edu.cn',color:'#E5484D',bg:'#FEE',icon:'<path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/>'},
+  {name:'教务处',desc:'本科教学管理',url:'http://teach.dlut.edu.cn',color:'#7C3AED',bg:'#F3EEFF',icon:'<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/>'},
+  {name:'研究生院',desc:'研究生教育管理',url:'http://gs.dlut.edu.cn/',color:'#0EA5E9',bg:'#E0F5FC',icon:'<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/>'},
+  {name:'图书馆',desc:'馆藏397万余册',url:'http://www.lib.dlut.edu.cn/',color:'#16A34A',bg:'#E6F4EA',icon:'<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>'},
+  {name:'网信中心',desc:'校园信息化服务',url:'http://its.dlut.edu.cn',color:'#003F88',bg:'#E8F0FB',icon:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>'},
+  {name:'后勤处',desc:'后勤保障服务',url:'http://houqin.dlut.edu.cn',color:'#E8A317',bg:'#FFF4E5',icon:'<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>'},
+  {name:'校园地图',desc:'大工校园地图',url:'http://map.dlut.edu.cn/',color:'#E5484D',bg:'#FEE',icon:'<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>'},
+  {name:'校友会',desc:'大连理工大学校友会',url:'http://alumni.dlut.edu.cn/',color:'#7C3AED',bg:'#F3EEFF',icon:'<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>'},
+  {name:'招生网',desc:'本科招生信息',url:'http://zs.dlut.edu.cn/',color:'#0EA5E9',bg:'#E0F5FC',icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'}
+];
+function renderLinks(){
+  var html='<div class="links-cat-title"><span class="bar-sm"></span>官方网站</div><div class="grid grid-2">';
+  html+=linksData.map(l=>linkTileHtml(l.name,l.desc,l.url,l.color,l.bg,l.icon)).join('');
+  html+='</div>';
+  html+='<div class="links-cat-title"><span class="bar-sm"></span>官方账号</div><div class="grid grid-2">';
+  html+=searchAccounts.map(a=>linkTileHtml(a.name+' · '+a.platform,a.desc,a.url,a.color,a.bg,a.icon)).join('');
+  html+='</div>';
+  document.getElementById('linksContainer').innerHTML=html;
+}
+function linkTileHtml(name,desc,url,color,bg,icon){
+  return '<a class="link-tile" href="'+url+'" target="_blank">'+
+    '<div class="lt-icon" style="background:'+bg+';color:'+color+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+icon+'</svg></div>'+
+    '<div class="lt-text"><div class="lt-name">'+name+'</div><div class="lt-desc">'+desc+'</div></div>'+
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:var(--text-3)"><path d="M9 18l6-6-6-6"/></svg>'+
+  '</a>';
+}
+
+// ===== Chat =====
+const qaDB=[
+  {keys:['团员档案','团档案','团的档案','团员档案自带','团员档案可以带','团员档案能带','团员档案自己带','团员档案怎么带','团员档案要带','团员档案需要','团员档案要自带','团员档案能自带','团员档案可以自带','带团员档案','团员档案寄','团员档案交','团员档案怎么交','团员档案如何交','团员档案如何带','团员档案要带吗','团员档案能带吗','团员档案可以带吗','团员档案要寄','团员档案需要寄','团员档案能寄吗','团员档案可以寄吗'],a:'<strong>团员档案：</strong>团员档案由学生在 <strong>报到日当天自带到学校</strong> 即可，无需提前邮寄。'},
+  {keys:['学生档案','中学档案','档案自带','自带档案','档案自己带','自己带档案','档案可以带','档案能带','档案要带','档案需要带','档案不能带','档案不能自带','档案不能自己带','档案怎么带','档案如何带','档案邮寄','档案寄','寄档案','档案要寄','档案需要寄','档案要邮寄','档案EMS','档案ems','档案地址','档案寄到','档案寄哪','档案寄去','档案怎么交','档案如何交','交档案','档案送到','档案送哪','送档案','档案怎么送','档案如何送','档案馆','档案密封','档案公章','档案带吗','档案要带吗','档案能带吗','档案可以带吗','档案需要带吗','档案要寄吗','档案需要寄吗','档案能寄吗','档案可以寄吗','档案要邮寄吗','档案怎么寄','档案如何寄','档案寄到哪','档案寄到哪里','档案寄去哪','档案送去哪','档案送到哪'],a:'<strong>学生档案邮寄说明：</strong>新生的中学档案由所在中学、当地招生部门或本人以 <strong>中国邮政快递EMS</strong> 邮寄至档案馆，<strong>个人不能自带</strong>。<ul><li><strong>邮寄地址：</strong>辽宁省大连市甘井子区凌工路2号大连理工大学档案馆113室</li><li><strong>收件人：</strong>姜军</li><li><strong>电话：</strong>0411-84708906</li><li><strong>邮编：</strong>116024</li></ul><strong>注意事项：</strong><ul><li>档案须密封（由所在中学或当地招生部门封口，并在骑缝处加盖公章或密封章），不得私自开封</li><li>档案袋和快递袋左上角均须写明姓名、大连理工大学学号、书院/学院、专业</li></ul>'},
+  {keys:['预科','预科生','少数民族预科','少数民族','预科班','预科报到','预科生报到','预科怎么报到','预科去哪报到','预科报到哪','预科哪个学院','预科学院','化工学院代管','化工学院','预科学费','预科交费','预科费用','预科多少钱','预科交多少','预科交费总额','4350','预科住宿费','预科杂费','预科体检','预科教材','预科定向','预科学制','预科几年','预科读几年','预科代管','预科咨询','预科电话','预科邮箱','932484018','84986025','少数民族同学','少数民族学生','少数民族新生','预科新生','预科生交费','预科生学费','预科生费用','预科生多少钱','预科生交多少','预科生去哪','预科生哪个学院','预科生化工','预科要交多少','预科要交多少钱','预科学费多少','预科住宿费多少','预科杂费多少','预科交费多少','少数民族预科班','少数民族预科生','预科生报到须知','预科报到须知','预科在哪读','预科去哪读','预科读完去哪','预科升本科','预科升入本科'],a:'<strong>少数民族预科生报到：</strong>少数民族预科生在预科学习阶段由 <strong>化工学院代管</strong>，新生到化工学院报到。<ul><li><strong>咨询方式：</strong>电话 0411-84986025，邮箱 932484018@qq.com</li><li><strong>学制：</strong>预科 1 年；定向计划形式</li><li><strong>预科期间学费：</strong>2400 元/年</li><li><strong>住宿费：</strong>1200 元/年</li><li><strong>杂费：</strong>750 元（体检费 150 + 教材预收款 600）</li><li><strong>交费总额：4350 元</strong>（学费+住宿费+杂费）</li><li>升入本科后，按所学专业标准缴纳学费</li></ul>'},
+  {keys:['请假','请假申请','请假怎么请','请假怎么申请','请假流程','请假怎么弄','请假咋弄','请假咋请','请假吗','能请假吗','可以请假吗','请假能请多久','请假多久','请假期限','请假最多','请假最多几周','请假两周','请假2周','两周','不能报到','不能按时报到','报到不了','去不了','赶不上','逾期','逾期不报到','放弃入学','放弃入学资格','报到不了怎么办','不能报到怎么办','赶不上报到','迟到','迟到报到','报到迟到','提前到校','提前报到','提前到','早到','早到校','提前去','提前来','提前到校怎么办','提前报到怎么办','早到了怎么办','提前到能住吗','提前到住哪','提前到有宿舍吗','提前到校住宿','提前到校自理','报到前到','提前几天到','提前一天到','提前两天到','不能按时报到怎么办','无法按时报到','没法按时报到','报到不了了','去不了学校','去不了怎么办','赶不上报到怎么办','请假在哪请','请假在哪申请','请假系统','请假模块','迎新系统请假','请假最多不超过','最多2周','最多两周','请假要什么','请假需要什么','请假材料','请假怎么办理','请假如何办理','请假咋办理','请假去哪','请假在哪','报到时间到了去不了','来不及报到','来不及','赶不到','赶不到学校'],a:'<strong>请假申请与提前到校：</strong><ul><li><strong>报到时间：</strong>2026年 <strong>8月30日</strong> 到校报到</li><li><strong>不能按时报到：</strong>请登录迎新网（yx.dlut.edu.cn）"迎新系统"，在 <strong>"请假申请"模块</strong> 进行请假申请</li><li><strong>请假期限：</strong>最多不超过 <strong>2周</strong>（自规定报到之日起算）</li><li><strong>逾期不报到：</strong>未经学校同意逾期不报到者，将被视为 <strong>自动放弃入学资格</strong></li><li><strong>提前到校：</strong>提前到校者 <strong>住宿自理</strong>，请在学校规定时间内报到</li></ul>'},
+  {keys:['电子注册','注册','网上注册','在线注册','电子注册怎么弄','电子注册如何弄','电子注册咋弄','电子注册怎么操作','电子注册如何操作','电子注册咋操作','电子注册流程','电子注册步骤','电子注册要求','电子注册须知','注册须知','电子注册是什么','电子注册啥','电子注册吗','要电子注册吗','需要电子注册吗','必须电子注册吗','电子注册必须','注册怎么弄','注册如何弄','注册咋弄','注册流程','注册步骤','注册要求','注册是什么','注册吗','要注册吗','需要注册吗','必须注册吗','迎新系统注册','网上注册须知','电子注册须知','电子注册办卡','电子注册照片','电子注册玉兰龙卡','电子注册确认','办卡确认','玉兰龙卡办卡确认','办卡确认怎么弄','办卡确认如何弄','办卡确认咋弄','办卡确认流程','电子注册包括什么','电子注册包含什么','注册包括什么','注册包含什么','电子注册要做什么','注册要做什么','电子注册做什么','注册做什么','电子注册哪些','注册哪些','电子注册内容','注册内容','电子注册事项','注册事项','电子注册工作','注册工作','电子注册采集','注册采集','电子注册怎么办','注册怎么办','电子注册去哪','注册去哪','电子注册在哪','注册在哪','电子注册完成','注册完成','怎么完成电子注册','如何完成电子注册','咋完成电子注册','电子注册没做','没注册','没电子注册','电子注册没完成','注册没完成','电子注册截止','注册截止','电子注册什么时候','注册什么时候','电子注册多久','注册多久','电子注册要照片','注册要照片','电子注册要办卡','注册要办卡','电子注册要确认','注册要确认'],a:'<strong>电子注册：</strong>新生 <strong>必须进行电子注册</strong>，请通过大连理工大学迎新网登录"迎新系统"按要求完成以下工作：<ul><li><strong>电子注册</strong></li><li><strong>校园卡照片采集</strong></li><li><strong>"玉兰龙卡"办卡确认</strong></li></ul>具体要求详见《新生电子注册须知》。'},
+  {keys:['报到','时间','什么时候报到','什么时候开学','什么时候到校','什么时候来学校','什么时候去学校','什么时候开学报到','报到什么时候','开学什么时候','什么时候来','什么时候去','开学','日期'],a:'<strong>2026级新生报到时间：</strong><ul><li><strong>报到日期：8月30日</strong> 到校报到（持录取通知书、二代身份证及有关证件）</li><li>迎新系统已于 <strong>7月15日</strong> 面向研究生开放，7月29日面向本科生开放</li><li>研究生校园卡照片采集 <strong>7月26日</strong> 截止，本科生 <strong>8月9日</strong> 截止</li><li>因故不能按时报到，请在迎新系统"请假申请"模块请假，期限最多2周</li><li>未经学校同意逾期不报到者，视为 <strong>自动放弃入学资格</strong></li></ul>建议尽早登录迎新系统完成线上手续，及时关注迎新网通知。'},
+  {keys:['材料','带什么','东西','证件','清单'],a:'<strong>入学必备材料：</strong><ul><li>录取通知书（原件）</li><li>身份证及正反面复印件</li><li>近期免冠彩色照片（一寸、二寸各若干）</li><li>个人档案（密封，不可拆封）</li><li>党/团组织关系转接材料</li><li>户口迁移证（自愿迁移）</li><li>玉兰龙卡（大工与建行联名卡，用于缴费扣款）</li></ul>可在"报到清单"页面逐项核对。'},
+  {keys:['杂费','体检费','教材费','教材预收款','体检','体检多少钱','体检费多少','体检费多少钱','教材多少钱','教材费多少','教材费多少钱','杂费多少','杂费多少钱','交杂费','杂费怎么交','杂费如何交','杂费咋交','杂费要交多少','杂费需要交多少','杂费交多少','杂费包括什么','杂费有哪些','杂费有什么','杂费含什么','杂费包含','体检包括什么','体检项目','体检有哪些项目','体检查什么','体检检查什么','教材包括什么','教材费包括','教材预收款多少','教材预收','教材预收多少','交费总额','杂费总额','杂费一共','杂费总共','体检教材','体检和教材','杂费750','750','体检150','教材600','杂费在哪交','杂费去哪交','杂费什么时候交','杂费多久交','杂费交费','杂费缴费','体检费怎么交','体检费在哪交','教材费怎么交','教材费在哪交','杂费能缓缴吗','杂费能晚交吗','杂费能延期吗','杂费啥时候交','杂费咋交','体检咋交','教材咋交','杂费交哪些','杂费要交哪些','杂费有哪些项目','体检费包括啥','教材费包括啥','杂费包括啥','杂费含啥','体检含啥','教材含啥'],a:'<strong>杂费（体检费+教材费）：</strong>新生需交纳下列款项，于 <strong>入学后一个月之内</strong> 通过"校园统一支付平台"缴费。<ul><li><strong>体检费：150 元</strong>（项目：身高、体重、血压、内科、外科、视力、辨色力、DR胸片、肾功、肝功、血常规5分类、听力外语专业、健康管理建档）</li><li><strong>教材预收款：600 元</strong>（第一学年结束前按班结算，多退少补）</li><li><strong>杂费合计：750 元</strong></li></ul>'},
+  {keys:['缴费','学费','费用','怎么交费','怎么交学费','费用怎么交','学费怎么交','怎么交钱','交钱'],a:'<strong>缴费说明：</strong><ul><li>学费、住宿费按辽宁省发改委批准标准收取，<strong>入学一个月内完成缴纳</strong>即可</li><li>通过 <strong>"校园统一支付平台"（pay.dlut.edu.cn）</strong> 自主缴费</li><li>已开通 <strong>微信缴费、支付宝缴费、银联缴费</strong> 等结算方式</li><li>缴费数据在新生报到后产生</li><li>2026年本科招生专业学费统计表已在迎新网公布</li><li>家庭经济困难同学可申请 <strong>绿色通道</strong> 缓缴</li></ul>'},
+  {keys:['宿舍床尺寸','床尺寸','床的尺寸','床多大','床多宽','床多长','床大小','床长宽','床规格','床长','床宽','宿舍床','床位尺寸','床位大小','床铺尺寸','床铺多大','铺位尺寸','床帘尺寸','床帘多大','床帘','蚊帐尺寸','蚊帐多大','蚊帐','床垫尺寸','床垫多大','被子尺寸','被褥尺寸','床长多少','床宽多少','床的长度','床的宽度','宿舍的床','寝室床','寝室床尺寸','床铺长宽','床多宽啊','床多大啊','床多长啊'],a:'<strong>宿舍床尺寸：</strong><ul><li>凌水主校区本科生宿舍多为 <strong>上床下桌</strong>，床铺尺寸一般为 <strong>长 1.9 米 × 宽 0.9 米</strong>（标准单人床）</li><li>开发区校区本科生宿舍多为上床下桌，床铺尺寸一般为 <strong>长 1.9 米 × 宽 0.9 米</strong></li><li>盘锦校区本科生宿舍多为上床下桌，床铺尺寸一般为 <strong>长 1.9 米 × 宽 0.9 米</strong></li><li>建议被褥、床垫按 <strong>1.9m×0.9m</strong> 准备，可适当留余量</li><li>床帘、蚊帐需依据床的尺寸与层高购买，上床下桌床帘一般选 <strong>1.0m 宽</strong> 左右</li><li>具体尺寸以入住宿舍实际情况为准，可在迎新系统查询宿舍后咨询宿管</li></ul>'},
+  {keys:['宿舍','住宿','寝室','舍友','住哪'],a:'<strong>住宿安排：</strong><ul><li>宿舍由学校统一分配，可在迎新系统查询宿舍楼号与床位</li><li>凌水主校区本科生多为 <strong>4人间</strong>，上床下桌</li><li>开发区校区本科生多为 <strong>4人间</strong>，上床下桌，宿舍楼较新</li><li>盘锦校区本科生多为 <strong>4人间</strong>，上床下桌，宿舍条件较好</li><li>宿舍配备空调/暖气、网络接口、公共卫浴</li><li>被褥等生活用品可自带，也可到校后购买</li></ul>报到当日凭入住单到指定宿舍楼办理入住。'},
+  {keys:['户口','迁移','迁户口','户口迁移','户口迁入','迁入户口','户口怎么迁','户口如何迁','户口咋迁','户口要迁吗','户口能迁吗','户口可以迁吗','户口迁不迁','户口要不要迁','户口迁移证','迁移证','落户','户口落户','户口迁移怎么办','户口迁移流程','户口迁移材料','户口迁移要什么','户口迁移需要什么','省内户口','省外户口','跨省通办','省内一地办结','跨省','户口咨询电话','户口电话','84708732','户口迁入学校','集体户口','户口集体','大连户口','大连市户口','普兰店','瓦房店','庄河','北三市','大连北三市','户口不能迁','户口不得迁','户口迁移地址','凌工路2号','户口截止','户口材料截止','10月15日','户口保卫处','保卫处','户口多久办好','户口什么时候好','户口迁移证地址','迁移证地址','迁移证落户地址','户口迁移去哪办','户口材料送哪','户口材料送去哪','户口材料送至','户口102室','警民服务站','户口咋办','户口咋迁入','户口迁入吗','要不要迁户口','迁户口吗','户口迁移自愿','户口自愿','户口能不迁吗','户口可以不迁吗','户口不迁','不迁户口','户口必须迁吗','户口得迁吗','省内迁移','省外迁移','户口省内','户口省外','迁移证要什么','迁移证材料','迁移证怎么办','落户怎么办','落户去哪','落户在哪办','户口落户去哪','户口落户在哪','户口迁移截止','户口材料期限','户口要多久','户口办好','户口迁完','户口在校期间','户口毕业','户口迁出','毕业迁出'],a:'<strong>户口迁移：</strong><ul><li><strong>自愿原则：</strong>户口迁移自愿，可迁可不迁</li><li><strong>大连市新生（含普兰店、瓦房店、庄河）不得将户口迁入</strong>我校集体户口</li><li>其他省市新生可自愿迁入；大连市可异地办证件，<strong>不建议迁入</strong></li><li><strong>省内新生：</strong>采取"省内一地办结"，需居民户口簿原件及复印件、录取通知书原件及复印件、身份证原件及复印件</li><li><strong>省外新生：</strong>可选"跨省通办"（材料同上）或持"户口迁移证"办理</li><li><strong>迁移证落户地址：</strong>辽宁省大连市甘井子区凌工路2号；出生地/籍贯须具体到省市（县），婚姻状况必填，迁移原因为"大中专招生"</li><li><strong>材料截止：</strong>2026年 <strong>10月15日前</strong> 送至保卫处警民服务站102室</li><li><strong>咨询电话：</strong>校保卫处 0411-84708732</li><li>新生落户预计2026年底完成，在校期间不得迁出，毕业离校必须迁出</li><li>需办理户口迁移的同学，报到前务必在迎新系统填写相关信息</li></ul>'},
+  {keys:['迎新系统','登录','系统','账号','密码'],a:'<strong>迎新系统登录：</strong><ul><li>登录地址：<strong>dutyx.dlut.edu.cn/yxwz</strong></li><li>账号一般为 <strong>考生号/学号</strong>，初始密码请阅读《迎新系统登录说明》</li><li>研究生7月15日开放，本科生7月29日开放</li><li>登录后请完善个人信息、上传照片、完成缴费</li></ul>如遇登录问题可联系网信中心 0411-84708000。'},
+  {keys:['军训','训练'],a:'<strong>军训安排：</strong><ul><li>新生军训一般安排在 <strong>开学后第一至二周</strong></li><li>军训为必修环节，特殊情况需提前申请</li><li>需自备舒适运动鞋、水杯、防晒用品</li><li>具体时间以入学后通知为准</li></ul>'},
+  {keys:['校园网','网络','上网','wifi','网'],a:'<strong>校园网办理：</strong><ul><li>新生入网说明已在迎新网公布</li><li>校园网覆盖教学区、宿舍区，账号为学号</li><li>可办理包月/包学期套餐，详情咨询网信中心</li><li>宿舍亦可选运营商宽带</li></ul>报到后持校园卡到网信中心或线上激活。'},
+  {keys:['银行卡','卡','银行','玉兰龙卡','玉兰卡'],a:'<strong>玉兰龙卡：</strong>由大连理工大学与 <strong>中国建设银行</strong> 携手推出，为多功能复合芯片卡。<ul><li>一卡融合三大独立账户：<strong>校园玉兰卡钱包</strong>、<strong>大连明珠卡钱包</strong>、<strong>建行龙卡金融钱包</strong></li><li>整合门禁通行、校内消费、奖助学金接收、公共交通等全场景服务</li><li>新生需在迎新系统完成"玉兰龙卡"办卡确认</li><li>如已有建行储蓄卡Ⅰ类账户，新卡金融账户将为Ⅱ类账户</li><li>可通过"i大工"APP→玉兰卡→自动充值，建议绑定建行卡享专属优惠</li></ul>'},
+  {keys:['团','团员','团组织','团关系'],a:'<strong>团组织关系转接：</strong><ul><li>2026级新生团员团关系转接指南已在迎新网公布</li><li>一般通过 <strong>"智慧团建"系统</strong> 线上转接</li><li>转出组织为原中学/原单位团委</li><li>转入组织为大连理工大学对应学院团委</li></ul>如有疑问联系学院团委或校团委。'},
+  {keys:['党','党员','党组织','党关系'],a:'<strong>党组织关系转接：</strong><ul><li>2026级新生党组织关系转接工作须知已在迎新网公布</li><li>省外党员一般开具 <strong>纸质介绍信</strong>，省内通过系统转接</li><li>报到时将材料交至学院党组织</li><li>注意介绍信有效期，勿逾期</li></ul>'},
+  {keys:['助学金申请','申请助学金','助学金怎么申请','助学金如何申请','怎么申请助学金','如何申请助学金','助学金在哪申请','助学金去哪申请','助学金申请流程','助学金申请条件','助学金申请材料','助学金怎么弄','助学金咋申请','助学金咋弄','助学金申请时间','助学金什么时候申请','助学金在哪报','助学金怎么报','助学金报名','报助学金','助学金申请入口','助学金系统','助学金网址','助学金网站','助学金在哪填','助学金表格','助学金材料','助学金要什么','助学金需要什么','助学金准备什么','助学金咋报','助学金咋填','助学金怎么填','助学金如何填','助学金在哪弄','助学金怎么领','助学金发哪','助学金发到哪里','助学金发放'],a:'<strong>助学金申请：</strong><ul><li><strong>种类：</strong>国家助学金（分一等/二等，按家庭经济困难程度与学业成绩评定）、校内助学金、社会奖助学金等</li><li><strong>申请条件：</strong>家庭经济困难、生活俭朴、学习努力、无违纪；需先完成 <strong>家庭经济困难学生认定</strong></li><li><strong>申请材料：</strong>《家庭经济困难学生认定申请表》、家庭经济情况证明（如低保证、建档立卡户、大病医疗票据等）</li><li><strong>申请流程：</strong>迎新系统/学生工作管理系统中在线填写申请 → 上传证明材料 → 学院审核 → 学校复核 → 公示 → 发放</li><li><strong>申请时间：</strong>一般每学年秋季学期初（9-10 月）集中认定与申请，具体以学生处通知为准</li><li><strong>发放方式：</strong>助学金按月发放至 <strong>玉兰龙卡</strong> 校园卡钱包</li><li>家庭经济困难新生可先通过 <strong>绿色通道</strong> 入学，再申请助学金、助学贷款、勤工助学等</li></ul>详情关注迎新网 yx.dlut.edu.cn 与学生处通知。'},
+  {keys:['援梦专列','援梦','援梦列车','援梦怎么申请','援梦如何申请','援梦咋申请','援梦申请','援梦条件','援梦资格','援梦是什么','援梦啥','援梦专列是什么','到校路费','路费','路费怎么办','路费不够','路费没钱','没钱去学校','没钱到校','没钱报到','没钱去','路费怎么解决','路费如何解决','路费谁出','路费报销','到校路费怎么解决','资助热线','资助电话','84708336','资助政策','资助政策综合','资助综合','资助有哪些','资助政策有哪些','资助政策是什么','资助怎么申请','资助如何申请','资助方式','资助种类','资助项目','经济困难','家庭困难','家里没钱','家里困难','交不起学费','交不起','交不起住宿费','没钱交学费','没钱交','困难资助','困难怎么办','困难怎么申请','困难如何申请','经济困难怎么办','家庭经济困难','资助政策早知道','资助政策简介','勤工助学','勤工','助学贷款','国家助学贷款','贷款怎么申请','贷款如何申请','入学资助','援梦专列怎么申请','援梦专列条件','援梦专列资格','援梦专列解决什么','援梦解决路费','援梦专列路费','路费资助','路费补助','路费补贴','去学校路费','到校路费不够','路费有补助吗','路费有资助吗','资助热线多少','资助热线号码','援梦咋弄','援梦去哪申请','援梦在哪申请','援梦专列去哪','援梦专列在哪','资助咋申请','资助咋弄','贷款咋申请','勤工咋申请','勤工怎么申请','勤工如何申请','勤工在哪申请','勤工去哪','贷款在哪申请','贷款去哪','经济困难咋办','困难咋办','家里困难咋办','交不起咋办','交不起学费咋办','没钱咋办','资助政策咋办','资助都有啥','资助都有什么','资助包括什么','资助包含什么','资助含什么','资助含哪些'],a:'<strong>资助政策与援梦专列：</strong>学校承诺不让一个学生因家庭经济困难而失学。<ul><li><strong>援梦专列：</strong>家庭经济困难新生入学前可申请"援梦专列"解决 <strong>到校路费</strong></li><li><strong>国家助学贷款：</strong>解决学费、住宿费</li><li><strong>绿色通道：</strong>报到时走新生入学绿色通道，申请入学资助（先入学后缴费）</li><li><strong>勤工助学/助学金：</strong>入学后申请，解决基本生活费</li><li><strong>资助热线：0411-84708336</strong>（8:30-11:30，13:30-16:30）</li><li>详情阅读迎新网通知及随通知书发放的《2026级本科新生资助政策早知道》《高校本专科学生资助政策简介》</li></ul>'},
+  {keys:['绿色通道','困难','助学金','贷款','缓缴'],a:'<strong>绿色通道：</strong><ul><li>家庭经济困难新生可通过绿色通道 <strong>先入学、后缴费</strong></li><li>迎新网设有"绿色通道"专栏，可查看申请条件与流程</li><li>可同时申请国家助学贷款、助学金、勤工助学等</li><li>需提前准备《家庭经济困难学生认定申请表》等材料</li></ul>学校承诺"不让一名学生因家庭经济困难而失学"。'},
+  {keys:['商业补充保险','商业保险','商业补充','补充保险','人保财险','人保','中国人民财产保险','基础版','升级版','综合版','保障方案','保障档次','保单查询','保单','出险报案','出险','理赔','理赔怎么办理','理赔流程','理赔去哪','理赔在哪','报案','报案电话','人保客服','人保热线','人保app','大连人保','人保微信公众号','保障期','保障范围','商业保险保障','商业保险范围','商业保险是什么','商业保险啥','商业保险咋买','商业保险怎么买','商业保险如何买','商业保险咋投保','商业保险去哪买','商业保险在哪买','商业保险多少钱','商业保险多少','商业保险费用','商业保险缴费','商业保险按学年','商业保险保障期','商业保险保单','商业保险查询','商业保险出险','商业保险理赔','商业保险报案','商业保险人保','商业保险专员','校园服务专员','服务专员','驻校办公','人保驻校','凌水校区服务大厅','学生服务大厅','开发区校区人保','盘锦校区人保','商业保险自愿','商业保险必须吗','商业保险要交吗','商业保险能不交吗','商业保险可以不交吗','商业保险自愿吗','商业保险和医保','医保和商业保险','商业保险区别','两种保险','保险两种','保险有哪些','保险种类','保险类型','商业保险类型','商业保险种类','商业保险有几档','商业保险几个档','商业保险三档','商业保险3档','梯度保障','商业保险保单怎么查','保单怎么查','保单怎么下载','保单下载','保单在哪查','保单去哪查','出险怎么报案','出险怎么办','出险了怎么办','理赔怎么申请','理赔材料','理赔要什么','理赔需要什么','报案怎么报','报案方式','报案渠道','人保财险客服','人保财险热线','人保财险电话','24小时客服','商业保险电话','商业保险咨询电话','商业保险联系方式','校园专员','商业保险每周二','商业保险什么时候','人保什么时候来','人保哪天来','人保办公时间','商业保险办公时间','商业保险线下','商业保险线下服务','商业保险保障什么','商业保险保什么','商业保险保哪些','商业保险保障哪些','商业保险意外','商业保险疾病','商业保险校内外','商业保险实习','商业保险学号','投保填学号','商业保险填写','投保填写','商业保险要填什么','商业保险填什么','商业保险怎么投保','商业保险如何投保','商业保险去哪投保','商业保险在哪投保','商业保险咋投保','商业保险啥时候交','商业保险什么时候交','商业保险保障多久','商业保险保多久','商业保险一年','商业保险学年'],a:'<strong>商业补充保险：</strong>保障范围覆盖学生校内外学习生活和实习实践的疾病、意外等各类风险，是城乡居民医保的有效补充。<ul><li><strong>服务单位：</strong>2026-2027学年为 <strong>中国人民财产保险（人保财险）</strong> 大连市分公司</li><li><strong>保障方案：</strong>设 <strong>基础版、升级版、综合版</strong> 3档，按需自愿选择投保</li><li><strong>保障期：</strong>2026年8月30日 - 2027年8月29日，按学年缴费</li><li><strong>投保：</strong>扫码登录查看各档位保障额度，投保时准确填写 <strong>当前学年学号</strong></li><li><strong>保单查询：</strong>投保当日生成正式保单，通过 <strong>大连人保微信公众号</strong> 自主查询下载</li><li><strong>出险报案：</strong>拨打人保财险24小时客服热线，或联系校园服务专员，或通过人保APP/微信公众号自助报案</li><li><strong>线下服务：</strong>人保专员 <strong>每周二</strong> 到凌水校区学生服务大厅驻校办公；<strong>每月中旬周二</strong> 到开发区校区和盘锦校区驻校办公（法定节假日顺延）</li></ul>'},
+  {keys:['保险','医保','医疗保险','医疗保险怎么交','医疗保险怎么投保','医疗保险怎么买','医疗保险在哪交','医保投保','医保怎么投保','医保怎么买','医保怎么交','医保在哪交','医保去哪交','医保多少钱','医保多少','医疗保险多少钱','城乡居民医保','城乡居民基本医疗保险','医保投保指南','医疗保险投保指南','医保要交吗','医保必须交吗','医保能不交吗','医保可以不交吗','医保自愿吗','医保入学前','入学前医保','医保自助缴费','自助缴费投保','医保生效','医保待遇','医保及时生效','医保咋交','医保咋投保','医保咋买','医疗保险咋交','医疗保险咋投保','医保啥时候交','医保什么时候交','医保在哪投保','医保去哪投保','医疗保险在哪投保','医疗保险去哪投保','医保要投保吗','医保需要投保吗','医保必须投保吗','医保入学前交','入学前交医保','入学前投保','医保投保了吗','医保投了没','医保没投','没投医保','医保没交','没交医保','城乡居民','医保参保','参保医保','医保参保吗','要参保医保吗','医保要参保吗','医保必须参保吗','400元','400块','四百','医保400','缴费标准','医保缴费标准','城乡居民医保缴费','医保个人缴费','趸交','趸缴','一次性趸交','按学制趸交','趸交怎么申请','趸交申请','趸交邮件','dgzz','医保邮件','医保邮箱','微信小程序缴费','支付宝小程序缴费','大连市自然人社保缴费','社保缴费小程序','医保小程序','高考证件号码','高考证件','证件号码','电子医保码','医保电子凭证','电子医保凭证','医保码','国家医疗保障信息平台','大连市医保局','医保待遇等待期','等待期','断保','未参保','补缴','医保补缴','补缴投保','退费','医保退费','退费申请','退费怎么办理','退费截止','医保退费截止','港澳台医保','华侨医保','港澳台学生','华侨学生','现场扫码缴费','学生文化中心232','盘锦校区医保','盘锦医保','盘锦参保','盘锦大连参保','盘锦校区学生大连参保','医保生效时间','医保什么时候生效','待遇享受','医保待遇享受','2027年度','2027年医保','医保保障期','原参保地','生源地医保','上一学段医保','医保报销','医保怎么报销','就医报销','校医院报销','定点医院','医保去哪交','医保在哪缴费','医保缴费方式','医保怎么缴费','城乡居民医保怎么交','城乡居民医保怎么投保','城乡居民医保多少钱','城乡居民医保多少','城乡居民医保400','医保400元','医保四百','医保要交多少','医保需要交多少','医保交多少','医保费用多少','医保一年多少','医保每年多少','医保按年','医保按学制','医保趸交','医保能趸交吗','医保可以趸交吗','趸交吗','要趸交吗','需要趸交吗','趸交好吗','趸交划算吗','趸交和按年','按年和趸交','医保怎么报销','报销怎么报','就医怎么报销','看病怎么报销','医保看病','医保就医','校医院','医保电子码怎么申请','电子医保码怎么弄','电子医保码怎么申请','医保码怎么开通','医保码怎么弄','医保凭证怎么激活','电子医保凭证激活','医保凭证激活','港澳台怎么交医保','华侨怎么交医保','港澳台不能在线缴费','港澳台现场缴费','9月1日到30日','医保补缴怎么弄','补缴怎么弄','2026年补缴','补缴2026','退费怎么弄','退费咋弄','退费去哪','退费在哪','退费截止时间','退费什么时候','12月31日退费','退费条件','什么情况能退费','退费能退吗','能退费吗','可以退费吗','退费吗','医保能退吗','医保可以退吗','退保','退保怎么办理'],a:'<strong>城乡居民医疗保险：</strong><ul><li><strong>缴费标准：</strong>2027年度大学生个人缴费 <strong>400元/人</strong>，可按学制一次性趸交（趸缴期内调标不再补缴）</li><li><strong>集中缴费：</strong>通过 <strong>"大连市自然人社保缴费"微信小程序</strong> 或 <strong>支付宝小程序</strong>"城乡居民医疗保险→医保缴费"自助缴费</li><li>缴费时请使用 <strong>高考证件号码</strong></li><li><strong>趸交申请：</strong>选择按学制趸交，发邮件至 <strong>dgzz@dlut.edu.cn</strong>，命名"新生保费趸交申请-姓名-学号"，含姓名、学号、证件号码、学制</li><li><strong>盘锦校区：</strong>等候盘锦市通知；如在大连参保，填《盘锦校区学生大连参保登记表》发至 dgzz@dlut.edu.cn</li><li><strong>港澳台及华侨学生：</strong>无法在线缴费者，2026年9月1日-30日持有效证件到 <strong>学生文化中心232</strong> 现场扫码</li><li><strong>待遇使用：</strong>通过"国家医疗保障信息平台"或"大连市医保局"微信公众号申请 <strong>电子医保码</strong>，就医持码挂号结算直接核销</li><li><strong>等待期：</strong>正常投保2027年1月1日起享受待遇；断保有3-4个月等待期</li><li><strong>2026年未参保：</strong>可在集中缴费期补缴大连市2026年度保费</li><li><strong>退费：</strong>死亡、转外地、转职工医保、退学、入伍等可申请退费，截止 <strong>2026年12月31日17时</strong></li></ul>'},
+  {keys:['气候','天气','冷不冷','带衣服'],a:'<strong>大连气候：</strong>大连属暖温带半湿润季风性海洋气候，<strong>冬无严寒、夏无酷暑</strong>。<ul><li>年平均气温 8-11℃，冬季约 -3℃，夏季约 25℃</li><li>空气湿润、风力较大，全年空气优良300+天</li><li>建议准备：薄外套、防风衣、保暖内衣、羽绒服</li></ul>海边风大，注意防风保暖。'},
+  {keys:['包裹','托运','行李托运','随车快件','包裹托运','火车托运','行李','行李怎么托运','行李如何托运','行李咋托运','托运怎么办理','托运如何办理','托运咋办理','托运去哪办','托运在哪办','包裹怎么托运','包裹如何托运','包裹咋托运','包裹怎么寄','包裹怎么运','行李怎么寄','行李怎么运','行李快递','包裹快递','托运标记','化工学院预科','到站大连站','随车','快件','凭火车票','火车票托运','包裹到站','托运到站','行李到站','包裹中不要夹带','包裹贵重物品','包裹夹带','托运字迹','托运外包装','透明塑料布','包裹两端','包裹贴','托运标记贴','包裹随车','行李随车','托运需要什么','托运要什么','托运材料','托运要求','包裹要求','包裹规定','托运规定','行李规定','行李要求','包裹怎么办','托运怎么办','行李怎么办','包裹去哪办','包裹在哪办','行李去哪办','行李在哪办','包裹托运去哪','包裹托运在哪','托运大连站','到站大连','包裹到大连站','行李到大连站','包裹咋办','托运咋办','行李咋办','包裹咋托','托运咋弄','行李咋弄','包裹咋弄','行李咋寄','包裹咋寄','包裹能寄吗','行李能寄吗','能托运吗','可以托运吗','托运吗','要托运吗','需要托运吗','行李要托运吗','包裹要托运吗','托运贵重','托运证件','包裹不要夹带','别夹带','不要夹带','包裹透明','托运透明','包裹外包装','托运外包装','包裹字迹','托运字迹','包裹粘贴','托运粘贴','包裹牢固','托运牢固'],a:'<strong>包裹托运：</strong><ul><li>凭 <strong>火车票</strong> 办理随车快件（务必注明到站为 <strong>大连站</strong>）</li><li>"托运标记"写清姓名和 <strong>"化工学院预科"</strong> 字样，贴于包裹两端</li><li>字迹工整、粘贴牢固，最好用 <strong>透明</strong> 塑料布作外包装</li><li>包裹由学校统一领取</li><li><strong>包裹中请不要夹带个人证件和贵重物品</strong></li></ul>'},
+  {keys:['交通','怎么去','路线','火车','高铁','飞机','半价火车票','半价票','火车票半价','半价','火车票优惠','火车票打折','凭录取通知书买票','录取通知书买火车票','买车票','买火车票','火车票怎么买','火车票优惠怎么用','新生接待站','接待站','迎新接待站','接站','大连机场接待','机场接站','火车站接站','大连北站接站','接待站时间','接站时间','接待站几点','几点接站','机场几点','火车站几点','北站几点','7点到23点','5点半到22点','自行到校','自己到校','自己怎么去','自行去学校','接待站在哪','接待站哪个站','机场迎新','火车站迎新','北站迎新','迎新点','报到接待','到校接待','新生接站','半价火车票怎么买','半价票怎么买','火车票怎么买半价','能买半价票吗','可以买半价票吗','半价票吗','火车票能半价吗','火车票可以半价吗','接待站有没有','有没有接待站','接站吗','有人接吗','到校有人接吗','火车站有人接吗','机场有人接吗','接待站几点到几点','接站几点','机场接站时间','火车站接站时间','北站接站时间','接待站营业时间','接待站几点开始','接待站几点结束','7点到23','5点半到22','7点到晚上11','5点半到晚上10','迎新点在哪','迎新点在哪报到','报到点','报到点在哪','去学校怎么走','到学校怎么走','学校怎么去','怎么去学校','怎么到学校','如何到学校','咋去学校','咋到学校','学校在哪','学校地址','学校怎么走'],a:'<strong>到校交通与迎新接待：</strong><ul><li><strong>半价火车票：</strong>新生可凭《录取通知书》购买 <strong>半价火车票</strong></li><li><strong>新生接待站：</strong>报到期间学校设有接待站<ul><li>大连机场：7:00-23:00</li><li>大连火车站、大连北站：5:30-22:00</li></ul></li><li><strong>大连站</strong>：乘406路公交至"理工大学站"，约40分钟</li><li><strong>大连北站</strong>：地铁2号线换乘或打车约20分钟</li><li><strong>周水子机场</strong>：距校区约15公里，打车约30分钟</li><li>自行到校者可直接到学校 <strong>迎新点</strong> 报到</li></ul>建议优先选择公共交通，方便快捷。'},
+  {keys:['照片','校园卡','上传照片','一寸照片','一寸照','证件照','证明照','照片要求','照片规格','照片尺寸','照片多大','照片几寸','一寸几张','几张照片','照片要几张','照片需要几张','照片数量','照片背景','白色背景','照片无边框','无边框','浅色上衣','不着浅色','眼镜无反光','照片无反光','不佩戴饰物','照片饰物','头部占','照片占','占照片尺寸','照片畸变','照片水印','照片无水印','自拍照片','美颜照片','扫描照片','重拍照片','不能用自拍','不能用美颜','专业机构拍摄','去哪拍照','照片去哪拍','照片在哪拍','照片怎么拍','照片如何拍','照片要求是什么','照片什么要求','照片标准','标准证明照','正面免冠','彩色头像','近期正面','免冠彩色','照片要什么要求','照片有什么要求','证件照要求','证件照什么要求','一寸4张','4张照片','照片4张','照片要4张','一寸','证明照要求','照片拍摄要求','照片拍摄','拍照片','拍照','照片能自拍吗','可以用自拍吗','照片可以自拍吗','照片能美颜吗','可以美颜吗','照片可以美颜吗','常戴眼镜','戴眼镜拍照','眼镜反光','照片眼镜','照片要戴眼镜吗','照片戴不戴眼镜','照片咋拍','照片咋弄','证件照咋弄','证件照咋拍','照片去哪弄','证件照去哪弄','证件照在哪弄','照片几寸的','要几寸照片','照片要几寸','证件照几寸','一寸还是二寸','照片一寸','照片二寸','照片要一寸','照片要二寸','要一寸照片','要二寸照片','照片白底','白底照片','照片底色','证件照底色','照片背景什么色','照片背景啥色'],a:'<strong>校园卡照片采集：</strong><ul><li>登录迎新系统后按要求上传近期免冠证件照</li><li>研究生 <strong>7月26日</strong> 截止，本科生 <strong>8月9日</strong> 截止</li><li>照片将用于校园卡，请认真对待</li></ul><strong>证件照要求（一寸标准证明照 4 张）：</strong><ul><li><strong>白色背景无边框，不着浅色上衣</strong></li><li>常戴眼镜者应配戴眼镜（眼镜 <strong>无反光</strong>），不佩戴饰物</li><li>人像清晰、面部无遮挡、神态自然，头部完整并占照片尺寸 2/3</li><li>无明显畸变，无水印</li><li><strong>务必到专业机构拍摄</strong>，不能使用自拍、美颜、扫描或重拍照片</li></ul>请务必在截止前完成！'},
+  {keys:['复查','入学复查','入学后复查','德智体','德智体复查','德智体全面复查','全面复查','复查不合格','复查怎么查','复查查什么','复查检查什么','复查什么内容','复查内容','复查项目','复查有哪些','新生复查','复查是啥','复查是什么','复查啥','复查咋查','复查严格吗','复查好过吗','复查会查什么','德智体查什么','德智体复查什么','复查标准','复查要求','复查规定','复查怎么算','复查不合格怎么办','复查不通过','复查通过','复查能过吗','复查能通过吗','复查难吗','体复查','体检复查','入学体检复查','复查什么时候','复查时间','复查多久','复查安排','复查在哪查','复查去哪查','复查咋办','复查怎么办','复查是干什么','复查干啥','复查干嘛','德智体复查干嘛','入学复查是什么','入学复查干啥','复查都查啥','复查都查什么','复查几项','复查几项查','复查查几项'],a:'<strong>入学复查：</strong>新生入学后将进行 <strong>德、智、体全面复查</strong>，不合格者将按有关规定处理。'},
+  {keys:['洗衣机','洗衣','洗衣房','自带洗衣机','带洗衣机','能带洗衣机吗','可以带洗衣机吗','洗衣机能带吗','洗衣机可以带吗','洗衣机自带','洗衣机自采','自采洗衣机','买洗衣机','能买洗衣机吗','可以买洗衣机吗','洗衣机要自己买吗','洗衣机怎么办','洗衣怎么办','衣服怎么洗','洗衣服','洗衣服在哪','洗衣房在哪','洗衣房有吗','有没有洗衣房','洗衣房几楼','洗衣房位置','洗衣机在哪','洗衣机有吗','有没有洗衣机','宿舍洗衣机','宿舍洗衣','楼里洗衣','洗衣房在哪栋','每栋都有洗衣房','洗衣房每栋','洗衣房都有','洗衣机公用','公用洗衣机','共享洗衣机','洗衣要钱吗','洗衣房收费','洗衣房免费','洗衣机收费','洗衣机免费','洗衣机咋用','洗衣机怎么用','洗衣房怎么用','能带洗衣吗','可以带洗衣吗','带洗衣','自带洗衣','洗衣机能带去吗','洗衣机搬去','搬洗衣机','买洗衣','买台洗衣机','买台洗衣','自己买洗衣机','自己买洗衣','洗衣咋办','洗衣咋弄','洗衣机咋办','能带洗衣机','可以带洗衣机','带洗衣机吗','要带洗衣机吗','需要带洗衣机吗','宿舍能放洗衣机吗','宿舍可以放洗衣机吗','宿舍有洗衣机吗','楼里有洗衣机吗','洗衣房开放','洗衣房几点','洗衣房怎么收费','洗衣机怎么收费'],a:'<strong>洗衣机与洗衣：</strong><ul><li>新生 <strong>禁止自带、自采洗衣机</strong></li><li>每栋宿舍楼均设有 <strong>洗衣房</strong>，可满足日常洗衣需求</li></ul>'},
+  {keys:['宿舍用电','用电规定','用电制度','用电管理','用电条例','住宿用电','宿舍电','宿舍用电规定','宿舍用电制度','宿舍用电管理','宿舍用电条例','用电相关','用电须知','宿舍用电须知','用电规则','宿舍用电规则','用电政策','宿舍用电政策','住宿管理规定','用电管理规','宿舍用电管理规','学生住宿管理','住宿管理','用电怎么办','宿舍用电怎么办','用电咋办','宿舍用电咋办','用电有哪些规定','用电有什么规定','用电什么规定','用电啥规定','用电咋规定','用电怎么规定','用电如何规定','宿舍用电有哪些','宿舍用电有什么','宿舍用电啥','宿舍用电是啥','宿舍用电是什么','宿舍用电政策是什么','用电政策是什么','用电制度是什么','用电规定是什么','用电制度是啥','用电规定是啥','用电管理是什么','用电管理是啥','住宿用电规定','住宿用电制度','住宿用电须知','住宿用电政策','住宿用电规则','住宿用电管理','公寓用电','公寓用电规定','公寓用电制度','公寓用电管理','公寓用电须知','宿舍用电概览','用电概览','宿舍用电总览','用电总览','宿舍用电指南','用电指南','宿舍用电介绍','用电介绍','宿舍用电说明','用电说明','宿舍用电相关','宿舍用电相关政策','用电相关政策','宿舍用电相关规','用电相关规','宿舍用电相关制度','用电相关制度'],a:'<strong>宿舍用电管理规定：</strong>根据《大连理工大学学生住宿管理规定》及相关文件，宿舍用电相关条例如下：<ul><li><strong>禁用电器：</strong>严禁无国家安全认证或500W及以上单一电器；禁止无自动断电/漏电保护的电加热、电炊器具（电饭锅、电褥子、电暖气、电磁炉、电吹风等）；严禁私拉电线、私接电路或窃电；禁止存放电动车/电池，不得将100Wh以上电池带入宿舍或私自充电</li><li><strong>用电定额：</strong>学生公寓（D类用户）实行定额管理，定额内免费，超定额按 <strong>0.5元/度</strong> 收费</li><li><strong>电费充值：</strong>通过"大工"微信小程序或App，支持玉兰卡余额、微信、云闪付等</li><li><strong>安全用电：</strong>电器不得放置在被褥、蚊帐、纸箱等易燃物上；人离开宿舍时必须关闭所有电器电源</li><li><strong>用电报修（盘锦校区）：</strong>强电 0427-2631975，弱电 0427-2631979</li><li><strong>违规处理：</strong>违规使用大功率电器给予警告以上处分；多次违规者物品将被暂存并依校规处理</li></ul>'},
+  {keys:['禁用电器','禁止电器','不能用电器','违章电器','违规电器','禁止用电器','电器禁用','电器违章','电器违规','宿舍电器','宿舍禁用电器','宿舍禁止电器','宿舍不能用电器','宿舍违章电器','宿舍违规电器','宿舍电器规定','宿舍电器制度','电器规定','电器制度','电器管理','宿舍电器管理','电器能带吗','电器可以带吗','能带电器吗','可以带电器吗','电器能带去吗','电器可以带去吗','带电器','自带电器','什么电器不能用','哪些电器不能用','什么电器禁止','哪些电器禁止','什么电器违章','哪些电器违章','什么电器违规','哪些电器违规','不能带什么电器','不能带哪些电器','禁止带什么电器','禁止带哪些电器','500瓦','500w','500W','五百瓦','500瓦以上','500w以上','500W以上','五百瓦以上','大功率','大功率电器','大功率用电器','功率限制','功率要求','功率规定','功率多大','功率多少','功率上限','功率不超过','不超过500','500以下','500瓦以下','500w以下','500W以下','电饭锅','电饭煲','电褥子','电热毯','电暖气','电热器','电磁炉','电吹风','吹风机','热得快','电水壶','电热水壶','电热杯','电热壶','电炉','电热炉','暖手宝','暖宝宝','电暖宝','卷发棒','直发棒','电夹板','蒸蛋器','煮蛋器','电蒸锅','电炒锅','电烤箱','微波炉','电饭锅能带吗','电饭煲能带吗','电吹风能带吗','吹风机能带吗','电磁炉能带吗','电暖气能带吗','热得快能带吗','电水壶能带吗','电饭锅可以带吗','电饭煲可以带吗','电吹风可以带吗','吹风机可以带吗','电磁炉可以带吗','电暖气可以带吗','热得快可以带吗','电水壶可以带吗','能带电饭锅吗','能带电饭煲吗','能带电吹风吗','能带吹风机吗','能带电磁炉吗','能带电暖气吗','能带热得快吗','能带电水壶吗','可以带电饭锅吗','可以带电饭煲吗','可以带电吹风吗','可以带吹风机吗','可以带电磁炉吗','可以带电暖气吗','可以带热得快吗','可以带电水壶吗','电饭锅能用吗','电饭煲能用吗','电吹风能用吗','吹风机能用吗','电磁炉能用吗','电暖气能用吗','热得快能用吗','电水壶能用吗','电饭锅可以用吗','电饭煲可以用吗','电吹风可以用吗','吹风机可以用吗','电磁炉可以用吗','电暖气可以用吗','热得快可以用吗','电水壶可以用吗','能用电饭锅吗','能用电饭煲吗','能用电吹风吗','能用吹风机吗','能用电磁炉吗','能用电暖气吗','能用热得快吗','能用电水壶吗','可以用电饭锅吗','可以用电饭煲吗','可以用电吹风吗','可以用吹风机吗','可以用电磁炉吗','可以用电暖气吗','可以用热得快吗','可以用电水壶吗','私拉电线','私接电路','私拉线','私接线','拉电线','接电路','窃电','偷电','偷电用','私拉','私接','私拉电线吗','私接电路吗','能私拉电线吗','能私接电路吗','能窃电吗','不能私拉','不能私接','不能窃电','禁止私拉','禁止私接','禁止窃电','严禁私拉','严禁私接','严禁窃电','安全认证','国家安全认证','无安全认证','没有安全认证','不带安全认证','不带认证','没有认证','无认证','电器认证','认证电器','电器要认证吗','电器需要认证吗','电器必须有认证吗','电器必须有安全认证吗','学校集中配置','学校配置的电器','学校配的电器','学校发的电器','学校统一配置','学校统一配','集中配置除外','学校配置除外'],a:'<strong>宿舍禁用电器规定：</strong><ul><li>严禁使用无国家级安全认证的电器或额定功率 <strong>500瓦及以上</strong> 的单一电器（学校集中配置的电器设备除外）</li><li>禁止使用额定功率500瓦以下且不具有自动断电、漏电保护功能的 <strong>电加热、电炊器具类电器</strong>（如电饭锅、电褥子、电暖气、电磁炉、电吹风等）</li><li>严禁 <strong>私拉电线、私接电路或窃电</strong></li><li>禁止存放电动车或电动车电池，不得将额定能量值 <strong>100Wh以上</strong> 的电池带入宿舍或私自充电</li></ul>'},
+  {keys:['用电定额','定额管理','电费定额','免费额度','用电免费','定额免费','定额内免费','超定额','超过定额','超定额收费','超定额多少钱','超定额多少','超定额怎么收','超定额如何收','超定额咋收','超出定额','超出定额怎么算','超出定额多少钱','超定额部分','超定额单价','0.5元','0.5元/度','0.5元每度','五毛','5毛','电费单价','电费价格','电费怎么收','电费如何收','电费咋收','电费多少钱一度','电费多少一度','每度多少','一度多少钱','电费计费','电费计算','电费标准','用电收费','收费标准','用电收费标准','定额管理','D类用户','d类用户','D类','d类','公寓用电定额','宿舍用电定额','宿舍定额','公寓定额','用电定额管理','定额用电','定额怎么算','定额多少','定额是多少','定额啥','定额是啥','定额是什么','定额有多少','定额几度','定额多少度','免费多少度','免费几度','免费用多少','定额内','定额以内','在定额内','在定额以内','超了定额','超过免费','超出免费','免费超了','超定额0.5','0.5一度','5毛一度','五毛一度','电费0.5','电费五毛','电费5毛','每度0.5','每度5毛','每度五毛','一度0.5','一度5毛','一度五毛','电费怎么算','电费如何算','电费咋算','电费怎么计算','电费如何计算','电费咋计算','电费咋收的','电费怎么收的','电费如何收的','电费按什么收','电费按啥收','电费按多少收','超定额按什么收','超定额按啥收','超定额按多少','超定额咋收费','超定额怎么收费','超定额如何收费','超出定额咋收费','超出定额怎么收费','超出定额如何收费'],a:'<strong>用电定额与收费：</strong><ul><li>学生公寓（<strong>D类用户</strong>）实行 <strong>定额管理</strong>，定额内免费</li><li>超定额部分按 <strong>0.5元/度</strong> 收费</li></ul>'},
+  {keys:['电费充值','电费缴费','电费怎么交','电费如何交','电费咋交','电费怎么充','电费如何充','电费咋充','充电费','交电费','缴电费','充缴电费','电费在哪交','电费去哪交','电费在哪充','电费去哪充','电费在哪缴','电费去哪缴','电费在哪充值','电费去哪充值','电费在哪缴费','电费去哪缴费','电费交费','电费充值方式','电费缴费方式','电费充值怎么充','电费缴费怎么交','电费充值咋充','电费缴费咋交','电费充值去哪','电费缴费去哪','电费充值在哪','电费缴费在哪','大工微信小程序','大工app','大工App','大工APP','大工小程序','微信小程序交电费','app交电费','小程序交电费','玉兰卡交电费','云闪付交电费','微信交电费','玉兰卡余额','云闪付','银联交电费','电费玉兰卡','电费云闪付','电费微信','电费支付方式','电费付款方式','电费怎么付','电费如何付','电费咋付','电费怎么支付','电费如何支付','电费咋支付','电费用什么交','电费用什么交','电费可以用什么','电费能用什么','电费支持什么','电费支持哪些','电费支付','电费付款','交电费方式','充电费方式','缴电费方式','交电费怎么交','充电费怎么充','缴电费怎么缴','交电费去哪','充电费去哪','缴电费去哪','交电费在哪','充电费在哪','缴电费在哪','交电费咋交','充电费咋充','缴电费咋缴','大工小程序交电费','大工app交电费','大工App交电费','大工APP交电费','大工app充电费','大工app缴电费','大工小程序充电费','大工小程序缴电费','电费能用微信吗','电费可以用微信吗','电费能用云闪付吗','电费可以用云闪付吗','电费能用玉兰卡吗','电费可以用玉兰卡吗','电费能用支付宝吗','电费可以用支付宝吗'],a:'<strong>电费充值方式：</strong><ul><li>通过 <strong>"大工"微信小程序</strong> 或 <strong>App</strong> 完成</li><li>支持 <strong>玉兰卡余额、微信、云闪付</strong> 等多种支付方式</li></ul>'},
+  {keys:['安全用电','用电安全','宿舍安全用电','宿舍用电安全','用电安全要求','安全用电要求','用电安全规定','安全用电规定','用电安全制度','安全用电制度','电器放哪','电器放哪里','电器不能放哪','电器不能放哪里','电器不能放','不能放被褥','不能放蚊帐','不能放纸箱','不能放易燃','被褥上','蚊帐上','纸箱上','易燃物','易燃物品','易燃','电器放在被褥','电器放在蚊帐','电器放在纸箱','台灯放哪','台灯能放哪','台灯不能放哪','台灯放被褥','台灯放蚊帐','台灯放纸箱','充电器放哪','充电器能放哪','充电器不能放哪','充电器放被褥','充电器放蚊帐','充电器放纸箱','人走断电','离开断电','离开关电源','人离开关电源','人走关电源','离开关电','人走关电','人离开断电','关电源','断电','人走要断电吗','离开要断电吗','人走要关电源吗','离开要关电源吗','要断电吗','要关电源吗','必须断电','必须关电源','人走必须关','离开必须关','人离开必须关','关所有电器','关闭所有电器','关所有电源','关闭所有电源','关照明灯','关空调','关充电设备','照明灯要关吗','空调要关吗','充电设备要关吗','人走关灯','离开关灯','人走关空调','离开关空调','人走关充电','离开关充电','安全用电咋做','用电安全咋做','安全用电怎么做','用电安全怎么做','安全用电如何做','用电安全如何做','安全用电要求是什么','用电安全要求是什么','安全用电要求是啥','用电安全要求是啥','安全用电有什么要求','用电安全有什么要求','安全用电有哪些要求','用电安全有哪些要求','安全用电啥要求','用电安全啥要求','电器不能放什么上','电器不能放哪些上','什么上不能放电器','哪些上不能放电器','电器放什么上','电器放哪些上','台灯不能放什么上','充电器不能放什么上','人离开怎么办','人走了怎么办','人走了要关吗','人离开要关吗','人走了关什么','人离开关什么','人走了关哪些','人离开关哪些','人走关什么','人走关哪些'],a:'<strong>安全用电要求：</strong><ul><li>使用中的电器（如台灯、充电器等）<strong>不得放置在被褥、蚊帐或纸箱等易燃物上</strong></li><li>人离开宿舍时 <strong>必须关闭所有电器电源</strong>，包括照明灯、空调、充电设备等</li></ul>'},
+  {keys:['用电报修','电费报修','电路报修','电力报修','用电故障','电路故障','用电问题','电路问题','电力故障','停电','没电','断电了','宿舍停电','宿舍没电','宿舍断电','用电坏了','电路坏了','电力坏了','跳闸','宿舍跳闸','空开跳闸','电闸跳闸','报修','报修电话','报修号码','报修电话多少','报修电话号码','报修号','用电报修电话','电路报修电话','电力报修电话','用电报修号码','电路报修号码','电力报修号码','强电','弱电','强电报修','弱电报修','强电电话','弱电电话','强电号码','弱电号码','04272631975','04272631979','0427-2631975','0427-2631979','2631975','2631979','盘锦报修','盘锦用电报修','盘锦电路报修','盘锦电力报修','盘锦校区报修','盘锦校区用电报修','盘锦校区电路报修','盘锦校区电力报修','盘锦校区报修电话','盘锦报修电话','盘锦用电报修电话','盘锦电路报修电话','盘锦电力报修电话','凌水报修','凌水校区报修','开发区报修','开发区校区报修','凌水用电报修','开发区用电报修','凌水校区用电报修','开发区校区用电报修','凌水报修电话','开发区报修电话','凌水校区报修电话','开发区校区报修电话','用电故障怎么办','电路故障怎么办','用电故障咋办','电路故障咋办','停电怎么办','停电咋办','没电怎么办','没电咋办','宿舍停电怎么办','宿舍停电咋办','宿舍没电怎么办','宿舍没电咋办','跳闸怎么办','跳闸咋办','宿舍跳闸怎么办','宿舍跳闸咋办','用电坏了怎么办','电路坏了怎么办','用电坏了咋办','电路坏了咋办','用电找谁','电路找谁','电力找谁','用电找谁修','电路找谁修','电力找谁修','用电找谁报修','电路找谁报修','电力找谁报修','用电去哪报修','电路去哪报修','电力去哪报修','用电在哪报修','电路在哪报修','电力在哪报修','用电咋报修','电路咋报修','电力咋报修','用电怎么报修','电路怎么报修','电力怎么报修','用电如何报修','电路如何报修','电力如何报修','报修怎么报','报修咋报','报修怎么弄','报修咋弄','报修去哪','报修在哪','报修找谁','报修打什么电话','报修打哪个电话','报修打多少','用电报修打什么','电路报修打什么','电力报修打什么','强电报修电话','弱电报修电话','强电报修号码','弱电报修号码','盘锦强电','盘锦弱电','盘锦校区强电','盘锦校区弱电','盘锦强电电话','盘锦弱电电话','盘锦校区强电电话','盘锦校区弱电电话'],a:'<strong>用电故障报修：</strong>发现用电故障可联系报修：<ul><li><strong>盘锦校区：</strong>强电 <strong>0427-2631975</strong>，弱电 <strong>0427-2631979</strong></li></ul>'},
+  {keys:['违规用电','违章用电','违规处理','违章处理','用电违规','用电违章','违规使用','违章使用','违规使用大功率','违章使用大功率','大功率违规','大功率违章','用电处分','违规处分','违章处分','警告处分','警告以上处分','处分','警告','没收','暂存','依校规处理','依校规','依规处理','违规怎么办','违章怎么办','违规咋办','违章咋办','违规怎么处理','违章怎么处理','违规咋处理','违章咋处理','违规如何处理','违章如何处理','违规了怎么办','违章了怎么办','违规了咋办','违章了咋办','被查到','被没收','被处分','被警告','查到违规','查到违章','查到大功率','查到电器','电器被查','电器被没收','电器被收','收电器','没收电器','暂存物品','物品暂存','物品被暂存','多次违规','多次违章','屡次违规','屡次违章','反复违规','反复违章','违规几次','违章几次','多次违规处理','多次违章处理','违规会怎样','违章会怎样','违规什么后果','违章什么后果','违规啥后果','违章啥后果','违规后果','违章后果','用电违规后果','用电违章后果','用电违规处理','用电违章处理','用电违规处分','用电违章处分','用电违规怎么办','用电违章怎么办','用电违规咋办','用电违章咋办','大功率电器处分','大功率电器违规','大功率电器违章','大功率电器后果','大功率电器被查','大功率电器被没收','大功率电器被收','违规使用电器','违章使用电器','违规使用电器处分','违章使用电器处分','违规使用电器后果','违章使用电器后果','用电违规会处分吗','用电违章会处分吗','违规会处分吗','违章会处分吗','违规会警告吗','违章会警告吗','违规会没收吗','违章会没收吗','违规会被没收吗','违章会被没收吗','违规会被处分吗','违章会被处分吗','违规会被警告吗','违章会被警告吗'],a:'<strong>违规处理：</strong><ul><li>违规使用大功率电器将给予 <strong>警告以上处分</strong></li><li>多次违规者物品将被 <strong>暂存</strong> 并依校规处理</li></ul>'},
+  {keys:['电动车','电瓶车','电池','电瓶','电动车能带吗','电瓶车能带吗','电池能带吗','电瓶能带吗','电动车可以带吗','电瓶车可以带吗','电池可以带吗','电瓶可以带吗','能带电动车吗','能带电瓶车吗','能带电池吗','能带电瓶吗','可以带电动车吗','可以带电瓶车吗','可以带电池吗','可以带电瓶吗','带电动车','带电瓶车','带电池','带电瓶','自带电动车','自带电瓶车','自带电池','自带电瓶','电动车充电','电瓶车充电','电池充电','电瓶充电','私自充电','私充电','充电','能充电吗','可以充电吗','能在宿舍充电吗','可以在宿舍充电吗','宿舍充电','宿舍能充电吗','宿舍可以充电吗','100wh','100Wh','100WH','100瓦时','一百瓦时','100wh以上','100Wh以上','100WH以上','100瓦时以上','一百瓦时以上','电池100wh','电池100Wh','电池100瓦时','电池多少','电池多大','电池容量','电池能量','能量值','额定能量','额定能量值','电动车规定','电瓶车规定','电池规定','电瓶规定','电动车制度','电瓶车制度','电池制度','电瓶制度','电动车能放吗','电瓶车能放吗','电动车可以放吗','电瓶车可以放吗','能放电动车吗','能放电瓶车吗','可以放电动车吗','可以放电瓶车吗','放电动车','放电瓶车','存放电动车','存放电瓶车','电动车存放','电瓶车存放','禁止电动车','禁止电瓶车','禁止电池','禁止电瓶','严禁电动车','严禁电瓶车','严禁电池','严禁电瓶','不得带入','不得带','不能带入','不能带','不得带入宿舍','不得带进宿舍','不能带入宿舍','不能带进宿舍','电池带入','电池带进','电池带宿舍','电池进宿舍','电动车带宿舍','电瓶车带宿舍','电动车进宿舍','电瓶车进宿舍','电动车咋办','电瓶车咋办','电池咋办','电瓶咋办','电动车怎么办','电瓶车怎么办','电池怎么办','电瓶怎么办','电动车能放宿舍吗','电瓶车能放宿舍吗','电池能放宿舍吗','电瓶能放宿舍吗','电动车可以放宿舍吗','电瓶车可以放宿舍吗','电池可以放宿舍吗','电瓶可以放宿舍吗','电动车能进宿舍吗','电瓶车能进宿舍吗','电池能进宿舍吗','电瓶能进宿舍吗','电动车可以进宿舍吗','电瓶车可以进宿舍吗','电池可以进宿舍吗','电瓶可以进宿舍吗','电动车不让带','电瓶车不让带','电池不让带','电瓶不让带','电动车不让进','电瓶车不让进','电池不让进','电瓶不让进','电动车不让放','电瓶车不让放','电池不让放','电瓶不让放','电动车不让充电','电瓶车不让充电','电池不让充电','电瓶不让充电','电动车不能充电','电瓶车不能充电','电池不能充电','电瓶不能充电','电动车禁止充电','电瓶车禁止充电','电池禁止充电','电瓶禁止充电','电动车私自充电','电瓶车私自充电','电池私自充电','电瓶私自充电','电动车私充电','电瓶车私充电','电池私充电','电瓶私充电'],a:'<strong>电动车与电池规定：</strong><ul><li>禁止 <strong>存放电动车或电动车电池</strong></li><li>不得将额定能量值 <strong>100Wh以上</strong> 的电池带入宿舍或私自充电</li></ul>'},
+  {keys:['你好','在吗','hi','hello','谢谢','感谢'],a:'你好！我是大工迎新小助手 😊 很高兴为你服务。你可以问我关于<strong>报到时间、必备材料、缴费、宿舍、户口、校园网、绿色通道</strong>等任何入学相关问题。'}
+];
+function normQ(s){
+  return s.toLowerCase()
+    .replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0))
+    .replace(/[，。？！,.?!;:：；、~～·…—\-_/\\【】\[\]()（）{}「」『』"'""'']/g,'')
+    .replace(/\s+/g,'')
+    .replace(/咋/g,'怎么').replace(/啥/g,'什么')
+    .replace(/能不能/g,'能').replace(/可不可以/g,'可以').replace(/会不会/g,'会').replace(/行不行/g,'行').replace(/可否/g,'可以').replace(/能否/g,'能')
+    .replace(/(请问一下|请问下|请问|想问一下|想问下|想问|想知道|想了解|问一下|问下|咨询一下|咨询下|咨询|麻烦问一下|麻烦问下|麻烦问|帮我问一下|帮我问|帮我查一下|帮我查|帮问|查一下|查下|了解下|了解一下|告诉我|说下|说一下|请教一下|请教)/g,'')
+    .replace(/(啊|呀|吧|哈|哦|噢|嘛|呐|噻|呗|啦|咯|喽|喂|嗯|吖|哇|哟|嘞|哒|哎|诶)/g,'');
+}
+function matchAnswer(q){
+  const nq=normQ(q);
+  for(const item of qaDB){
+    if(item.keys.some(k=>nq.includes(normQ(k))))return item.a;
+  }
+  return '抱歉，我暂时无法准确理解这个问题 🤔 你可以尝试换个问法，或点击下方快捷按钮。关于更详细的信息，建议访问 <strong>迎新网 yx.dlut.edu.cn</strong> 或拨打学生处电话 <strong>0411-84708320</strong>。';
+}
+let chatHistory=[],restoringChat=false;
+function saveChatHistory(){try{sessionStorage.setItem('dut_chat_history',JSON.stringify(chatHistory));}catch(e){}}
+function addMsg(text,who){
+  const msgs=document.getElementById('chatMsgs');
+  const div=document.createElement('div');
+  div.className='msg '+who;
+  div.innerHTML=`<div class="msg-av">${who==='bot'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-3 3 3 3 0 01-3-3V5a3 3 0 013-3z"/><path d="M5 12a7 7 0 0014 0M12 19v3"/></svg>':'我'}</div><div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+  if(!restoringChat){chatHistory.push({text,who});saveChatHistory();}
+}
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const q=input.value.trim();
+  if(!q)return;
+  addMsg(q,'user');
+  input.value='';
+  setTimeout(()=>{
+    addMsg(matchAnswer(q),'bot');
+  },500);
+}
+function askQuick(q){
+  document.getElementById('chatInput').value=q;
+  sendChat();
+}
+
+// ===== 示例分组（右侧按键展开）=====
+const EXAMPLE_GROUPS=[
+  ['报到时间','请假怎么申请','需要带什么材料','照片要求'],
+  ['怎么缴费','体检费多少','宿舍怎么样','宿舍床尺寸'],
+  ['户口迁移','迎新系统怎么登录','电子注册','助学金申请'],
+  ['绿色通道','援梦专列','医保怎么投保','商业补充保险'],
+  ['半价火车票','包裹怎么托运','预科生报到','入学复查'],
+  ['宿舍禁用电器','电费怎么交','用电定额','安全用电']
+];
+let exIndex=0;
+function updateExLabel(){
+  const label=document.getElementById('exLabel');
+  if(label)label.textContent='试试问 '+(exIndex+1)+'/'+EXAMPLE_GROUPS.length;
+}
+function renderExamples(){
+  const slides=document.getElementById('exSlides');
+  slides.innerHTML=EXAMPLE_GROUPS.map(group=>'<div class="ex-slide">'+group.map(ex=>'<div class="ex-chip" data-ex="'+ex+'">'+ex+'</div>').join('')+'</div>').join('');
+  slides.style.transform='translateX(0)';
+  exIndex=0;
+  updateExLabel();
+  slides.querySelectorAll('.ex-chip').forEach(chip=>chip.addEventListener('click',()=>askQuick(chip.getAttribute('data-ex'))));
+}
+document.getElementById('exNext').addEventListener('click',()=>{
+  const slides=document.getElementById('exSlides');
+  exIndex=(exIndex+1)%EXAMPLE_GROUPS.length;
+  slides.style.transform='translateX(-'+(exIndex*100)+'%)';
+  updateExLabel();
+});
+
+// ===== Timeline (按当前实际时间动态校准) =====
+const timelineData=[
+  {label:'7月15日',date:'2026-07-15',title:'迎新系统面向研究生开放',desc:'研究生可登录迎新系统办理入学手续，校园卡照片采集7月26日截止。',doneText:'已开放'},
+  {label:'7月29日',date:'2026-07-29',title:'迎新系统面向本科生开放',desc:'本科生可登录迎新系统办理入学手续，校园卡照片采集8月9日截止。',doneText:'已开放'},
+  {label:'8月9日',date:'2026-08-09',title:'本科生校园卡照片采集截止',desc:'请务必在此之前完成校园卡照片上传，逾期将影响报到。',doneText:'已截止'},
+  {label:'8月下旬',start:'2026-08-20',end:'2026-08-31',title:'新生报到',desc:'具体报到日期请关注迎新网通知及录取通知书说明。',doneText:'已完成'},
+  {label:'9月',date:'2026-09-01',title:'开学典礼 · 军训',desc:'新生开学典礼及军训安排，具体时间以学校通知为准。',doneText:'已开始'}
+];
+function getNodeStatus(node){
+  const now=new Date();
+  if(node.start&&node.end){
+    const s=new Date(node.start+'T00:00:00');
+    const e=new Date(node.end+'T23:59:59');
+    if(now<s)return 'todo';
+    if(now>=s&&now<=e)return 'now';
+    return 'done';
+  }
+  return now<new Date(node.date+'T23:59:59')?'todo':'done';
+}
+function renderTimeline(){
+  const list=document.getElementById('timelineList');
+  list.innerHTML=timelineData.map((node,i)=>{
+    const status=getNodeStatus(node);
+    let dotContent,badgeClass,badgeText,itemClass='';
+    if(status==='done'){itemClass='done';dotContent='✓';badgeClass='badge-done';badgeText=node.doneText;}
+    else if(status==='now'){itemClass='now';dotContent='●';badgeClass='badge-now';badgeText='进行中';}
+    else{dotContent=i+1;badgeClass='badge-todo';badgeText='待办';}
+    return `<div class="tl-item ${itemClass}">
+      <div class="tl-dot">${dotContent}</div>
+      <div class="tl-body">
+        <div class="tl-date">${node.label}</div>
+        <div class="tl-title">${node.title}<span class="tl-badge ${badgeClass}">${badgeText}</span></div>
+        <div class="tl-desc">${node.desc}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===== Search =====
+const searchAccounts=[
+  {name:'大连理工大学',platform:'微信公众号',desc:'学校官方公众号，发布权威通知与校园资讯',url:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA4MjA3NTc0MA==',color:'#16A34A',bg:'#E6F4EA',icon:'<path d="M9 2v6h6V2M9 11h6M9 15h6M5 22h14a2 2 0 002-2V4a2 2 0 00-2-2H5a2 2 0 00-2 2v16a2 2 0 002 2z"/>'},
+  {name:'大连理工大学迎新',platform:'微信公众号',desc:'迎新专属公众号，发布入学须知与报到指引',url:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI4NjEyNzgyNw==',color:'#003F88',bg:'#E8F0FB',icon:'<path d="M9 2v6h6V2M9 11h6M9 15h6M5 22h14a2 2 0 002-2V4a2 2 0 00-2-2H5a2 2 0 00-2 2v16a2 2 0 002 2z"/>'},
+  {name:'大连理工大学团委',platform:'微信公众号',desc:'共青团工作动态与青年活动资讯',url:'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzA5NjE2NjUxMA==',color:'#E5484D',bg:'#FEE',icon:'<path d="M9 2v6h6V2M9 11h6M9 15h6M5 22h14a2 2 0 002-2V4a2 2 0 00-2-2H5a2 2 0 00-2 2v16a2 2 0 002 2z"/>'},
+  {name:'大连理工大学',platform:'官方微博',desc:'学校官方微博，分享校园动态与师生风采',url:'https://weibo.com/dlut1949',color:'#E5484D',bg:'#FEE',icon:'<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 14c1 2 3 3 4 3s3-1 4-3"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/>'},
+  {name:'大连理工大学',platform:'官方抖音',desc:'学校官方抖音号，发布校园短视频与精彩瞬间',url:'https://www.douyin.com/user/MS4wLjABAAAAv7iS5eE5K5K5K5K5K5K5K5K5K5K5K5',color:'#0F1B2D',bg:'#F2F4F7',icon:'<path d="M9 8a3 3 0 100 6 3 3 0 000-6z"/><path d="M15 8a3 3 0 100 6 3 3 0 000-6z"/>'},
+  {name:'大连理工大学',platform:'哔哩哔哩',desc:'学校官方B站账号，发布讲座与校园视频',url:'https://space.bilibili.com/52877737',color:'#00A3E0',bg:'#E0F5FC',icon:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M8 10l4 3-4 3zM15 10v6"/>'},
+  {name:'大连理工大学',platform:'微信视频号',desc:'学校官方视频号，发布校园影像与活动直播',url:'https://channels.weixin.qq.com/',color:'#16A34A',bg:'#E6F4EA',icon:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/>'}
+];
+function getSearchData(){
+  const sites=[
+    {name:'大连理工大学官网',desc:'学校官方网站，了解学校概况与新闻动态',url:'https://www.dlut.edu.cn',color:'#003F88',bg:'#E8F0FB',icon:'<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>'},
+    ...linksData.map(l=>({name:l.name,desc:l.desc,url:l.url,color:l.color,bg:l.bg,icon:l.icon}))
+  ];
+  const siteList=sites.map(s=>({...s,type:'site',tagText:'网站'}));
+  const accountList=searchAccounts.map(a=>({...a,type:'account',tagText:a.platform}));
+  return [...siteList,...accountList];
+}
+let searchResults=[],searchFocusIdx=-1;
+function openSearch(){
+  document.getElementById('searchModal').classList.add('open');
+  const input=document.getElementById('searchInput');
+  input.value='';
+  setTimeout(()=>input.focus(),50);
+  renderSearchResults('');
+}
+function closeSearch(){
+  document.getElementById('searchModal').classList.remove('open');
+  searchFocusIdx=-1;
+}
+function renderSearchResults(query){
+  const body=document.getElementById('searchBody');
+  const data=getSearchData();
+  const q=query.trim().toLowerCase();
+  searchResults=q?data.filter(d=>(d.name+' '+d.desc+' '+d.tagText).toLowerCase().includes(q)):data;
+  searchFocusIdx=-1;
+  if(!searchResults.length){
+    body.innerHTML=`<div class="search-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4-4"/></svg><div>未找到与"<strong>${escapeHtml(query)}</strong>"相关的内容</div><div style="margin-top:6px;font-size:12px">试试搜索：迎新网、教务处、微博、公众号</div></div>`;
+    return;
+  }
+  const sites=searchResults.filter(r=>r.type==='site');
+  const accounts=searchResults.filter(r=>r.type==='account');
+  let html='';
+  if(sites.length){
+    html+='<div class="search-sec-title">官方网站</div>';
+    html+=sites.map((r,i)=>resultHtml(r,allIdx(sites,i,searchResults))).join('');
+  }
+  if(accounts.length){
+    html+='<div class="search-sec-title">官方账号</div>';
+    html+=accounts.map((r,i)=>resultHtml(r,allIdx(accounts,i,searchResults))).join('');
+  }
+  body.innerHTML=html;
+  body.querySelectorAll('.search-result').forEach((el,i)=>{
+    el.addEventListener('click',()=>openSearchResult(i));
+    el.addEventListener('mouseenter',()=>setSearchFocus(i));
+  });
+}
+function allIdx(sub,subI,all){
+  const target=sub[subI];
+  return all.indexOf(target);
+}
+function resultHtml(r,i){
+  return `<div class="search-result" data-idx="${i}">
+    <div class="sr-icon" style="background:${r.bg};color:${r.color}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${r.icon}</svg></div>
+    <div class="sr-text">
+      <div class="sr-name">${escapeHtml(r.name)}<span class="sr-tag ${r.type}">${r.tagText}</span></div>
+      <div class="sr-desc">${escapeHtml(r.desc)}</div>
+    </div>
+    <div class="sr-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+  </div>`;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function setSearchFocus(i){
+  searchFocusIdx=i;
+  document.querySelectorAll('.search-result').forEach((el,idx)=>el.classList.toggle('focus',idx===i));
+}
+function moveSearchFocus(dir){
+  const items=document.querySelectorAll('.search-result');
+  if(!items.length)return;
+  let i=searchFocusIdx+dir;
+  if(i<0)i=items.length-1;
+  if(i>=items.length)i=0;
+  setSearchFocus(i);
+  items[i].scrollIntoView({block:'nearest'});
+}
+function openSearchResult(i){
+  if(i<0||i>=searchResults.length)return;
+  const r=searchResults[i];
+  window.open(r.url,'_blank');
+  closeSearch();
+  showToast('已为你打开：'+r.name);
+}
+document.getElementById('searchBtn').addEventListener('click',openSearch);
+document.getElementById('searchClose').addEventListener('click',closeSearch);
+document.getElementById('searchMask').addEventListener('click',closeSearch);
+document.getElementById('searchInput').addEventListener('input',e=>renderSearchResults(e.target.value));
+document.getElementById('searchInput').addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'){e.preventDefault();moveSearchFocus(1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();moveSearchFocus(-1);}
+  else if(e.key==='Enter'){e.preventDefault();openSearchResult(searchFocusIdx);}
+  else if(e.key==='Escape'){e.preventDefault();closeSearch();}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.getElementById('searchModal').classList.contains('open'))closeSearch();
+});
+
+// ===== Realtime Weather =====
+const rtWeatherData={
+  lingshui:{name:'凌水主校区',area:'大连市甘井子区',forecasts:[
+    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'阴',daytemp:'27',nighttemp:'22',daywind:'北',daypower:'1-3'},
+    {date:'2026-08-29',week:'6',dayweather:'多云',nightweather:'晴',daytemp:'27',nighttemp:'23',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'多云',daytemp:'29',nighttemp:'21',daywind:'西南',daypower:'4'},
+    {date:'2026-08-31',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'28',nighttemp:'19',daywind:'北',daypower:'5'}
+  ]},
+  kaifa:{name:'开发区校区',area:'大连市金州区',forecasts:[
+    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'阴',daytemp:'27',nighttemp:'22',daywind:'北',daypower:'1-3'},
+    {date:'2026-08-29',week:'6',dayweather:'多云',nightweather:'晴',daytemp:'27',nighttemp:'22',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'多云',daytemp:'29',nighttemp:'21',daywind:'西南',daypower:'4'},
+    {date:'2026-08-31',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'27',nighttemp:'19',daywind:'北',daypower:'5'}
+  ]},
+  panjin:{name:'盘锦校区',area:'盘锦市大洼区',forecasts:[
+    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'多云',daytemp:'26',nighttemp:'20',daywind:'北',daypower:'1-3'},
+    {date:'2026-08-29',week:'6',dayweather:'阴',nightweather:'晴',daytemp:'29',nighttemp:'17',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'晴',daytemp:'26',nighttemp:'17',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-31',week:'1',dayweather:'多云',nightweather:'晴',daytemp:'25',nighttemp:'18',daywind:'北',daypower:'1-3'}
+  ]}
+};
+function rtIcon(w){
+  const m=[['雪','❄️'],['大雨','⛈️'],['中雨','🌧️'],['小雨','🌦️'],['雨','🌧️'],['晴','☀️'],['多云','⛅'],['阴','☁️']];
+  for(const [k,v] of m){if(w.includes(k))return v;}
+  return '🌤️';
+}
+function rtWeek(n){return ['日','一','二','三','四','五','六'][n]}
+function renderRtWeather(key){
+  const d=rtWeatherData[key];
+  const t=d.forecasts[0];
+  const html='<div class="rt-now">'+
+    '<div class="rt-now-icon">'+rtIcon(t.dayweather)+'</div>'+
+    '<div class="rt-now-info">'+
+      '<div class="rt-now-area">'+d.name+' · '+d.area+' · 今天</div>'+
+      '<div class="rt-now-temp">'+t.daytemp+'<span class="unit">℃</span></div>'+
+      '<div class="rt-now-desc">'+
+        '<span>天气 '+t.dayweather+'</span>'+
+        '<span>夜间 '+t.nightweather+' '+t.nighttemp+'℃</span>'+
+        '<span>'+t.daywind+'风 '+t.daypower+'级</span>'+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+  '<div class="rt-future">'+
+    d.forecasts.map(f=>'<div class="rt-day">'+
+      '<div class="rt-day-date">'+f.date.slice(5)+' 周'+rtWeek(Number(f.week))+'</div>'+
+      '<div class="rt-day-icon">'+rtIcon(f.dayweather)+'</div>'+
+      '<div class="rt-day-temp">'+f.daytemp+'°<span class="lo">'+f.nighttemp+'°</span></div>'+
+    '</div>').join('')+
+  '</div>';
+  document.getElementById('rtContent').innerHTML=html;
+}
+document.getElementById('campusSelect').addEventListener('change',e=>renderRtWeather(e.target.value));
+renderRtWeather('lingshui');
+
+// ===== 交通路线指引（三校区切换）=====
+const TRANSIT_DATA={
+  lingshui:[
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>',bg:'#E8F0FB',color:'#003F88',title:'火车 · 大连站',desc:'出站后可乘坐406路公交车至"理工大学站"下车，约40分钟；或打车约25分钟。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=38.922471&slon=121.633200&sname=%E5%A4%A7%E8%BF%9E%E7%AB%99&dlon=121.528449&dlat=38.880709&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E5%87%8C%E6%B0%B4%E4%B8%BB%E6%A0%A1%E5%8C%BA'},
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 22V12h6v10"/></svg>',bg:'#E6F4EA',color:'#16A34A',title:'高铁 · 大连北站',desc:'可乘坐地铁2号线至"海事大学站"换乘，或打车约20分钟直达凌水主校区。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=39.016710&slon=121.607299&sname=%E5%A4%A7%E8%BF%9E%E5%8C%97%E7%AB%99&dlon=121.528449&dlat=38.880709&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E5%87%8C%E6%B0%B4%E4%B8%BB%E6%A0%A1%E5%8C%BA'},
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12l10-10 10 10M12 2v20"/></svg>',bg:'#FFF4E5',color:'#E8A317',title:'飞机 · 周水子机场',desc:'机场距凌水主校区约15公里，可乘坐机场大巴或打车，约30分钟到达。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=38.953789&slon=121.566262&sname=%E5%A4%A7%E8%BF%9E%E5%91%A8%E6%B0%B4%E5%AD%90%E6%9C%BA%E5%9C%BA&dlon=121.528449&dlat=38.880709&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E5%87%8C%E6%B0%B4%E4%B8%BB%E6%A0%A1%E5%8C%BA'}
+  ],
+  kaifa:[
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>',bg:'#E8F0FB',color:'#003F88',title:'火车 · 大连站',desc:'出站后可乘坐快轨3号线至开发区站，约70分钟；或打车约60分钟到达开发区校区。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=38.922471&slon=121.633200&sname=%E5%A4%A7%E8%BF%9E%E7%AB%99&dlon=121.813890&dlat=39.085050&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E5%BC%80%E5%8F%91%E5%8C%BA%E6%A0%A1%E5%8C%BA'},
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 22V12h6v10"/></svg>',bg:'#E6F4EA',color:'#16A34A',title:'高铁 · 大连北站',desc:'可乘坐地铁2号线换乘快轨3号线至开发区站，约80分钟；或打车约50分钟。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=39.016710&slon=121.607299&sname=%E5%A4%A7%E8%BF%9E%E5%8C%97%E7%AB%99&dlon=121.813890&dlat=39.085050&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E5%BC%80%E5%8F%91%E5%8C%BA%E6%A0%A1%E5%8C%BA'},
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12l10-10 10 10M12 2v20"/></svg>',bg:'#FFF4E5',color:'#E8A317',title:'飞机 · 周水子机场',desc:'机场距开发区校区约35公里，可打车约45分钟到达，或乘快轨3号线转乘。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=38.953789&slon=121.566262&sname=%E5%A4%A7%E8%BF%9E%E5%91%A8%E6%B0%B4%E5%AD%90%E6%9C%BA%E5%9C%BA&dlon=121.813890&dlat=39.085050&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E5%BC%80%E5%8F%91%E5%8C%BA%E6%A0%A1%E5%8C%BA'}
+  ],
+  panjin:[
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>',bg:'#E8F0FB',color:'#003F88',title:'火车 · 大连站',desc:'大连站乘高铁至盘锦站（约1.5小时），再打车至盘锦校区约40分钟。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=38.922471&slon=121.633200&sname=%E5%A4%A7%E8%BF%9E%E7%AB%99&dlon=122.124016&dlat=40.690242&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E7%9B%98%E9%94%A6%E6%A0%A1%E5%8C%BA'},
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 22V12h6v10"/></svg>',bg:'#E6F4EA',color:'#16A34A',title:'高铁 · 大连北站',desc:'大连北站乘高铁至盘锦站（约1.5小时），再打车至盘锦校区约40分钟。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=39.016710&slon=121.607299&sname=%E5%A4%A7%E8%BF%9E%E5%8C%97%E7%AB%99&dlon=122.124016&dlat=40.690242&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E7%9B%98%E9%94%A6%E6%A0%A1%E5%8C%BA'},
+    {ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12l10-10 10 10M12 2v20"/></svg>',bg:'#FFF4E5',color:'#E8A317',title:'飞机 · 周水子机场',desc:'机场距盘锦校区约150公里，建议乘高铁至盘锦站后转车，全程约2.5小时。',uri:'amapuri://drive/takeTaxi?sourceApplication=amapplatform&slat=38.953789&slon=121.566262&sname=%E5%A4%A7%E8%BF%9E%E5%91%A8%E6%B0%B4%E5%AD%90%E6%9C%BA%E5%9C%BA&dlon=122.124016&dlat=40.690242&dname=%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E7%9B%98%E9%94%A6%E6%A0%A1%E5%8C%BA'}
+  ]
+};
+function renderTransit(key){
+  const cards=TRANSIT_DATA[key];
+  document.getElementById('transitCards').innerHTML=cards.map(c=>`
+    <div class="card">
+      <div class="card-icon" style="background:${c.bg};color:${c.color}">${c.ico}</div>
+      <h3>${c.title}</h3>
+      <p>${c.desc}</p>
+      <a class="card-link" href="${c.uri}">高德导航 →</a>
+    </div>`).join('');
+}
+document.getElementById('transitCampusSelect').addEventListener('change',e=>renderTransit(e.target.value));
+renderTransit('lingshui');
+
+// ===== Init =====
+renderTimeline();
+renderChecklist();
+renderLinks();
+
+renderExamples();
+var savedChat=null;
+try{savedChat=JSON.parse(sessionStorage.getItem('dut_chat_history')||'null');}catch(e){}
+if(savedChat&&savedChat.length){
+  restoringChat=true;
+  savedChat.forEach(m=>addMsg(m.text,m.who));
+  restoringChat=false;
+  chatHistory=savedChat.slice();
+}else{
+  addMsg('你好！我是 <strong>大工迎新小助手</strong> 👋<br>欢迎来到大连理工大学！我可以帮你解答关于入学报到的各类问题，比如：<ul><li>什么时候报到？</li><li>需要准备哪些材料？</li><li>学费怎么缴？宿舍怎么样？</li></ul>请在下方输入你的问题，或点击快捷按钮开始对话。','bot');
+}
+</script>
+<script src="protect.js"></script>
+</body>
+</html>

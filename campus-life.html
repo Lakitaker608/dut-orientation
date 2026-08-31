@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大连理工大学 · 校园生活助手</title>
+<script>(function(){var p=new URLSearchParams(location.search);if(!p.get('skip')){location.replace('entrance.html');}})();</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+:root{
+  --bg:#F7F8FA;--surface:#FFFFFF;--surface-2:#F2F4F7;
+  --primary:#003F88;--primary-2:#0052B4;--primary-light:#E8F0FB;--accent:#00A3E0;
+  --text-1:#0F1B2D;--text-2:#4A5A70;--text-3:#8A98AC;
+  --border:#E4E8EE;--border-strong:#D0D6DE;
+  --success:#16A34A;--warning:#E8A317;
+  --shadow-sm:0 1px 2px rgba(15,27,45,.04);
+  --shadow-md:0 6px 20px rgba(15,27,45,.06);
+  --shadow-lg:0 20px 50px rgba(15,27,45,.10);
+  --radius:14px;--radius-lg:20px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spacing:-.005em}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+svg{display:block}
+
+/* ===== Topbar ===== */
+.topbar{height:60px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:20}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;color:var(--text-2);font-size:13px;transition:all .15s}
+.back-btn:hover{background:var(--surface-2);color:var(--text-1)}
+.back-btn svg{width:16px;height:16px}
+.topbar-title{font-size:16px;font-weight:600}
+.topbar-logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+
+/* ===== Container ===== */
+.container{max-width:1080px;margin:0 auto;padding:28px 24px 60px}
+
+/* ===== Hero ===== */
+.hero{background:linear-gradient(135deg,#003F88 0%,#0052B4 45%,#0078D4 100%);border-radius:var(--radius-lg);padding:36px;color:#fff;position:relative;overflow:hidden;margin-bottom:28px}
+.hero::before{content:"";position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%}
+.hero-inner{position:relative;z-index:1}
+.hero h1{font-size:24px;font-weight:700;margin-bottom:8px}
+.hero p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.6;max-width:560px}
+.hero-meta{display:flex;gap:18px;margin-top:18px;flex-wrap:wrap}
+.hero-meta .m{display:flex;align-items:center;gap:6px;font-size:12.5px;color:rgba(255,255,255,.9)}
+.hero-meta .m svg{width:15px;height:15px;opacity:.85}
+
+/* ===== Section ===== */
+.section{margin-bottom:32px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{font-size:18px;font-weight:600;display:flex;align-items:center;gap:10px}
+.section-title .bar{width:4px;height:18px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px}
+.section-sub{font-size:12.5px;color:var(--text-3)}
+.nav-back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:var(--surface-2);color:var(--text-2);font-size:13px;font-weight:500;border:1px solid var(--border);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.nav-back-btn:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
+.nav-back-btn svg{width:15px;height:15px}
+.campus-select-wrap{display:flex;align-items:center;gap:8px}
+.cs-label{font-size:12px;color:var(--text-3);font-weight:500}
+.campus-select{appearance:none;-webkit-appearance:none;padding:7px 32px 7px 12px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234A5A70' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center;font-size:13px;font-weight:600;color:var(--primary);cursor:pointer;outline:none;transition:all .15s;font-family:inherit}
+.campus-select:hover{border-color:var(--primary)}
+.campus-select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,63,136,.12)}
+
+/* ===== Campus cards ===== */
+.campus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.campus-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:18px;transition:all .2s}
+.campus-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.campus-card .c-name{font-size:15px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.campus-card .c-dot{width:8px;height:8px;border-radius:50%}
+.campus-card .c-addr{font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:10px}
+.campus-card .c-coord{font-size:11px;color:var(--text-3);font-family:ui-monospace,Menlo,Consolas,monospace;margin-bottom:10px}
+.campus-card .c-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--primary);font-weight:500;padding:5px 11px;border-radius:8px;background:var(--primary-light);transition:all .15s}
+.campus-card .c-link:hover{background:var(--primary);color:#fff}
+.campus-card .c-link svg{width:13px;height:13px}
+
+/* ===== Tabs ===== */
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:10px;font-size:13px;color:var(--text-2);background:var(--surface);border:1px solid var(--border);transition:all .15s;display:flex;align-items:center;gap:7px}
+.tab:hover{border-color:var(--border-strong)}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tab svg{width:15px;height:15px}
+.tab .cnt{font-size:11px;opacity:.7;padding:1px 6px;border-radius:5px;background:rgba(255,255,255,.2)}
+.tab.active .cnt{background:rgba(255,255,255,.22)}
+
+/* ===== Place cards ===== */
+.places{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.place{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:18px;transition:all .2s;position:relative}
+.place:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.place-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.place-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.place-ico svg{width:20px;height:20px}
+.place-info{flex:1;min-width:0}
+.place-name{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.place-addr{font-size:12px;color:var(--text-3);margin-top:3px;line-height:1.5}
+.place-badge{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:5px;background:var(--surface-2);color:var(--text-3)}
+.badge-rate{background:#FFF4E5;color:#E8A317}
+.badge-near{background:#E6F4EA;color:var(--success)}
+.badge-transit{background:#E0F5FC;color:var(--accent)}
+.place-route{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface-2);border-radius:10px;margin-bottom:12px}
+.place-route .r-mode{font-size:11px;font-weight:600;color:var(--primary);padding:3px 8px;border-radius:6px;background:var(--primary-light)}
+.place-route .r-dist{font-size:12.5px;color:var(--text-1);font-weight:500}
+.place-route .r-time{font-size:12px;color:var(--text-3);margin-left:auto;display:flex;align-items:center;gap:4px}
+.place-route .r-time svg{width:13px;height:13px}
+.place-route .r-detail{font-size:11px;color:var(--text-3);margin-top:4px;width:100%;line-height:1.5}
+.place-actions{display:flex;gap:8px}
+.act-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:12px;font-weight:500;padding:8px;border-radius:9px;transition:all .15s}
+.act-btn svg{width:14px;height:14px}
+.act-map{background:var(--primary-light);color:var(--primary)}
+.act-map:hover{background:var(--primary);color:#fff}
+.act-nav{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.act-nav:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ===== Contest ===== */
+.contests{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.contest{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:20px;transition:all .2s;position:relative;overflow:hidden}
+.contest:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.contest::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+.contest-tag{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--primary-light);color:var(--primary);margin-bottom:10px;letter-spacing:.02em}
+.contest-name{font-size:16px;font-weight:600;margin-bottom:8px;line-height:1.4}
+.contest-desc{font-size:12.5px;color:var(--text-2);line-height:1.6;margin-bottom:14px}
+.contest-loc{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--surface-2);border-radius:10px;margin-bottom:14px}
+.contest-loc .loc-ico{width:28px;height:28px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--shadow-sm)}
+.contest-loc .loc-ico svg{width:15px;height:15px;color:var(--accent)}
+.contest-loc .loc-txt{flex:1;min-width:0}
+.contest-loc .loc-name{font-size:12.5px;font-weight:600;color:var(--text-1)}
+.contest-loc .loc-coord{font-size:10.5px;color:var(--text-3);font-family:ui-monospace,Menlo,Consolas,monospace;margin-top:1px}
+.contest-loc .loc-link{font-size:11px;color:var(--primary);font-weight:500;padding:4px 9px;border-radius:7px;background:var(--primary-light);transition:all .15s;flex-shrink:0}
+.contest-loc .loc-link:hover{background:var(--primary);color:#fff}
+.contest-actions{display:flex;gap:8px}
+.contest-actions .ca{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:500;padding:9px;border-radius:9px;transition:all .15s}
+.contest-actions .ca svg{width:14px;height:14px}
+.ca-official{background:var(--primary);color:#fff}
+.ca-official:hover{background:var(--primary-2);transform:translateY(-1px)}
+.ca-map{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.ca-map:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ===== Footer ===== */
+.foot{text-align:center;padding:24px;font-size:12px;color:var(--text-3);letter-spacing:.04em}
+.foot .dot{display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;vertical-align:middle;margin:0 8px}
+
+/* ===== Layout (sidebar + main) ===== */
+.sidebar{width:248px;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;height:100vh;display:flex;flex-direction:column;z-index:40;transition:transform .3s ease}
+.main{margin-left:248px;min-width:0;min-height:100vh;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:12px;padding:8px 8px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.brand-logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,63,136,.25)}
+.brand-name{font-size:15px;font-weight:600;line-height:1.3}
+.brand-sub{font-size:11px;color:var(--text-3);margin-top:2px;letter-spacing:.02em}
+.nav{flex:1;overflow-y:auto}
+.nav-label{font-size:11px;color:var(--text-3);font-weight:600;padding:12px 12px 6px;letter-spacing:.05em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:14px;color:var(--text-2);cursor:pointer;transition:all .15s ease;width:100%;text-align:left;border:none;background:none;font-family:inherit}
+.nav-item:hover{background:var(--surface-2);color:var(--text-1)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+.sidebar-foot{padding:12px 8px 4px;border-top:1px solid var(--border);margin-top:8px}
+.side-link{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-3);padding:6px 8px;border-radius:8px;cursor:pointer}
+.side-link:hover{color:var(--primary);background:var(--surface-2)}
+.side-link svg{width:15px;height:15px}
+.menu-toggle{display:none;width:36px;height:36px;border-radius:9px;align-items:center;justify-content:center;color:var(--text-2);margin-right:4px}
+.menu-toggle:hover{background:var(--surface-2)}
+.menu-toggle svg{width:18px;height:18px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,27,45,.4);z-index:35}
+.overlay.show{display:block}
+
+/* ===== 卫星地图 ===== */
+.sat-section{margin-top:24px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
+.sat-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
+.sat-title{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.sat-title svg{width:18px;height:18px;color:var(--accent)}
+.sat-map-wrap{position:relative;width:100%;height:400px;background:#0a0e1a}
+.sat-map{width:100%;height:100%;object-fit:cover;display:none}
+.sat-map.show{display:block}
+.sat-grid-deco{position:absolute;inset:0;background-image:linear-gradient(rgba(0,163,224,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,163,224,.08) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.sat-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:rgba(255,255,255,.7);text-align:center;padding:24px;z-index:2}
+.sat-fallback .sf-ico{width:60px;height:60px;border-radius:18px;background:rgba(0,163,224,.2);display:flex;align-items:center;justify-content:center;color:#7BE495}
+.sat-fallback .sf-ico svg{width:30px;height:30px}
+.sat-fallback .sf-txt{font-size:13px;line-height:1.7;max-width:380px}
+.sat-fallback .sf-txt b{color:#fff;font-weight:600}
+.sat-fallback .sf-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:13px;font-weight:500;transition:all .15s}
+.sat-fallback .sf-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,163,224,.3)}
+.sat-fallback .sf-btn svg{width:15px;height:15px}
+.sat-info{padding:14px 20px;font-size:12px;color:var(--text-3);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);gap:10px;flex-wrap:wrap}
+.sat-info .sat-link{color:var(--primary);font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.sat-info .sat-link:hover{text-decoration:underline}
+.sat-links{display:inline-flex;align-items:center;gap:16px}
+
+/* ===== 校区卫星地图卡片（科技感）===== */
+.sat-map-card{background:linear-gradient(135deg,#0a0e1a 0%,#0d1b2a 100%);border:2px solid var(--accent);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md),0 0 24px rgba(0,163,224,.15);position:relative}
+.sat-map-card::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(0,163,224,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,163,224,.07) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+.sat-map-card::after{content:"";position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(0,163,224,.2),transparent 70%);border-radius:50%;pointer-events:none;z-index:0}
+.sat-map-card .sat-head{background:rgba(0,0,0,.3);border-bottom:1px solid rgba(0,163,224,.25);position:relative;z-index:1}
+.sat-map-card .sat-title{color:#fff}
+.sat-map-card .sat-title svg{color:var(--accent)}
+.sat-map-body{padding:22px;position:relative;z-index:1}
+.sat-map-desc{font-size:13px;color:rgba(255,255,255,.72);line-height:1.7;margin-bottom:18px}
+.sat-map-link{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#0078D4);color:#fff;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s;box-shadow:0 0 14px rgba(0,163,224,.3)}
+.sat-map-link:hover{transform:translateY(-1px);box-shadow:0 4px 22px rgba(0,163,224,.45)}
+.sat-map-link svg{width:15px;height:15px}
+
+/* ===== 校区实时天气 ===== */
+.rt-select{padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-size:13px;color:var(--text-1);cursor:pointer;outline:none;transition:all .15s;font-family:inherit}
+.rt-select:hover{border-color:var(--border-strong)}
+.rt-select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.rt-content{display:flex;flex-direction:column;gap:14px}
+.rt-now{display:flex;align-items:center;gap:22px;padding:22px;border-radius:14px;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-2) 55%,var(--accent) 100%);position:relative;overflow:hidden}
+.rt-now::before{content:"";position:absolute;top:-44px;right:-44px;width:170px;height:170px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);border-radius:50%;pointer-events:none}
+.rt-now-icon{font-size:56px;flex-shrink:0;line-height:1;position:relative;z-index:1}
+.rt-now-info{flex:1;min-width:0;position:relative;z-index:1}
+.rt-now-area{font-size:13px;color:rgba(255,255,255,.78);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.rt-now-temp{font-size:34px;font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1.1}
+.rt-now-temp .unit{font-size:16px;font-weight:500;color:rgba(255,255,255,.85);margin-left:4px}
+.rt-now-desc{font-size:13px;color:rgba(255,255,255,.9);margin-top:8px;display:flex;gap:16px;flex-wrap:wrap}
+.rt-now-desc span{display:inline-flex;align-items:center;gap:4px}
+.rt-future{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rt-day{padding:12px 8px;border-radius:10px;background:var(--surface-2);text-align:center;transition:all .2s;border:1px solid var(--border)}
+.rt-day:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:var(--border-strong)}
+.rt-day-date{font-size:11px;color:var(--text-3);font-weight:500}
+.rt-day-icon{font-size:24px;margin:6px 0 4px}
+.rt-day-temp{font-size:13px;font-weight:600;color:var(--text-1)}
+.rt-day-temp .lo{color:var(--text-3);font-weight:400;margin-left:4px}
+
+/* ===== Views ===== */
+.view{display:none;animation:fade .35s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== 概览快速入口 ===== */
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+.quick-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:22px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.quick-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.quick-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+.quick-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.quick-ico svg{width:22px;height:22px}
+.quick-card h3{font-size:16px;font-weight:600;margin-bottom:6px}
+.quick-card p{font-size:12.5px;color:var(--text-2);line-height:1.6}
+.quick-card .qa{font-size:12px;color:var(--primary);font-weight:500;margin-top:12px;display:inline-flex;align-items:center;gap:4px}
+
+/* ===== 学习规划 ===== */
+.study-block{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:22px;margin-bottom:20px}
+.study-block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px}
+.sb-title{display:flex;align-items:center;gap:12px}
+.sb-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-ico svg{width:21px;height:21px}
+.sb-ico-college{background:var(--primary-light);color:var(--primary)}
+.sb-ico-major{background:#E0F5FC;color:var(--accent)}
+.sb-name{font-size:16px;font-weight:600}
+.sb-desc{font-size:12px;color:var(--text-3);margin-top:2px}
+.college-card{background:linear-gradient(135deg,#003F88 0%,#0052B4 100%);border-radius:var(--radius);padding:24px;color:#fff;position:relative;overflow:hidden}
+.college-card::before{content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(0,163,224,.3),transparent 70%);border-radius:50%}
+.cc-inner{position:relative;z-index:1}
+.cc-name{font-size:20px;font-weight:700;margin-bottom:6px}
+.cc-en{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:14px;letter-spacing:.5px}
+.cc-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cc-tag{font-size:11.5px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.15);color:#fff;font-weight:500}
+.cc-section{margin-bottom:14px}
+.cc-label{font-size:11.5px;color:rgba(255,255,255,.7);margin-bottom:6px;font-weight:500}
+.cc-text{font-size:13.5px;line-height:1.7;color:rgba(255,255,255,.95)}
+.cc-majors{display:flex;flex-wrap:wrap;gap:8px}
+.cc-major{font-size:12px;padding:5px 11px;border-radius:8px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.major-card{background:var(--surface-2);border-radius:var(--radius);padding:22px;border:1px solid rgba(0,63,136,.2)}
+.mc-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.mc-name{font-size:17px;font-weight:600;flex:1}
+.mc-code{font-size:11px;color:var(--text-3);font-family:ui-monospace,Menlo,Consolas,monospace;padding:3px 8px;border-radius:6px;background:var(--surface);border:1px solid var(--border)}
+.mc-faculty{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--primary);font-weight:500;padding:4px 10px;border-radius:7px;background:var(--primary-light);margin-bottom:14px}
+.mc-faculty svg{width:13px;height:13px}
+.mc-desc{font-size:13px;color:var(--text-2);line-height:1.7;margin-bottom:14px}
+.mc-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.mc-meta-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+.mc-meta-label{font-size:11px;color:var(--text-3);margin-bottom:4px}
+.mc-meta-value{font-size:13px;color:var(--text-1);font-weight:500}
+
+/* ===== 确认选择按钮 ===== */
+.study-confirm{display:flex;justify-content:center;margin-top:8px}
+.confirm-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:420px;padding:14px 24px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;border:none;box-shadow:0 8px 20px rgba(0,63,136,.18);transition:all .2s}
+.confirm-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,63,136,.28)}
+.confirm-btn:active{transform:translateY(0)}
+.confirm-btn svg{width:18px;height:18px}
+
+/* ===== 学习规划助手（聊天界面）===== */
+.assistant-wrap{display:flex;flex-direction:column;height:calc(100vh - 160px);min-height:520px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md)}
+.asst-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#003F88 0%,#0052B4 100%);color:#fff;flex-shrink:0}
+.asst-avatar{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.asst-avatar svg{width:24px;height:24px}
+.asst-title{font-size:16px;font-weight:600}
+.asst-sub{font-size:12px;color:rgba(255,255,255,.78);margin-top:3px}
+.asst-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11.5px;color:rgba(255,255,255,.85);padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.12)}
+.asst-status .dot{width:7px;height:7px;border-radius:50%;background:#7BE495;box-shadow:0 0 6px #7BE495}
+.chat-body{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:18px;background:var(--surface-2);scroll-behavior:smooth}
+.chat-body::-webkit-scrollbar{width:8px}
+.chat-body::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px}
+.chat-body::-webkit-scrollbar-track{background:transparent}
+.msg{display:flex;gap:12px;max-width:88%;animation:msgIn .3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-ava{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;font-weight:600}
+.msg.bot .msg-ava{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff}
+.msg.user .msg-ava{background:var(--surface);border:1px solid var(--border);color:var(--text-2)}
+.msg-ava svg{width:18px;height:18px}
+.msg-bubble{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;font-size:13.5px;line-height:1.7;color:var(--text-1);box-shadow:var(--shadow-sm)}
+.msg.bot .msg-bubble{border-top-left-radius:4px}
+.msg.user .msg-bubble{border-top-right-radius:4px;background:var(--primary);color:#fff;border-color:var(--primary)}
+.msg-bubble p{margin:0}
+.msg-bubble p+p{margin-top:8px}
+.msg-bubble b{font-weight:600}
+.course-list{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.course-item{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.msg.user .course-item{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18)}
+.ci-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ci-term{font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--primary-light);color:var(--primary);flex-shrink:0}
+.msg.user .ci-term{background:rgba(255,255,255,.2);color:#fff}
+.ci-name{font-size:13.5px;font-weight:600}
+.ci-courses{display:flex;flex-wrap:wrap;gap:6px}
+.ci-course{font-size:11.5px;padding:4px 9px;border-radius:7px;background:var(--surface);border:1px solid var(--border);color:var(--text-2)}
+.msg.user .ci-course{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.92)}
+.chat-foot{padding:16px 20px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
+.chat-input-row{display:flex;gap:10px;align-items:flex-end}
+.chat-input{flex:1;padding:11px 14px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface-2);font-size:13.5px;font-family:inherit;color:var(--text-1);resize:none;min-height:44px;max-height:120px;line-height:1.5;transition:all .15s}
+.chat-input:focus{outline:none;border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px rgba(0,63,136,.1)}
+.chat-send{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:12px;background:var(--primary);color:#fff;font-size:13.5px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s;flex-shrink:0}
+.chat-send:hover{background:var(--primary-2);transform:translateY(-1px)}
+.chat-send:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.chat-send svg{width:16px;height:16px}
+.chat-hint{font-size:11px;color:var(--text-3);margin-top:8px;text-align:center}
+.chat-examples{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ex-label{font-size:11.5px;color:var(--text-3);font-weight:500;flex-shrink:0}
+.ex-track{flex:1;overflow:hidden}
+.ex-slides{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.ex-slide{flex:0 0 100%;display:flex;gap:8px;align-items:center;min-width:0}
+.ex-chip{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;padding:8px 10px;border-radius:9px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all .15s;text-align:center;min-width:0}
+.ex-chip:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);transform:translateY(-1px)}
+.ex-next{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);cursor:pointer;flex-shrink:0;transition:all .15s}
+.ex-next:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.ex-next:active{transform:scale(.92)}
+.ex-next svg{width:16px;height:16px}
+.typing{display:inline-flex;gap:4px;align-items:center;padding:4px 0}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--text-3);animation:typing 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+
+.contest-intro{background:linear-gradient(135deg,#003F88 0%,#0052B4 50%,#0078D4 100%);border-radius:var(--radius-lg);padding:26px 30px;color:#fff;position:relative;overflow:hidden;margin-bottom:22px}
+.contest-intro::before{content:"";position:absolute;top:-50px;right:-50px;width:220px;height:220px;background:radial-gradient(circle,rgba(0,163,224,.3),transparent 70%);border-radius:50%}
+.contest-intro-inner{position:relative;z-index:1}
+.contest-intro h2{font-size:17px;font-weight:700;margin-bottom:8px}
+.contest-intro p{font-size:13.5px;font-weight:600;color:#fff;line-height:1.7}
+
+/* ===== Responsive ===== */
+@media (max-width:760px){
+  .campus-grid,.places,.contests,.quick-grid{grid-template-columns:1fr}
+  .container{padding:20px 16px 50px}
+  .hero{padding:28px 22px}
+  .hero h1{font-size:21px}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .menu-toggle{display:flex}
+  .rt-future{grid-template-columns:repeat(2,1fr)}
+  .rt-now{flex-direction:column;text-align:center;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-logo">大工</div>
+    <div>
+      <div class="brand-name">校园生活助手</div>
+      <div class="brand-sub">大连理工大学 · 入学后</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">导航</div>
+    <button class="nav-item active" data-view="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>概览
+    </button>
+    <button class="nav-item" data-view="study">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>学习规划
+    </button>
+    <button class="nav-item" data-view="location">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>学校地理位置
+    </button>
+    <button class="nav-item" data-view="life">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>周边生活与路线
+    </button>
+    <button class="nav-item" data-view="contest">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a1.5 1.5 0 010-3H6m12 3h1.5a1.5 1.5 0 000-3H18M6 6v6a6 6 0 0012 0V6M6 6h12M8 21h8M12 17v4"/></svg>大学生学科竞赛
+    </button>
+    <button class="nav-item" onclick="location.href='volunteer.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>志愿服务平台
+    </button>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="side-link" onclick="location.href='entrance.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>返回入学入口
+    </div>
+    <div class="side-link" onclick="location.href='dut-orientation.html?skip=1'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>新生入学助手
+    </div>
+    <div class="side-link" onclick="window.open('https://www.dlut.edu.cn')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>大工官网
+    </div>
+  </div>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<div class="main">
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" id="menuToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+    <div class="topbar-logo">大工</div>
+    <div class="topbar-title" id="viewTitle">概览</div>
+  </div>
+  <div style="font-size:12px;color:var(--text-3)">入学后 · 生活与竞赛指南</div>
+</header>
+
+<div class="container">
+
+  <!-- 概览 -->
+  <section class="view active" id="view-home">
+    <section class="hero">
+      <div class="hero-inner">
+        <h1>欢迎来到大连理工大学</h1>
+        <p>入学后生活指南：学校地理位置、周边餐饮娱乐与交通出行路线规划，以及各大大学生学科竞赛信息与办赛位置，助你快速融入校园生活。</p>
+        <div class="hero-meta">
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>凌水主校区 121.528449, 38.880709</span>
+          <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>数据由高德地图 MCP 实时提供</span>
+        </div>
+    </div>
+    </section>
+    <div class="quick-grid">
+      <div class="quick-card" onclick="goStudyNav()">
+        <div class="quick-ico" style="background:#E8F0FB;color:var(--primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+        <h3>学习规划</h3>
+        <p>书院选择与专业选择：四大拔尖创新书院、各学部本科专业一览。</p>
+        <span class="qa">规划学习方向 →</span>
+      </div>
+      <div class="quick-card" onclick="switchView('location')">
+        <div class="quick-ico" style="background:var(--primary-light);color:var(--primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>学校地理位置</h3>
+        <p>一校两地三区：凌水主校区、开发区校区、盘锦校区的精确坐标与高德地图定位。</p>
+        <span class="qa">查看校区位置 →</span>
+      </div>
+      <div class="quick-card" onclick="switchView('life')">
+        <div class="quick-ico" style="background:#E0F5FC;color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div>
+        <h3>周边生活与路线规划</h3>
+        <p>各校区周边餐饮、购物娱乐、交通出行场所，步行/公交路线规划与高德导航。</p>
+        <span class="qa">查看周边路线 →</span>
+      </div>
+      <div class="quick-card" onclick="switchView('contest')">
+        <div class="quick-ico" style="background:#FFF4E5;color:#E8A317"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a1.5 1.5 0 010-3H6m12 3h1.5a1.5 1.5 0 000-3H18M6 6v6a6 6 0 0012 0V6M6 6h12M8 21h8M12 17v4"/></svg></div>
+        <h3>大学生学科竞赛</h3>
+        <p>挑战杯、数学建模、ACM-ICPC 等七大竞赛信息、办赛位置与官网直达。</p>
+        <span class="qa">查看竞赛信息 →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 学习规划 -->
+  <section class="view" id="view-study">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>学习规划</div>
+      <div class="section-sub">书院 · 专业选择 · 为你的学业方向定锚</div>
+    </div>
+
+    <!-- 书院选择 -->
+    <div class="study-block">
+      <div class="study-block-head">
+        <div class="sb-title">
+          <span class="sb-ico sb-ico-college"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></span>
+          <div>
+            <div class="sb-name">书院选择</div>
+            <div class="sb-desc">大连理工大学拔尖创新人才培养书院</div>
+          </div>
+        </div>
+        <div class="campus-select-wrap">
+          <span class="cs-label">选择书院</span>
+          <select class="campus-select" id="collegeSelect">
+            <optgroup label="凌水主校区">
+              <option value="lingxi">令希书院</option>
+              <option value="dayu">大煜书院</option>
+              <option value="kuixin">化心书院</option>
+              <option value="wangdaheng">王大珩书院</option>
+            </optgroup>
+            <optgroup label="开发区校区">
+              <option value="leicester">莱斯特书院</option>
+              <option value="guoji">国际书院</option>
+              <option value="qiushi">求实书院</option>
+            </optgroup>
+            <optgroup label="盘锦校区">
+              <option value="liaodongwan">辽东湾书院</option>
+              <option value="honghaitan">红海滩书院</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <div class="college-card" id="collegeCard"></div>
+    </div>
+
+    <!-- 专业选择 -->
+    <div class="study-block">
+      <div class="study-block-head">
+        <div class="sb-title">
+          <span class="sb-ico sb-ico-major"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+          <div>
+            <div class="sb-name">专业选择</div>
+            <div class="sb-desc">按学部 / 学院分类的本科专业</div>
+          </div>
+        </div>
+        <div class="campus-select-wrap">
+          <span class="cs-label">选择专业</span>
+          <select class="campus-select" id="majorSelect"></select>
+        </div>
+      </div>
+      <div class="major-card" id="majorCard"></div>
+    </div>
+
+    <!-- 确认选择按钮 -->
+    <div class="study-confirm">
+      <button class="confirm-btn" id="confirmStudyBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        确认选择 · 进入学习规划助手
+      </button>
+    </div>
+  </section>
+
+  <!-- 学习规划助手 -->
+  <section class="view" id="view-assistant">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>学习规划助手</div>
+      <div class="section-sub">基于书院与专业 · 智能问答 · 未来课程规划</div>
+      <button class="nav-back-btn" onclick="switchView('study')" style="margin-left:auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        返回书院/专业选择
+      </button>
+    </div>
+    <div class="assistant-wrap">
+      <div class="asst-head">
+        <div class="asst-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-3 3 3 3 0 01-3-3V5a3 3 0 013-3z"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/><circle cx="12" cy="12" r="0"/></svg>
+        </div>
+        <div>
+          <div class="asst-title">学习规划助手</div>
+          <div class="asst-sub">面向大学学习的问答智能体 · 自动规划未来课程</div>
+        </div>
+        <div class="asst-status"><span class="dot"></span>在线</div>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-foot">
+        <div class="chat-examples">
+          <div class="ex-label">试试问</div>
+          <div class="ex-track"><div class="ex-slides" id="exSlides"></div></div>
+          <button class="ex-next" id="exNext" title="换一批示例">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-input" id="chatInput" rows="1" placeholder="向助手提问，或点击上方示例快速发送"></textarea>
+          <button class="chat-send" id="chatSend">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            发送
+          </button>
+        </div>
+        <div class="chat-hint">智能体根据你选择的书院与专业作答 · 仅供学习参考</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 学校地理位置 -->
+  <section class="view" id="view-location">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>学校地理位置</div>
+      <div class="section-sub">一校两地三区 · 点击查看高德地图</div>
+    </div>
+    <div class="campus-grid" id="campusGrid"></div>
+
+    <!-- 校区实时天气 -->
+    <div class="sat-section">
+      <div class="sat-head">
+        <div class="sat-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19a4.5 4.5 0 100-9 4.5 4.5 0 000 9z"/><path d="M3 15a4 4 0 014-4h1.5a3.5 3.5 0 113.5 3.5"/><path d="M7 19a3 3 0 010-6"/></svg>
+          校区实时天气
+        </div>
+        <div class="campus-select-wrap">
+          <span class="cs-label">选择校区</span>
+          <select class="rt-select" id="rtCampusSelect">
+            <option value="lingshui">大连凌水主校区</option>
+            <option value="kaifa">开发区校区</option>
+            <option value="panjin">盘锦校区</option>
+          </select>
+        </div>
+      </div>
+      <div class="rt-content" id="rtContent"></div>
+    </div>
+
+    <!-- 校区卫星地图（科技感） -->
+    <div class="sat-map-card">
+      <div class="sat-head">
+        <div class="sat-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M20 12A8 8 0 004 12M4 12a8 8 0 0016 0M12 2a15 15 0 010 20M12 22a15 15 0 010-20"/></svg>
+          校区卫星地图
+        </div>
+      </div>
+      <div class="sat-map-body">
+        <div class="sat-map-desc">大连理工大学一校两地三区，点击下方按钮可在高德地图中查看各校区卫星航拍图与实时位置。</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a class="sat-map-link" target="_blank" href="https://uri.amap.com/marker?position=121.528449,38.880709&name=大连凌水主校区&coordinate=gaode&callnative=1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            凌水主校区
+          </a>
+          <a class="sat-map-link" target="_blank" href="https://uri.amap.com/marker?position=121.813890,39.085050&name=开发区校区&coordinate=gaode&callnative=1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            开发区校区
+          </a>
+          <a class="sat-map-link" target="_blank" href="https://uri.amap.com/marker?position=122.124016,40.690242&name=盘锦校区&coordinate=gaode&callnative=1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            盘锦校区
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 周边生活 -->
+  <section class="view" id="view-life">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>周边生活与路线规划</div>
+      <div class="campus-select-wrap">
+        <span class="cs-label">出发校区</span>
+        <select class="campus-select" id="campusSelect">
+          <option value="lingshui">大连凌水主校区</option>
+          <option value="kaifa">开发区校区</option>
+          <option value="panjin">盘锦校区</option>
+        </select>
+      </div>
+    </div>
+    <div class="section-sub" id="placesSub">从大连凌水主校区出发 · 步行/公交路线</div>
+    <div class="tabs" id="tabs"></div>
+    <div class="places" id="places"></div>
+  </section>
+
+  <!-- 学科竞赛 -->
+  <section class="view" id="view-contest">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>大学生学科竞赛</div>
+      <div class="section-sub">办赛位置 · 官网直达 · 高德地图标注</div>
+    </div>
+    <div class="contest-intro">
+      <div class="contest-intro-inner">
+        <h2>本科阶段参加学术竞赛的意义与价值</h2>
+        <p>学科竞赛是本科生将课堂理论转化为实践能力的重要平台。参加"挑战杯"、数学建模、ACM-ICPC 等高水平竞赛，能够锻炼创新思维、团队协作与问题解决能力，深化对专业知识的理解与应用；获奖经历更是保研推免、评奖评优、求职简历的有力加分项，也是结识志同道合伙伴、接触前沿课题与行业导师的宝贵契机。以赛促学、以赛促研，在竞赛中成长，是本科阶段值得投入的重要选择。</p>
+      </div>
+    </div>
+    <div class="contests" id="contests"></div>
+  </section>
+
+</div>
+
+<div class="foot">大连理工大学 校园生活助手<span class="dot"></span>路线与位置数据由高德地图提供</div>
+
+</div>
+
+<script>
+// ===== 视图切换（左侧导航）=====
+var viewTitles={home:'概览',study:'学习规划',location:'学校地理位置',life:'周边生活与路线规划',contest:'大学生学科竞赛',assistant:'学习规划助手'};
+function switchView(name){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  var navMatch=document.querySelector('.nav-item[data-view="'+(name==='assistant'?'study':name)+'"]');
+  if(navMatch)navMatch.classList.add('active');
+  document.getElementById('viewTitle').textContent=viewTitles[name]||'';
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goStudyNav(){
+  if(STUDY_CTX.college && sessionStorage.getItem('chat_history')){
+    switchView('assistant');
+  }else{
+    switchView('study');
+  }
+}
+document.querySelectorAll('.nav-item').forEach(function(item){
+  item.addEventListener('click',function(){
+    if(!item.dataset.view)return;
+    if(item.dataset.view==='study'){goStudyNav();}else{switchView(item.dataset.view);}
+  });
+});
+
+document.getElementById('menuToggle').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+});
+document.getElementById('overlay').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+});
+
+// ===== 校区列表（路线起点，供下拉栏切换）=====
+var CAMPUS_LIST=[
+  {key:'lingshui',name:'大连凌水主校区',lng:'121.528449',lat:'38.880709'},
+  {key:'kaifa',name:'开发区校区',lng:'121.813890',lat:'39.085050'},
+  {key:'panjin',name:'盘锦校区',lng:'122.124016',lat:'40.690242'}
+];
+var curCampus='lingshui';
+function getSchool(){for(var i=0;i<CAMPUS_LIST.length;i++){if(CAMPUS_LIST[i].key===curCampus)return CAMPUS_LIST[i];}return CAMPUS_LIST[0];}
+
+// ===== 高德地图 URI 拼接 =====
+function uriMarker(lng,lat,name){return 'https://uri.amap.com/marker?position='+lng+','+lat+'&name='+encodeURIComponent(name)+'&coordinate=gaode&callnative=1';}
+function uriNavi(lng,lat,name,mode){var s=getSchool();return 'https://uri.amap.com/navigation?from='+s.lng+','+s.lat+','+encodeURIComponent(s.name)+'&to='+lng+','+lat+','+encodeURIComponent(name)+'&mode='+(mode||'walk')+'&coordinate=gaode&callnative=1';}
+
+// ===== 图标 =====
+var ICO={
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+  navi:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>',
+  fork:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>',
+  food:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>',
+  shop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>',
+  film:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg>',
+  metro:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="16" rx="8"/><path d="M8 11h8M9 19l-2 3M15 19l2 3"/><circle cx="8.5" cy="11.5" r="0.5" fill="currentColor"/><circle cx="15.5" cy="11.5" r="0.5" fill="currentColor"/></svg>',
+  train:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="13" rx="3"/><path d="M5 11h14M8 16l-2 4M16 16l2 4"/><circle cx="8" cy="13.5" r="0.5" fill="currentColor"/><circle cx="16" cy="13.5" r="0.5" fill="currentColor"/></svg>',
+  plane:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5a2.12 2.12 0 00-3-3L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+  trophy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a1.5 1.5 0 010-3H6m12 3h1.5a1.5 1.5 0 000-3H18M6 6v6a6 6 0 0012 0V6M6 6h12M8 21h8M12 17v4"/></svg>',
+  link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>'
+};
+
+// ===== 三个校区 =====
+var CAMPUSES=[
+  {name:'大连凌水主校区',dot:'#003F88',addr:'辽宁省大连市甘井子区凌工路2号',coord:'121.528449, 38.880709',lng:'121.528449',lat:'38.880709'},
+  {name:'开发区校区',dot:'#16A34A',addr:'辽宁省大连市金普新区图强路321号',coord:'121.813890, 39.085050',lng:'121.813890',lat:'39.085050'},
+  {name:'盘锦校区',dot:'#E8A317',addr:'辽宁省盘锦市辽东湾新区大工路2号',coord:'122.124016, 40.690242',lng:'122.124016',lat:'40.690242'}
+];
+document.getElementById('campusGrid').innerHTML=CAMPUSES.map(function(c){
+  return '<div class="campus-card">'+
+    '<div class="c-name"><span class="c-dot" style="background:'+c.dot+'"></span>'+c.name+'</div>'+
+    '<div class="c-addr">'+c.addr+'</div>'+
+    '<div class="c-coord">经纬度 '+c.coord+'</div>'+
+    '<a class="c-link" target="_blank" href="'+uriMarker(c.lng,c.lat,c.name)+'">'+ICO.pin+'高德地图查看</a>'+
+  '</div>';
+}).join('');
+
+// ===== 周边场所（按校区·按分类）=====
+var CAMPUS_PLACES={
+  lingshui:{
+  food:{
+    label:'餐饮美食',ico:ICO.food,
+    items:[
+      {name:'学府餐厅(明德路店)',addr:'凌工路2号大连理工大学内',lng:'121.529701',lat:'38.881412',mode:'walk',dist:'215 米',time:'约 3 分钟',detail:'校内餐厅，沿德邻路→尚书路→明德路步行即达',badges:[{t:'校内',c:'badge-near'},{t:'评分 4.2',c:'badge-rate'}]},
+      {name:'沁园餐厅(红凌路)',addr:'凌水路2号大连理工大学西山生活区内',lng:'121.527100',lat:'38.879200',mode:'walk',dist:'校内',time:'约 5 分钟',detail:'西山生活区食堂',badges:[{t:'校内',c:'badge-near'}]},
+      {name:'大连理工大学博园餐厅',addr:'凌工路2号',lng:'121.528100',lat:'38.882100',mode:'walk',dist:'校内',time:'约 4 分钟',detail:'校内博园餐厅',badges:[{t:'校内',c:'badge-near'}]},
+      {name:'小花卷味道餐厅(理工西门店)',addr:'凌水街道栾金村406号',lng:'121.526800',lat:'38.878500',mode:'walk',dist:'约 350 米',time:'约 5 分钟',detail:'理工西门附近特色餐厅',badges:[]}
+    ]
+  },
+  fun:{
+    label:'购物娱乐',ico:ICO.shop,
+    items:[
+      {name:'锦辉购物广场(奥莱店)',addr:'高新园区黄浦路517号',lng:'121.532640',lat:'38.865350',mode:'walk',dist:'2.41 公里',time:'约 32 分钟',detail:'步行沿凌水路→黄浦路向南，评分 4.7',badges:[{t:'评分 4.7',c:'badge-rate'}]},
+      {name:'万达影城(高新万达广场店)',addr:'黄浦路500号万达广场4层',lng:'121.533141',lat:'38.861318',mode:'walk',dist:'2.79 公里',time:'约 37 分钟',detail:'步行沿凌水路→黄浦路，评分 4.7，营业 08:00-24:00',badges:[{t:'评分 4.7',c:'badge-rate'}]},
+      {name:'中影星美国际影城(软件园店)',addr:'软件园路1A-12号',lng:'121.535200',lat:'38.872100',mode:'walk',dist:'约 1.8 公里',time:'约 24 分钟',detail:'软件园路影院',badges:[]},
+      {name:'锦辉购物广场(书香园店)',addr:'高新园区数码路18号',lng:'121.536100',lat:'38.870200',mode:'walk',dist:'约 2.0 公里',time:'约 26 分钟',detail:'数码路购物中心',badges:[]}
+    ]
+  },
+  transit:{
+    label:'交通出行',ico:ICO.metro,
+    items:[
+      {name:'海事大学(地铁站)',addr:'地铁 1 号线',lng:'121.534513',lat:'38.866029',mode:'walk',dist:'2.18 公里',time:'约 29 分钟',detail:'步行沿凌水路→黄浦路至 1 号线海事大学站',badges:[{t:'1 号线',c:'badge-transit'}]},
+      {name:'学苑广场(地铁站)',addr:'地铁 1 号线',lng:'121.545100',lat:'38.868900',mode:'walk',dist:'约 2.6 公里',time:'约 34 分钟',detail:'1 号线学苑广场站',badges:[{t:'1 号线',c:'badge-transit'}]},
+      {name:'沙河口火车站',addr:'西安路1号',lng:'121.592032',lat:'38.925551',mode:'transit',dist:'10.49 公里',time:'约 47 分钟',detail:'公交 10 路(理工大学→学苑广场) 换乘 地铁 1 号线(学苑广场→中长街)',badges:[{t:'公交+地铁',c:'badge-transit'}]},
+      {name:'大连周水子国际机场',addr:'迎客路100号',lng:'121.542585',lat:'38.964154',mode:'transit',dist:'10.50 公里',time:'约 102 分钟',detail:'公交 10 路(理工大学→盖州街) 换乘 701 路(盖州街→迎客路) 步行到达',badges:[{t:'机场',c:'badge-transit'}]},
+      {name:'理工大学(公交站)',addr:'10路;406路;1123路',lng:'121.527068',lat:'38.877988',mode:'walk',dist:'约 400 米',time:'约 6 分钟',detail:'校南门凌工路公交站，10路/406路可达市中心',badges:[{t:'公交站',c:'badge-transit'}]},
+      {name:'理工大学东门(公交站)',addr:'23路',lng:'121.535177',lat:'38.879828',mode:'walk',dist:'约 600 米',time:'约 8 分钟',detail:'校东门黄浦路公交站，23路可达',badges:[{t:'公交站',c:'badge-transit'}]},
+      {name:'新新广场(公交站)',addr:'26路;3路',lng:'121.527412',lat:'38.886841',mode:'walk',dist:'约 700 米',time:'约 10 分钟',detail:'软件园路公交站，26路/3路可达',badges:[{t:'公交站',c:'badge-transit'}]},
+      {name:'理工大学北门(公交站)',addr:'901路',lng:'121.529727',lat:'38.887148',mode:'walk',dist:'约 700 米',time:'约 10 分钟',detail:'校北门公交站，901路可达',badges:[{t:'公交站',c:'badge-transit'}]}
+    ]
+  }
+  },
+  kaifa:{
+    food:{
+      label:'餐饮美食',ico:ICO.food,
+      items:[
+        {name:'得来速餐厅(知润山店)',addr:'知润山北门东300米',lng:'121.818088',lat:'39.080387',mode:'walk',dist:'805 米',time:'约 11 分钟',detail:'沿图强路→学府南街步行即达，评分 3.8',badges:[{t:'评分 3.8',c:'badge-rate'}]},
+        {name:'裕丰快餐厅(馨佳园店)',addr:'馨佳园',lng:'121.815000',lat:'39.083000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近馨佳园快餐厅',badges:[]},
+        {name:'大连大学食堂',addr:'学府大街大连大学内',lng:'121.820000',lat:'39.082000',mode:'walk',dist:'约 1.2 公里',time:'约 15 分钟',detail:'毗邻大连大学，可步行前往',badges:[]}
+      ]
+    },
+    fun:{
+      label:'购物娱乐',ico:ICO.shop,
+      items:[
+        {name:'中环城市广场',addr:'辽河西路与东北四街交叉口',lng:'121.789425',lat:'39.061075',mode:'walk',dist:'4.77 公里',time:'约 64 分钟',detail:'沿图强路→铁山西路→辽河西路步行，评分 3.6',badges:[{t:'评分 3.6',c:'badge-rate'}]},
+        {name:'万达影城(经开万达广场IMAX激光店)',addr:'辽河西路117号万达广场4层',lng:'121.784467',lat:'39.060285',mode:'walk',dist:'5.27 公里',time:'约 70 分钟',detail:'沿图强路→铁山西路→辽河西路，评分 4.8，营业 09:00-21:00',badges:[{t:'评分 4.8',c:'badge-rate'}]},
+        {name:'CGV影城(安盛购物广场店)',addr:'金马路189号安盛购物广场5层',lng:'121.780000',lat:'39.055000',mode:'walk',dist:'约 5.8 公里',time:'约 75 分钟',detail:'安盛购物广场内 CGV 影城',badges:[]}
+      ]
+    },
+    transit:{
+      label:'交通出行',ico:ICO.metro,
+      items:[
+        {name:'开发区(地铁站)',addr:'地铁 3 号线 / 3 号线支线',lng:'121.774538',lat:'39.053598',mode:'walk',dist:'6.34 公里',time:'约 85 分钟',detail:'沿图强路→铁山西路→辽河西路步行至 3 号线开发区站',badges:[{t:'3 号线',c:'badge-transit'}]},
+        {name:'保税区(地铁站)',addr:'地铁 3 号线',lng:'121.780000',lat:'39.060000',mode:'walk',dist:'约 5.8 公里',time:'约 78 分钟',detail:'3 号线保税区站',badges:[{t:'3 号线',c:'badge-transit'}]},
+        {name:'金州站',addr:'友好街',lng:'121.726346',lat:'39.087506',mode:'transit',dist:'7.83 公里',time:'约 85 分钟',detail:'昌赫 811 路(开发区一中→艺术学院) 换乘 802 路(→八里) 换乘 金州 105 路(→火车站)',badges:[{t:'公交',c:'badge-transit'}]},
+        {name:'大连北站',addr:'南关岭街道华北路666号',lng:'121.590000',lat:'39.040000',mode:'transit',dist:'约 30 公里',time:'约 90 分钟',detail:'高铁站，公交换乘地铁 3 号线可达',badges:[{t:'高铁',c:'badge-transit'}]},
+        {name:'开发区一中(公交站)',addr:'开发区2路;5路;昌赫811路',lng:'121.818060',lat:'39.080686',mode:'walk',dist:'约 200 米',time:'约 3 分钟',detail:'校区附近公交站，多路公交可达',badges:[{t:'公交站',c:'badge-transit'}]},
+        {name:'松岚工业园(公交站)',addr:'开发区2路;5路;昌赫811路',lng:'121.818837',lat:'39.077216',mode:'walk',dist:'约 400 米',time:'约 6 分钟',detail:'松岚工业园公交站',badges:[{t:'公交站',c:'badge-transit'}]},
+        {name:'职业中专(公交站)',addr:'开发区5路;昌赫811路',lng:'121.820911',lat:'39.087401',mode:'walk',dist:'约 900 米',time:'约 12 分钟',detail:'职业中专公交站，昌赫811路快速公交可达',badges:[{t:'公交站',c:'badge-transit'}]},
+        {name:'高安里(公交站)',addr:'开发区12路',lng:'121.819100',lat:'39.072770',mode:'walk',dist:'约 800 米',time:'约 11 分钟',detail:'高安里公交站，开发区12路可达',badges:[{t:'公交站',c:'badge-transit'}]}
+      ]
+    }
+  },
+  panjin:{
+    food:{
+      label:'餐饮美食',ico:ICO.food,
+      items:[
+        {name:'三年十六班主题餐厅(辽滨店)',addr:'直方街与庆誉路交叉口东200米',lng:'122.123309',lat:'40.700879',mode:'walk',dist:'1.88 公里',time:'约 25 分钟',detail:'沿明德路→德榜路→复州路→直方街步行，评分 4.3，营业 10:00-21:00',badges:[{t:'评分 4.3',c:'badge-rate'}]},
+        {name:'罗森便利店(盘锦校区店)',addr:'大工路2号大连理工大学盘锦校区内',lng:'122.124016',lat:'40.690242',mode:'walk',dist:'校内',time:'约 2 分钟',detail:'校内便利店',badges:[{t:'校内',c:'badge-near'}]},
+        {name:'祥惠百货超市(物流大厦店)',addr:'辽东湾新区物流大厦',lng:'122.125000',lat:'40.692000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近百货超市',badges:[]}
+      ]
+    },
+    fun:{
+      label:'购物娱乐',ico:ICO.shop,
+      items:[
+        {name:'新页通百货超市',addr:'滨海大道与柴河路交叉口西280米',lng:'122.158659',lat:'40.718148',mode:'transit',dist:'6.02 公里',time:'约 83 分钟',detail:'辽东湾 2 路(理工大学西门→嘉恒伟业) 或 步行至辽东湾管委会乘 T1 路，评分 3.2',badges:[{t:'公交',c:'badge-transit'},{t:'评分 3.2',c:'badge-rate'}]},
+        {name:'欧派国际影城',addr:'滨海大道与向海大道交叉口华源时代城3楼',lng:'122.173355',lat:'40.720498',mode:'transit',dist:'7.52 公里',time:'约 76 分钟',detail:'步行至辽东湾管委会乘 T1 路(→柏栎饭店) 步行到达，评分 4.5',badges:[{t:'公交',c:'badge-transit'},{t:'评分 4.5',c:'badge-rate'}]},
+        {name:'兴隆七彩城',addr:'辽东湾新区',lng:'122.130000',lat:'40.705000',mode:'transit',dist:'约 5 公里',time:'约 70 分钟',detail:'辽东湾 2 路可达，周边商业综合体',badges:[{t:'公交',c:'badge-transit'}]}
+      ]
+    },
+    transit:{
+      label:'交通出行',ico:ICO.metro,
+      items:[
+        {name:'理工大学西门(公交站)',addr:'辽东湾 2 路',lng:'122.121201',lat:'40.689327',mode:'walk',dist:'285 米',time:'约 4 分钟',detail:'沿明德路→德榜路→复州路步行至西门公交站',badges:[{t:'公交站',c:'badge-transit'}]},
+        {name:'市民服务中心(公交站)',addr:'辽东湾 2 路',lng:'122.128000',lat:'40.698000',mode:'transit',dist:'约 3 公里',time:'约 30 分钟',detail:'辽东湾 2 路可达',badges:[{t:'公交',c:'badge-transit'}]},
+        {name:'田庄台客运综合服务中心',addr:'田庄台镇镇政府西侧',lng:'122.126328',lat:'40.833475',mode:'transit',dist:'16.12 公里',time:'约 130 分钟',detail:'步行至辽东湾管委会乘 T1 路(→北魏家沟) 换乘 大洼 32 路(→田庄台客运站)，24 小时营业',badges:[{t:'长途客运',c:'badge-transit'}]},
+        {name:'理工大学(公交站)',addr:'辽东湾2路;金帛滩旅游专线',lng:'122.123070',lat:'40.684334',mode:'walk',dist:'约 700 米',time:'约 10 分钟',detail:'校区南门公交站，辽东湾2路可达',badges:[{t:'公交站',c:'badge-transit'}]},
+        {name:'辽东湾管委会(公交站)',addr:'T1路;辽东湾2路',lng:'122.129746',lat:'40.704345',mode:'transit',dist:'约 3 公里',time:'约 30 分钟',detail:'辽东湾管委会公交站，T1路/辽东湾2路可达',badges:[{t:'公交站',c:'badge-transit'}]}
+      ]
+    }
+  }
+};
+
+// 渲染 Tabs（按当前校区）
+function curPlaces(){return CAMPUS_PLACES[curCampus];}
+var TABS=['food','fun','transit'];
+var curTab='food';
+function renderTabs(){
+  var P=curPlaces();
+  document.getElementById('tabs').innerHTML=TABS.map(function(k){
+    var p=P[k];
+    return '<button class="tab'+(k===curTab?' active':'')+'" data-tab="'+k+'">'+p.ico+'<span>'+p.label+'</span><span class="cnt">'+p.items.length+'</span></button>';
+  }).join('');
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){curTab=this.dataset.tab;renderTabs();renderPlaces();});
+  });
+}
+function renderPlaces(){
+  var P=curPlaces();
+  var p=P[curTab];
+  document.getElementById('places').innerHTML=p.items.map(function(it){
+    var modeLabel=it.mode==='walk'?'步行':'公交';
+    var badgesHtml=(it.badges||[]).map(function(b){return '<span class="place-badge '+b.c+'">'+b.t+'</span>';}).join('');
+    return '<div class="place">'+
+      '<div class="place-head">'+
+        '<div class="place-ico" style="background:'+(curTab==='food'?'#FFF4E5;color:#E8A317':curTab==='fun'?'#E8F0FB;color:#003F88':'#E0F5FC;color:#00A3E0')+'">'+p.ico+'</div>'+
+        '<div class="place-info">'+
+          '<div class="place-name">'+it.name+badgesHtml+'</div>'+
+          '<div class="place-addr">'+it.addr+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="place-route">'+
+        '<span class="r-mode">'+modeLabel+'</span>'+
+        '<span class="r-dist">'+it.dist+'</span>'+
+        '<span class="r-time">'+ICO.clock+it.time+'</span>'+
+        '<div class="r-detail">'+it.detail+'</div>'+
+      '</div>'+
+      '<div class="place-actions">'+
+        '<a class="act-btn act-map" target="_blank" href="'+uriMarker(it.lng,it.lat,it.name)+'">'+ICO.pin+'查看位置</a>'+
+        '<a class="act-btn act-nav" target="_blank" href="'+uriNavi(it.lng,it.lat,it.name,it.mode)+'">'+ICO.navi+'导航前往</a>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+function updatePlacesSub(){
+  var s=getSchool();
+  document.getElementById('placesSub').textContent='从 '+s.name+' 出发 · 步行/公交路线';
+}
+document.getElementById('campusSelect').addEventListener('change',function(){
+  curCampus=this.value;
+  curTab='food';
+  updatePlacesSub();
+  renderTabs();renderPlaces();
+});
+updatePlacesSub();
+renderTabs();renderPlaces();
+
+// ===== 校区实时天气（数据由 maps_weather 提供）=====
+var rtWeatherData={
+  lingshui:{name:'凌水主校区',area:'大连市甘井子区',forecasts:[
+    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'阴',daytemp:'27',nighttemp:'22',daywind:'北',daypower:'1-3'},
+    {date:'2026-08-29',week:'6',dayweather:'多云',nightweather:'晴',daytemp:'27',nighttemp:'23',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'多云',daytemp:'29',nighttemp:'21',daywind:'西南',daypower:'4'},
+    {date:'2026-08-31',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'28',nighttemp:'19',daywind:'北',daypower:'5'}
+  ]},
+  kaifa:{name:'开发区校区',area:'大连市金州区',forecasts:[
+    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'阴',daytemp:'27',nighttemp:'22',daywind:'北',daypower:'1-3'},
+    {date:'2026-08-29',week:'6',dayweather:'多云',nightweather:'晴',daytemp:'27',nighttemp:'22',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'多云',daytemp:'29',nighttemp:'21',daywind:'西南',daypower:'4'},
+    {date:'2026-08-31',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'27',nighttemp:'19',daywind:'北',daypower:'5'}
+  ]},
+  panjin:{name:'盘锦校区',area:'盘锦市大洼区',forecasts:[
+    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'多云',daytemp:'26',nighttemp:'20',daywind:'北',daypower:'1-3'},
+    {date:'2026-08-29',week:'6',dayweather:'阴',nightweather:'晴',daytemp:'29',nighttemp:'17',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'晴',daytemp:'26',nighttemp:'17',daywind:'西南',daypower:'1-3'},
+    {date:'2026-08-31',week:'1',dayweather:'多云',nightweather:'晴',daytemp:'25',nighttemp:'18',daywind:'北',daypower:'1-3'}
+  ]}
+};
+function rtIcon(w){
+  var m=[['雪','❄️'],['大雨','⛈️'],['中雨','🌧️'],['小雨','🌦️'],['雨','🌧️'],['晴','☀️'],['多云','⛅'],['阴','☁️']];
+  for(var i=0;i<m.length;i++){if(w.indexOf(m[i][0])>=0)return m[i][1];}
+  return '🌤️';
+}
+function rtWeek(n){return ['日','一','二','三','四','五','六'][n]}
+function renderRtWeather(key){
+  var d=rtWeatherData[key];
+  var t=d.forecasts[0];
+  var now='<div class="rt-now">'+
+    '<div class="rt-now-icon">'+rtIcon(t.dayweather)+'</div>'+
+    '<div class="rt-now-info">'+
+      '<div class="rt-now-area">'+d.name+' · '+d.area+' · 今天</div>'+
+      '<div class="rt-now-temp">'+t.daytemp+'<span class="unit">℃</span></div>'+
+      '<div class="rt-now-desc">'+
+        '<span>天气 '+t.dayweather+'</span>'+
+        '<span>夜间 '+t.nightweather+' '+t.nighttemp+'℃</span>'+
+        '<span>'+t.daywind+'风 '+t.daypower+'级</span>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+  var future='<div class="rt-future">'+d.forecasts.map(function(f){
+    return '<div class="rt-day">'+
+      '<div class="rt-day-date">'+f.date.slice(5)+' 周'+rtWeek(Number(f.week))+'</div>'+
+      '<div class="rt-day-icon">'+rtIcon(f.dayweather)+'</div>'+
+      '<div class="rt-day-temp">'+f.daytemp+'°<span class="lo">'+f.nighttemp+'°</span></div>'+
+    '</div>';
+  }).join('')+'</div>';
+  document.getElementById('rtContent').innerHTML=now+future;
+}
+document.getElementById('rtCampusSelect').addEventListener('change',function(){renderRtWeather(this.value);});
+renderRtWeather('lingshui');
+
+// ===== 学习规划：书院与专业 =====
+var COLLEGES={
+  lingxi:{name:'令希书院',en:'Lingxi College',campus:'凌水主校区',tags:['拔尖创新','计算机/软件','小班化','导师制'],
+    orient:'以计算机科学与技术、软件工程为核心，依托计算机科学与技术学院与软件学院，培养具有国际竞争力的信息技术拔尖创新人才。',
+    feature:'实行完全学分制、小班化研讨教学、本科生导师制，每位学生配备学术导师，从大一起进入科研实验室参与课题研究。',
+    majors:['计算机科学与技术','软件工程','人工智能','物联网工程','网络工程']},
+  dayu:{name:'大煜书院',en:'Dayu College',campus:'凌水主校区',tags:['拔尖创新','物理/光电','科研导向','本硕博贯通'],
+    orient:'以物理学院为依托，聚焦应用物理学、光电信息科学与工程，培养基础扎实、面向前沿的物理与光电科学拔尖人才。',
+    feature:'本硕博贯通培养通道，强调数理基础与科研训练并重，设置学术沙龙与前沿讲座，鼓励本科生早进课题组、早出成果。',
+    majors:['应用物理学','光电信息科学与工程','核工程与核技术']},
+  kuixin:{name:'化心书院',en:'Huaxin College',campus:'凌水主校区',tags:['拔尖创新','力学/化工','强基计划','交叉学科'],
+    orient:'以工程力学、化学工程为核心，依托运载工程与力学学部、化工与环境生命学部，培养工程科学与基础学科交叉的拔尖人才。',
+    feature:'对接国家"强基计划"，注重力学-数学、化工-材料的交叉融合，设置荣誉课程体系与暑期海外学术交流项目。',
+    majors:['工程力学','化学工程与工艺','能源化学工程','生物工程']},
+  wangdaheng:{name:'王大珩书院',en:'Wang Daheng College',campus:'凌水主校区',tags:['拔尖创新','光学/仪器','科学家精神','国际视野'],
+    orient:'传承王大珩先生科学家精神，以光电信息、仪器科学为核心，培养光学与精密仪器领域的领军型创新人才。',
+    feature:'弘扬"大珩精神"，校企联合培养，与长春光机所等科研院所深度合作，设置本硕博连读与海外名校联合培养通道。',
+    majors:['光电信息科学与工程','测控技术与仪器','电子科学与技术']},
+  leicester:{name:'莱斯特书院',en:'Leicester College',campus:'开发区校区',tags:['中外合作','国际化','双学位','英语强化'],
+    orient:'依托莱斯特国际学院，与英国莱斯特大学深度合作，培养具有国际视野与跨文化交际能力的工程拔尖人才。',
+    feature:'中英双学位培养，核心课程全英文授课，满足条件者可赴英学习一年，获中英双学士学位，注重英语与国际化工程素养。',
+    majors:['机械设计制造及其自动化（中外合作）','化学工程与工艺（中外合作）']},
+  guoji:{name:'国际书院',en:'International College',campus:'开发区校区',tags:['国际教育','来华留学','跨文化','语言强化'],
+    orient:'依托国际教育学院，统筹来华留学生与中国学生的国际化培养，打造跨文化学习与交流的国际化书院社区。',
+    feature:'中外学生混班授课与生活社区，开设国际理解课程与多语种选修，组织海外交流与暑期学校，培养全球胜任力。',
+    majors:['国际经济与贸易（全英文）','汉语言（留学生）','工商管理（留学生）']},
+  qiushi:{name:'求实书院',en:'Qiushi College',campus:'开发区校区',tags:['大类培养','通识教育','工科试验班','一年分流'],
+    orient:'大连理工大学开发区校区求实书院，实行大类招生与通识培养，入学时不分专业，经过一年基础学习后按兴趣与成绩分流至各专业。',
+    feature:'工科试验班/理科试验班大类培养模式，强化数学、物理、程序设计等基础课程，配备学业导师与朋辈辅导，一年后自主分流至软件、机械、化工等方向。',
+    majors:['工科试验班（求实）','理科试验班（求实）','软件工程（开发区）','数字媒体技术','机械设计制造及其自动化（中外合作）']},
+  liaodongwan:{name:'辽东湾书院',en:'Liaodongwan College',campus:'盘锦校区',tags:['基础学科','石油化工','海洋科学','应用导向'],
+    orient:'立足盘锦辽东湾新区，以石油化工、海洋科学为核心，面向区域产业需求培养应用型与基础研究并重的拔尖人才。',
+    feature:'紧邻辽东湾石化产业基地，校企联合实训与产业实习，注重化学-能源-海洋的交叉融合，服务辽宁沿海经济带建设。',
+    majors:['化学工程与工艺（盘锦）','能源化学工程','海洋技术','石油工程']},
+  honghaitan:{name:'红海滩书院',en:'Honghaitan College',campus:'盘锦校区',tags:['生命科学','生态环境','药学','湿地特色'],
+    orient:'以盘锦红海滩湿地生态为特色，依托生命科学与药学学院，培养生命科学、药学与生态环境领域的创新人才。',
+    feature:'依托红海滩湿地生态系统开展野外实践教学，强化生命-环境-药学的交叉培养，设置湿地生态与生物多样性研究方向。',
+    majors:['生物科学','药学','食品科学与工程','环境生态工程']}
+};
+function renderCollege(){
+  var c=COLLEGES[document.getElementById('collegeSelect').value];
+  document.getElementById('collegeCard').innerHTML=
+    '<div class="cc-inner">'+
+      '<div class="cc-name">'+c.name+'<span style="font-size:12px;font-weight:500;color:rgba(255,255,255,.7);margin-left:10px;padding:3px 9px;border-radius:6px;background:rgba(255,255,255,.12)">'+c.campus+'</span></div>'+
+      '<div class="cc-en">'+c.en+'</div>'+
+      '<div class="cc-row">'+c.tags.map(function(t){return '<span class="cc-tag">'+t+'</span>';}).join('')+'</div>'+
+      '<div class="cc-section"><div class="cc-label">培养定位</div><div class="cc-text">'+c.orient+'</div></div>'+
+      '<div class="cc-section"><div class="cc-label">培养特色</div><div class="cc-text">'+c.feature+'</div></div>'+
+      '<div class="cc-section"><div class="cc-label">对应专业</div><div class="cc-majors">'+c.majors.map(function(m){return '<span class="cc-major">'+m+'</span>';}).join('')+'</div></div>'+
+    '</div>';
+}
+document.getElementById('collegeSelect').addEventListener('change',function(){
+  localStorage.setItem('study_college',this.value);
+  sessionStorage.removeItem('chat_history');
+  renderCollege();
+});
+(function(){var s=localStorage.getItem('study_college');if(s&&document.querySelector('#collegeSelect option[value="'+s+'"]'))document.getElementById('collegeSelect').value=s;})();
+renderCollege();
+
+var MAJOR_GROUPS=[
+  {faculty:'运载工程与力学学部',majors:[
+    {name:'船舶与海洋工程',code:'081901',desc:'研究各类船舶与海洋结构物的设计、制造、性能与安全性，面向船舶工业与海洋装备领域。',len:'四年',degree:'工学学士',tags:['国家一流','国防特色']},
+    {name:'车辆工程',code:'080207',desc:'研究汽车整车与零部件的设计、制造、性能匹配与试验，面向汽车工业与新能源车辆领域。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'工程力学',code:'080102',desc:'研究固体与流体的力学行为及其工程应用，为航空航天、土木、机械等领域提供力学基础。',len:'四年',degree:'工学学士',tags:['强基计划','国家一流']}
+  ]},
+  {faculty:'机械工程学院',majors:[
+    {name:'机械设计制造及其自动化',code:'080202',desc:'研究机械装备的设计、制造、控制与自动化，培养机械工程领域复合型工程技术人才。',len:'四年',degree:'工学学士',tags:['国家一流','工程教育认证']},
+    {name:'机械工程',code:'080201',desc:'涵盖机械设计、制造、机电控制等方向，强调机械与现代信息技术的深度融合。',len:'四年',degree:'工学学士',tags:['国家一流']}
+  ]},
+  {faculty:'材料科学与工程学院',majors:[
+    {name:'材料成型及控制工程',code:'080203',desc:'研究材料加工成型过程与质量控制，涵盖铸造、焊接、塑性成型等方向。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'材料物理',code:'080401',desc:'从物理学角度研究材料的结构、性能与机理，培养材料与物理交叉的复合人才。',len:'四年',degree:'理学学士',tags:[]},
+    {name:'功能材料',code:'080412',desc:'研究具有特殊功能的材料如纳米材料、生物医用材料等的制备与应用。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'能源与动力学院',majors:[
+    {name:'能源与动力工程',code:'080501',desc:'研究能源转换与动力装备，涵盖热能、流体机械、内燃机、制冷与空调等方向。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'新能源科学与工程',code:'080503',desc:'研究太阳能、风能、生物质能等新能源的开发利用与相关装备设计。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'电气工程学院',majors:[
+    {name:'电气工程及其自动化',code:'080601',desc:'研究电能的产生、传输、变换与利用，以及电气装备的控制与自动化。',len:'四年',degree:'工学学士',tags:['国家一流']}
+  ]},
+  {faculty:'信息与通信工程学院',majors:[
+    {name:'电子信息工程',code:'080701',desc:'研究电子设备与信息系统设计、信号处理与集成电路，面向电子信息产业。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'通信工程',code:'080703',desc:'研究通信系统与网络的设计、优化与实现，涵盖无线通信、光通信等方向。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'电子科学与技术',code:'080702',desc:'研究电子器件与微电子系统，涵盖集成电路设计、半导体物理等。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'计算机科学与技术学院',majors:[
+    {name:'计算机科学与技术',code:'080901',desc:'研究计算机系统结构、软件与理论，培养计算机领域科研与工程拔尖人才。',len:'四年',degree:'工学学士',tags:['国家一流','A+学科']},
+    {name:'人工智能',code:'080717',desc:'研究机器学习、深度学习、计算机视觉等人工智能核心理论与应用。',len:'四年',degree:'工学学士',tags:['新工科']},
+    {name:'物联网工程',code:'080905',desc:'研究物联网体系结构、感知技术与智能处理，面向万物互联应用场景。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'软件学院',majors:[
+    {name:'软件工程',code:'080902',desc:'研究软件开发方法、工具与过程管理，培养大型软件系统设计与工程化人才。',len:'四年',degree:'工学学士',tags:['国家一流','国家示范']},
+    {name:'网络工程',code:'080903',desc:'研究计算机网络体系结构、协议与安全，培养网络规划、设计与运维人才。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'化工与环境生命学部',majors:[
+    {name:'化学工程与工艺',code:'081301',desc:'研究化工过程与产品开发，面向石油化工、精细化工、材料化工等领域。',len:'四年',degree:'工学学士',tags:['国家一流','A学科']},
+    {name:'环境工程',code:'082502',desc:'研究水、气、固废污染控制与生态修复，培养环境工程领域技术与管理人才。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'生物工程',code:'083001',desc:'研究生物技术在工程中的应用，涵盖发酵工程、生物制药等方向。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'建设工程学部',majors:[
+    {name:'土木工程',code:'081001',desc:'研究建筑、桥梁、隧道等土木工程设施的设计、施工与运维。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'水利水电工程',code:'081101',desc:'研究水利枢纽、水电站及水资源的开发、利用与管理。',len:'四年',degree:'工学学士',tags:['国家一流']},
+    {name:'工程管理',code:'120103',desc:'研究工程项目的投资决策、实施管理与全过程控制，培养管理-技术复合人才。',len:'四年',degree:'管理学学士',tags:[]}
+  ]},
+  {faculty:'建筑与艺术学院',majors:[
+    {name:'建筑学',code:'082801',desc:'研究建筑设计与城市空间营造，培养具备艺术素养与工程能力的建筑设计师。',len:'五年',degree:'建筑学学士',tags:['国家一流']},
+    {name:'城乡规划',code:'082802',desc:'研究区域与城乡空间发展规划，培养城乡规划设计与管理人才。',len:'五年',degree:'工学学士',tags:[]},
+    {name:'环境设计',code:'130503',desc:'研究室内外空间环境的设计与艺术表达，培养环境艺术设计人才。',len:'四年',degree:'艺术学学士',tags:[]}
+  ]},
+  {faculty:'管理与经济学部',majors:[
+    {name:'工商管理',code:'120201',desc:'研究企业经营管理决策，培养具备经济与管理素养的复合型管理人才。',len:'四年',degree:'管理学学士',tags:['国家一流']},
+    {name:'信息管理与信息系统',code:'120102',desc:'研究管理中的信息处理与决策支持系统，培养IT与管理交叉人才。',len:'四年',degree:'管理学学士',tags:[]},
+    {name:'金融学',code:'020301',desc:'研究货币、信用、金融市场与金融机构运行，培养金融分析与决策人才。',len:'四年',degree:'经济学学士',tags:[]},
+    {name:'国际经济与贸易',code:'020401',desc:'研究国际贸易理论与政策、跨国经营与全球经济治理。',len:'四年',degree:'经济学学士',tags:[]}
+  ]},
+  {faculty:'数学科学学院',majors:[
+    {name:'数学与应用数学',code:'070101',desc:'研究数学基础理论与应用，培养具备扎实数理基础的科研与教学人才。',len:'四年',degree:'理学学士',tags:['强基计划','国家一流']},
+    {name:'信息与计算科学',code:'070102',desc:'研究计算数学与信息处理，培养科学计算与数据分析人才。',len:'四年',degree:'理学学士',tags:[]}
+  ]},
+  {faculty:'物理学院',majors:[
+    {name:'应用物理学',code:'070202',desc:'研究物理学基础及其在工程中的应用，培养物理与工程交叉人才。',len:'四年',degree:'理学学士',tags:['强基计划','国家一流']},
+    {name:'光电信息科学与工程',code:'080705',desc:'研究光学、光电技术与信息处理，面向光电产业与光通信领域。',len:'四年',degree:'工学学士',tags:['国家一流']}
+  ]},
+  {faculty:'化学学院',majors:[
+    {name:'化学',code:'070301',desc:'研究物质组成、结构、性质与变化规律，培养化学基础研究人才。',len:'四年',degree:'理学学士',tags:['强基计划']},
+    {name:'应用化学',code:'070302',desc:'研究化学在工程中的应用，培养化学-工程复合人才。',len:'四年',degree:'理学学士',tags:[]}
+  ]},
+  {faculty:'外国语学院',majors:[
+    {name:'英语',code:'050201',desc:'培养具备扎实英语语言文学功底与跨文化交际能力的复合型外语人才。',len:'四年',degree:'文学学士',tags:[]},
+    {name:'日语',code:'050207',desc:'培养具备日语语言文学功底与对日交流能力的复合型人才。',len:'四年',degree:'文学学士',tags:[]}
+  ]},
+  {faculty:'人文与社会科学学部',majors:[
+    {name:'汉语言文学',code:'050101',desc:'研究汉语言文字与文学，培养人文素养深厚的文化教育人才。',len:'四年',degree:'文学学士',tags:[]},
+    {name:'哲学',code:'010101',desc:'研究哲学基础理论与思维方法，培养理论思维与人文素养兼备的人才。',len:'四年',degree:'哲学学士',tags:[]}
+  ]},
+  {faculty:'生命科学与药学学院（盘锦校区）',majors:[
+    {name:'生物科学',code:'071001',desc:'研究生命现象与规律，培养生物科学基础研究与应用人才。',len:'四年',degree:'理学学士',tags:[]},
+    {name:'药学',code:'100701',desc:'研究药物发现、制备与作用机理，培养药物研发与应用人才。',len:'四年',degree:'理学学士',tags:[]}
+  ]},
+  {faculty:'海洋科学与技术学院（盘锦校区）',majors:[
+    {name:'海洋技术',code:'070704',desc:'研究海洋探测、海洋信息处理与海洋资源开发技术，面向海洋强国战略需求。',len:'四年',degree:'理学学士',tags:[]},
+    {name:'环境生态工程',code:'082504',desc:'研究生态系统修复与环境工程，依托红海滩湿地开展生态保护与修复实践。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'石油化工学院（盘锦校区）',majors:[
+    {name:'化学工程与工艺（盘锦）',code:'081301P',desc:'面向辽东湾石化产业基地，研究化工过程与石油加工，培养石化领域工程技术人才。',len:'四年',degree:'工学学士',tags:['校区特色']},
+    {name:'能源化学工程',code:'081304',desc:'研究能源转化与化工利用，面向石油化工与新能源交叉领域。',len:'四年',degree:'工学学士',tags:[]},
+    {name:'石油工程',code:'081502',desc:'研究油气田勘探、开发与开采，面向石油工业上游领域。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'食品与环境学院（盘锦校区）',majors:[
+    {name:'食品科学与工程',code:'082701',desc:'研究食品加工、保藏与安全，培养食品工业技术与研发人才。',len:'四年',degree:'工学学士',tags:[]},
+    {name:'环境工程（盘锦）',code:'082502P',desc:'研究环境污染控制与生态修复，面向盘锦沿海生态保护需求。',len:'四年',degree:'工学学士',tags:['校区特色']}
+  ]},
+  {faculty:'莱斯特国际学院（开发区校区）',majors:[
+    {name:'机械设计制造及其自动化（中外合作）',code:'080202H',desc:'与英国莱斯特大学合作举办，双学位培养，强化英语与国际化工程视野。',len:'四年',degree:'工学学士',tags:['中外合作','双学位']},
+    {name:'化学工程与工艺（中外合作）',code:'081301H',desc:'与英国莱斯特大学合作举办，双学位培养，面向国际化化工领域。',len:'四年',degree:'工学学士',tags:['中外合作','双学位']}
+  ]},
+  {faculty:'软件学院（开发区校区）',majors:[
+    {name:'软件工程（开发区）',code:'080902K',desc:'研究软件开发方法、工具与过程管理，开发区校区培养，强化工程实践与国际化视野。',len:'四年',degree:'工学学士',tags:['国家示范','校区特色']},
+    {name:'数字媒体技术',code:'080906',desc:'研究数字媒体内容的设计、开发与应用，培养软件-艺术交叉人才。',len:'四年',degree:'工学学士',tags:[]}
+  ]},
+  {faculty:'求实书院（开发区校区）',majors:[
+    {name:'工科试验班（求实）',code:'080999Q',desc:'求实书院大类招生工科试验班，入学不分专业，强化数理与程序设计基础，一年后分流至软件、机械、化工等方向。',len:'四年',degree:'工学学士',tags:['大类培养','一年分流','书院特色']},
+    {name:'理科试验班（求实）',code:'070999Q',desc:'求实书院理科试验班，夯实数学、物理基础，面向基础学科与交叉前沿，一年后分流至应用物理、光电、力学等方向。',len:'四年',degree:'理学学士',tags:['大类培养','一年分流','书院特色']}
+  ]}
+];
+var majorList=[];
+MAJOR_GROUPS.forEach(function(g){g.facultyIdx=MAJOR_GROUPS.indexOf(g);g.majors.forEach(function(m){majorList.push({faculty:g.faculty,name:m.name,code:m.code,desc:m.desc,len:m.len,degree:m.degree,tags:m.tags});});});
+(function(){
+  var sel=document.getElementById('majorSelect');
+  MAJOR_GROUPS.forEach(function(g,i){
+    var og=document.createElement('optgroup');
+    og.label=g.faculty;
+    g.majors.forEach(function(m,j){
+      var op=document.createElement('option');
+      op.value=i+'-'+j;
+      op.textContent=m.name;
+      og.appendChild(op);
+    });
+    sel.appendChild(og);
+  });
+})();
+function renderMajor(){
+  var parts=document.getElementById('majorSelect').value.split('-');
+  var m=MAJOR_GROUPS[+parts[0]].majors[+parts[1]];
+  var faculty=MAJOR_GROUPS[+parts[0]].faculty;
+  document.getElementById('majorCard').innerHTML=
+    '<div class="mc-head">'+
+      '<div class="mc-name">'+m.name+'</div>'+
+      '<div class="mc-code">'+m.code+'</div>'+
+    '</div>'+
+    '<div class="mc-faculty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg>'+faculty+'</div>'+
+    '<div class="mc-desc">'+m.desc+'</div>'+
+    '<div class="mc-meta">'+
+      '<div class="mc-meta-item"><div class="mc-meta-label">学制</div><div class="mc-meta-value">'+m.len+'</div></div>'+
+      '<div class="mc-meta-item"><div class="mc-meta-label">授予学位</div><div class="mc-meta-value">'+m.degree+'</div></div>'+
+      '<div class="mc-meta-item"><div class="mc-meta-label">专业代码</div><div class="mc-meta-value">'+m.code+'</div></div>'+
+      '<div class="mc-meta-item"><div class="mc-meta-label">所属</div><div class="mc-meta-value">'+faculty+'</div></div>'+
+    '</div>'+
+    (m.tags.length?('<div class="cc-row" style="margin-top:14px">'+m.tags.map(function(t){return '<span class="cc-tag" style="background:var(--primary-light);color:var(--primary);border:1px solid var(--border)">'+t+'</span>';}).join('')+'</div>'):'');
+}
+document.getElementById('majorSelect').addEventListener('change',function(){
+  localStorage.setItem('study_major',this.value);
+  sessionStorage.removeItem('chat_history');
+  renderMajor();
+});
+(function(){var s=localStorage.getItem('study_major');if(s&&document.querySelector('#majorSelect option[value="'+s+'"]'))document.getElementById('majorSelect').value=s; })();
+renderMajor();
+
+// ===== 学习规划助手 =====
+// 英语以考代修政策（提取自教务文档"2 以考代修-2025"）
+var EXEMPT_INFO={
+  intro:'学校允许本科生通过雅思/托福或大学英语四、六级考试成绩，申请免修相应大学英语课程，并以认定分数计入成绩。',
+  ielts:{
+    title:'以雅思/托福成绩以考代修',
+    rows:['· 雅思≥6.0 或 托福 75-83 → 免修大学英语 1-2 级，成绩认定为 95 分','· 雅思≥6.5 或 托福 84-89 → 免修大学英语 1-3 级，成绩认定为 95 分','· 雅思≥7.0 或 托福≥90 → 免修大学英语 1-4 级，成绩认定为 95 分'],
+    materials:'身份证复印件、准考证复印件、成绩单复印件、填写完整的申请表'
+  },
+  cet:{
+    title:'以大学英语四、六级成绩以考代修',
+    note:'通过四、六级申请以考代修，该课程分数认定为 98 分。',
+    rows:['· 大学英语2：四级≥425 或 六级≥425','· 大学英语3A：六级≥425 且 口语 B 级及以上','· 大学英语4A：六级≥425 且 口语 A 级']
+  },
+  faq:'以雅思/托福成绩申请以考代修后不需要选课；以大学英语四、六级成绩申请的不可跨学期申请。'
+};
+function normalizeExempt(q){
+  q=q.toLowerCase().replace(/\s+/g,'');
+  return q.replace(/雅斯|雅思|雅思|ielts/g,'雅思')
+          .replace(/托付|托福|toefl|tofel/g,'托福')
+          .replace(/四六级|46级|4六级|四六|cet4|cet6|cet-4|cet-6|四级|六级/g,'四六级')
+          .replace(/大学英文|大学英语|公共英语/g,'大学英语')
+          .replace(/以考代修|考代修|代修|免修|免读|免英语|替换|替代|顶替/g,'以考代修');
+}
+function normQuery(q){
+  q=q.toLowerCase().replace(/[\s，。、！？,.!?;；:：""''""''()（）【】\[\]{}\-—…~·\/\\@#%&*+=|`]/g,'');
+  var map=[
+    [/考烟|考验|考研|保研|推免|深造|读研|上研|研究生|硕士|博士|复式|复试|初试|笔试|研一|研二|直博/g,'考研'],
+    [/就叶|救业|就业|工作|职业|前景|干啥|干什么|去哪|去哪儿|出路|找工作|毕业去|毕业后|薪资|薪制|待遇|工姿|工资|挣钱|赚钱|offer|录用|签三方|秋招|春招|招聘/g,'就业'],
+    [/客程|课成|课程|课表|培养方案|学什么|学哪些|学啥|学哪|课业|功课|修什么|修啥|将来学|未来课|要学|学些啥|学点啥|排课|开课|上课|学几门|几门课/g,'课程'],
+    [/竟赛|竞塞|竞赛|比赛|大赛|挑战杯|赛事|参赛|比拼|拿奖|获奖|报名赛/g,'竞赛'],
+    [/实息|实习|实践|实训|打工|见习|实操|实习期|实习去|去实习/g,'实习'],
+    [/专页|专业|major|代码|学位|学制|专ye|专业介绍|专业情况|专业是|啥专业|什么专业/g,'专业'],
+    [/书院|college|书苑|啥书院|哪个书院/g,'书院'],
+    [/你好|您好|哈喽|嗨|hey|hello|hi|在吗|在么|在不在|早啊|晚上好|下午好|早上好|你好啊|嗨啊/g,'问候'],
+    [/谢谢|感谢|多谢|thx|thanks|辛苦了|谢啦|辛苦|牛|厉害|赞|不错|好用/g,'感谢']
+  ];
+  map.forEach(function(p){q=q.replace(p[0],p[1]);});
+  return q;
+}
+var CONCEPT_HINT=/什么是|是什么|解释|意思|含义|指什么|啥是|介绍一下|说说|科普|全称|定义|啥意思|怎么理解|指的是|讲解|讲一下|了解|帮我说明|说明一下|请问.*是/i;
+var CONCEPTS=[
+  {keys:['gpa','绩点','学分绩','grade point'],title:'GPA（平均学分绩点）',desc:'GPA（Grade Point Average）是衡量学生学习成绩的常用指标。计算方式：每门课的绩点乘以该课学分，求和后除以总学分。大连理工大学一般采用 4 分制或 5 分制绩点，GPA 是保研、出国、评奖的重要依据。'},
+  {keys:['学分','credit','学分制'],title:'学分',desc:'学分是计算课业学习量的单位，每门课程按学时数规定一定学分（一般 16-18 学时计 1 学分）。修满培养方案规定的总学分（通常 160-180）方可毕业。学分分为必修学分、选修学分、通识学分、实践学分等。'},
+  {keys:['考研制度','考研','全国硕士','硕士研究生招生','研究生考试','硕士考试','研究生统考','统考','考研流程','考研政策','考研规则','考研条件','考研怎么考','考研考什么'],title:'考研制度（全国硕士研究生招生考试）',desc:'教育部统一组织的选拔性考试，流程与要求如下：<br><br><b>【报考条件】</b><br>· 中华人民共和国公民，拥护党的领导，品德良好，遵纪守法。<br>· 身体健康符合国家和招生单位体检要求。<br>· 学历须符合之一：国家承认学历的应届本科毕业生（录取当年入学前须取得本科毕业证书）；或已获本科毕业学历人员；或高职高专毕业满 2 年按本科同等学力身份报考（须符合招生单位附加要求）。<br><br><b>【初试】</b><br>· 时间：每年 12 月下旬（倒数第二个周末）。<br>· 报名：10 月研招网网上报名，11 月网上/现场确认并缴费，12 月打印准考证。<br>· 科目：一般 4 门——政治（100 分）、外语（100 分）、业务课一（数学或专业基础 150 分）、业务课二（专业课 150 分），满分 500。<br>· 教育学/历史学/医学门类设 3 门（政治、外语、专业基础综合 300 分）。<br>· 工学/理学/经济学/管理学等部分专业考数学一/二/三；不考数学者考两门专业课。<br>· 每科均有国家划定的单科线，单科与总分均过线方可进入复试。<br><br><b>【国家线与复试】</b><br>· 3 月中旬公布国家线，分 A 区/B 区（B 区一般低 2-10 分）。<br>· 过国家线且达报考院校复试线方可复试；复试一般 3-4 月，含专业课笔试、综合面试、外语听力口语、实验/上机考核等。<br>· 复试成绩占比约 30%-50%，初复试综合排名录取；复试不合格不予录取。<br><br><b>【调剂】</b><br>· 未达报考院校复试线但过国家线者，可向有缺额院校申请调剂（通过研招网调剂系统）。<br><br><b>【额外要求与限制】</b><br>· 同等学力考生复试须加试至少两门本科主干课程（笔试），部分专业不接收同等学力。<br>· 跨专业限制：法律（非法学）仅招非法学本科，法律（法学）仅招法学本科；临床医学等对本科背景有要求。<br>· 推免生已获推免资格不得再报统考，否则取消推免资格。<br>· 专项计划：少数民族骨干计划、退役大学生士兵计划单列分数线，须提前申请资格。<br>· 部分院校/专业要求复试提交本科成绩单、科研证明、专家推荐信等材料。<br>· 学制：学术硕士一般 3 年，专业硕士一般 2-3 年（MBA/MPA 非全日制可更长）。'},
+  {keys:['保研政策','保研','推免','免试推荐','保研推免','推免政策','保研条件','保研资格','保研流程','保研要求','保研标准','保研办法','保研细则','推免条件','推免资格','推免流程','推免要求','推免办法','免试读研','保研率','推免率','保研比例','推免比例','保研怎么保','保研怎么走','保研怎么弄','保研要什么','保研需要什么','保研看什么','保研咋弄','保研咋保','保烟','推面','推勉','保研正策','保研去哪','保研去向','保研能去哪','保研方向'],title:'保研政策（推荐免试攻读研究生）',desc:'保研即"推荐优秀应届本科毕业生免试攻读研究生"，无需参加全国统考，经学校推荐、招生单位接收即可直接读研。<br><br><b>【推免类型】</b><br>· 学术型硕士推免、专业型硕士推免、直博生推免（直接攻读博士，一般 5 年）。<br><br><b>【基本条件】</b><br>· 纳入学校推免名额的应届本科毕业生；<br>· 前三年（前六学期）学业成绩排名达到学院推免门槛（各学院不同，一般前 10%-30%）；<br>· 无未通过课程（挂科会严重影响甚至取消资格）；<br>· 英语成绩达标（如 CET-4/6 或雅思托福要求）；<br>· 思想品德合格，无违纪处分记录；<br>· 综合测评、科研、竞赛、社会实践等综合表现优异者优先。<br><br><b>【推免流程】</b><br>· <b>夏令营</b>（6-8 月）：目标院校举办，优秀营员可获预录取资格，是重要途径；<br>· <b>预推免</b>（8-9 月）：部分院校提前选拔；<br>· <b>正式推免</b>（9 月）：本校公示推免名单，学生在"全国推免服务系统"注册、填报志愿、接收复试通知、确认待录取；<br>· 一般 9 月下旬至 10 月初完成录取确认。<br><br><b>【大连理工大学特点】</b><br>· 拔尖创新书院（令希、大煜、化心、王大珩等）及强基计划专业推免比例较高；<br>· 科研训练、学科竞赛获奖、高水平论文等在推免中给予加分或优先；<br>· 推免生可申请本校直博或外校（C9、985 等）推免。<br><br><b>【与考研区别】</b><br>· 保研免统考初试，由推荐+复试（面试为主）录取；考研须参加 12 月全国统考。<br><br><b>【建议】</b><br>· 从第 3 学期起保持高 GPA 与专业排名；<br>· 第 5 学期参加科研训练、学科竞赛、夏令营；<br>· 第 6 学期准备推免材料、联系导师；<br>· 关注学院推免细则与名额，提前规划。'},
+  {keys:['api'],title:'API（应用程序编程接口）',desc:'API（Application Programming Interface）是软件之间交互的约定，定义了如何请求某个功能并获取返回数据。例如调用地图 API 可获取地点坐标。在计算机/软件专业中，API 设计与调用是核心技能。'},
+  {keys:['必修','选修'],title:'必修课与选修课',desc:'必修课是培养方案规定必须修读的课程，未通过需重修；选修课可按兴趣自主选择，修满规定学分即可。选修又分专业选修、通识选修、公共选修等。'},
+  {keys:['补考','重修','挂科','不及格'],title:'补考与重修',desc:'课程考核不及格（挂科）通常有一次免费补考机会，补考仍不过需重修该课程（重新上课并考核）。必修课一般须重修至通过，选修课可改选其他课程凑学分。'},
+  {keys:['四六级','cet','大学英语四六级'],title:'大学英语四、六级（CET）',desc:'CET-4/CET-6 是教育部主管的全国性英语考试，每年 6 月、12 月各一次。四级 425 分以上可报考六级。成绩是保研、就业、以考代修的重要依据。'},
+  {keys:['学位','学士','学位证'],title:'学位',desc:'学位是授予达到一定学术水平者的学术称号。本科毕业且符合条件者授予学士学位（工学/理学/文学/管理学学士等）。需修满学分、通过毕业设计答辩、无违纪等。'},
+  {keys:['导师','指导老师'],title:'导师',desc:'导师是指导学生学业或科研的教师。本科阶段有学业导师（选课、规划指导）和毕设导师（指导毕业设计）；研究生阶段有硕导、博导，负责科研方向与论文指导。'},
+  {keys:['毕设','毕业设计','毕业论文'],title:'毕业设计 / 论文',desc:'毕业设计/论文是本科最后一个学期的综合性实践环节，通常 15-18 学分。需在导师指导下选题、开题、研究、撰写论文并答辩通过后方可毕业。'},
+  {keys:['开题','开题报告'],title:'开题',desc:'开题是毕设或科研课题的起始环节，需撰写开题报告并汇报研究背景、内容、方法、进度等，经评审通过后正式开展，一般在第 7 学期末进行。'},
+  {keys:['答辩'],title:'答辩',desc:'答辩是毕设/论文的最终考核环节，学生陈述研究内容后由评委提问，综合评定成绩。答辩通过是获得学位的必要条件。'},
+  {keys:['通识','通识课','公选'],title:'通识课',desc:'通识课是面向全体学生的跨学科基础课程，旨在拓宽知识面与综合素质，涵盖人文、社科、自然、艺术等模块，需修满规定通识学分。'},
+  {keys:['加权','加权平均','加权分'],title:'加权平均分',desc:'加权平均分是按学分加权的课程平均成绩：Σ(成绩×学分)/Σ学分。它比简单平均更能反映学习质量，是 GPA 计算的基础。'},
+  {keys:['先修','先修课','前置课程'],title:'先修课',desc:'先修课是在修读某课程前需先完成的课程。例如学"数据结构"前通常需先修"程序设计基础"。未修先修课可能影响选课或理解。'},
+  {keys:['综测','综合测评','素质分'],title:'综合测评',desc:'综合测评是保研、评奖的重要依据，一般由学业成绩（GPA/加权）+ 科研竞赛 + 社会工作 + 思想品德等分项按比例折算总分排名。'},
+  {keys:['国家线','复试线','调剂'],title:'国家线 / 调剂',desc:'国家线是教育部划定的考研初试最低资格线，过线方可参加复试或调剂。调剂是未达报考院校复试线但过国家线的考生，向其他有缺额的院校申请录取的过程。'},
+  {keys:['强基','强基计划'],title:'强基计划',desc:'强基计划是教育部基础学科招生改革试点，聚焦数学、物理、化学、生物、历史、哲学等基础学科，选拔培养有志于服务国家重大战略的拔尖学生，一般 4 月报名、校考+高考综合录取。'},
+  {keys:['志愿','志愿活动','志愿服务','志愿者','义工','公益','公益活动','志愿服务活动','志愿工作','参加志愿','做志愿','当志愿者','志愿时长','志愿工时','志愿意义','志愿有啥用','志愿有什么用','志愿作用','为啥志愿','为什么志愿','志愿为了啥','志愿为了什么','志愿活','志愿服','支援活动','支援服务','支援者','工益','义公','志愿有啥意义','志愿的意义','志愿作用是啥','志愿有啥用','做义工','当义工','公益有啥用','公益意义'],title:'大学阶段参加志愿活动的意义',desc:'大学阶段参加志愿活动（志愿服务）的意义：<br><br><b>【个人成长】</b><br>· 培养社会责任感与奉献精神，树立正确价值观；<br>· 锻炼沟通、组织、协调等综合能力，提升自信与抗压能力；<br>· 丰富人生阅历，拓宽视野，加深对社会的认知。<br><br><b>【学业与发展】</b><br>· 志愿服务时长与表现是<b>综合测评、评奖评优、保研推免</b>的重要加分项或参考依据；<br>· 优秀志愿者可获"优秀志愿者""志愿服务先进个人"等荣誉，丰富简历；<br>· 部分书院/学院将志愿服务纳入第二课堂或实践学分要求。<br><br><b>【社会价值】</b><br>· 帮扶弱势群体、服务校园与社区，传递正能量；<br>· 助力大型赛会、支教助农、环保宣传等公益事业，体现青年担当。<br><br><b>【建议】</b><br>· 通过校团委、青年志愿者协会、书院/学院志愿组织报名；<br>· 结合专业特长选择项目（如支教、科普、技术帮扶）；<br>· 注重长期坚持与深度参与，而非单纯凑时长；<br>· 保留志愿服务记录与证明，便于后续评优与推免材料使用。'},
+  {keys:['校招','秋招','春招','校园招聘','校招会','招聘会','宣讲会','offer','录用','签三方','三方协议','找工作','求职','投简历','投递简历','网申','内推','实习转正','秋招时间','春招时间','秋招什么时候','春招什么时候','秋招准备','春招准备','怎么找工作','怎么求职','咋找工作','咋求职','招聘季','金九银十','春招秋招','校招啥时候','秋招咋准备','春招咋准备','招聘流程','求职流程','校招流程','秋招流程','校招是什么','秋招是什么','春招是什么','校招啥意思','秋招啥意思','宣讲会是什么','offer是什么','三方协议是什么','签三方协议','求职面试','校招面试','面试准备','笔试题','群面','单面','简历怎么写','简历咋写','求职信','就业信息','就业网','宣讲会啥时候','校招和秋招','秋招和春招','招聘宣讲','企业宣讲','双选会','人才双选'],title:'校招与秋招（校园招聘）',desc:'校招与秋招（校园招聘）概念解读：<br><br><b>【校招】</b><br>· 校园招聘的简称，指用人单位面向应届毕业生在校园内开展的招聘活动，是大学生最主要的就业渠道。<br><br><b>【秋招】</b><br>· 秋季校园招聘，一般 <b>8-11 月</b> 进行，规模最大、岗位最多、名企最集中，有"金九银十"之说；<br>· 大三/研二暑假实习转正名额多在秋招发放，建议提前准备。<br><br><b>【春招】</b><br>· 春季校园招聘，一般 <b>2-5 月</b> 进行，规模小于秋招，多为秋招补录及部分企业新增岗位，是秋招的补充。<br><br><b>【常见环节】</b><br>· <b>网申</b>（在线投递简历）→ <b>笔试</b>（行测/专业/编程）→ <b>群面</b>（无领导小组讨论）→ <b>单面</b>（技术面+HR面）→ <b>offer</b>（录用通知）→ <b>签三方协议</b>。<br><br><b>【关键概念】</b><br>· <b>offer</b>：录用通知，收到后需在期限内确认；<br>· <b>三方协议</b>：《全国普通高等学校毕业生就业协议书》，签约后具法律效力，违约需付违约金；<br>· <b>内推</b>：内部员工推荐，可免简历筛选直通笔试/面试；<br>· <b>实习转正</b>：暑期实习表现优异者可直接获得秋招 return offer。<br><br><b>【建议】</b><br>· 大三/研二下学期开始刷题、做项目、投暑期实习；<br>· 秋招前准备好简历、项目经历、算法与专业八股；<br>· 多投多面，关注学校就业信息网与宣讲会；<br>· 拿到 offer 后谨慎比较，签约前看清条款。'}
+];
+var STUDY_CTX={college:'',collegeName:'',majorName:'',faculty:'',majorDesc:''};
+var COMMON_S1=['高等数学(A)Ⅰ','线性代数','大学英语(一)','思想道德与法治','体育(一)','程序设计基础'];
+var COMMON_S2=['高等数学(A)Ⅱ','大学物理(A)Ⅰ','概率论与数理统计','大学英语(二)','中国近现代史纲要','体育(二)'];
+var COURSE_LIB=[
+  {kw:['计算机','软件','人工智能','物联网','网络工程','数字媒体'],base:['离散数学','数据结构','算法设计与分析','计算机组成原理','操作系统','计算机网络','数据库系统','编译原理'],core:['软件工程','面向对象程序设计','机器学习','深度学习','云计算与分布式系统','信息安全','Web应用开发','计算机视觉'],elect:['大数据技术','自然语言处理','区块链技术','人机交互','移动应用开发'],dir:'IT/互联网/人工智能/软件研发工程师'},
+  {kw:['电子信息','通信','电子科学'],base:['电路理论','信号与系统','模拟电子技术','数字电子技术','电磁场与电磁波','微机原理与接口技术'],core:['通信原理','数字信号处理','高频电子线路','集成电路设计','信息论与编码','微波技术基础'],elect:['射频电路设计','光通信技术','嵌入式系统','软件无线电'],dir:'电子/通信/芯片设计/集成电路工程师'},
+  {kw:['电气'],base:['电路理论','模拟电子技术','数字电子技术','电机学','自动控制原理'],core:['电力系统分析','电力电子技术','高电压技术','继电保护原理','发电厂电气部分'],elect:['新能源发电','智能电网','电力系统自动化'],dir:'电力/电气装备/能源系统工程师'},
+  {kw:['机械'],base:['工程制图','理论力学','材料力学','机械原理','机械设计基础','电工电子技术'],core:['机械设计','制造技术基础','数控技术','液压与气动','机电一体化','精度与测量'],elect:['机器人技术','CAD/CAM','汽车构造','先进制造技术'],dir:'机械设计/制造/机电一体化工程师'},
+  {kw:['能源','动力','新能源'],base:['工程热力学','流体力学','传热学','工程力学','机械设计基础'],core:['内燃机原理','锅炉原理','汽轮机原理','制冷与空调','燃烧学','热交换器原理'],elect:['新能源转化原理','风力发电','太阳能利用','储能技术'],dir:'能源/动力/制冷/新能源工程师'},
+  {kw:['化工','化学工程'],base:['无机化学','有机化学','物理化学','分析化学','化工热力学'],core:['化工原理','化学反应工程','化工分离工程','化工工艺学','化工设备设计','工业催化'],elect:['精细化工','高分子化工','石油加工工艺','生物化工'],dir:'化工/石化/材料/制药工程师'},
+  {kw:['化学'],base:['无机化学','有机化学','物理化学','分析化学','仪器分析'],core:['结构化学','波谱分析','配位化学','有机合成','高分子化学'],elect:['材料化学','计算化学','环境化学','药物化学'],dir:'化学研究/材料/医药/检测分析师'},
+  {kw:['环境'],base:['环境学导论','有机化学','物理化学','分析化学','生态学基础'],core:['环境化学','水污染控制工程','大气污染控制工程','固体废物处理','环境监测','环境评价'],elect:['环境生态修复','环境微生物学','环保设备设计','碳排放管理'],dir:'环保/监测/生态修复/环评工程师'},
+  {kw:['生物'],base:['普通生物学','有机化学','生物化学','细胞生物学','微生物学'],core:['分子生物学','遗传学','基因工程','发酵工程','生物反应工程','生物分离工程'],elect:['生物制药','合成生物学','海洋生物学','生态学'],dir:'生物制药/基因工程/生物技术研究员'},
+  {kw:['土木','水利','工程管理'],base:['材料力学','结构力学','土力学','工程测量','土木工程材料'],core:['混凝土结构设计','钢结构设计','地基基础','工程结构抗震','建筑施工技术','工程项目管理'],elect:['桥梁工程','道路工程','BIM技术','装配式建筑'],dir:'建筑/市政/基建/工程管理工程师'},
+  {kw:['建筑','城乡规划','环境设计'],base:['建筑设计基础','建筑力学','中外建筑史','建筑构造','城市规划原理'],core:['建筑设计(一)(二)','场地设计','建筑物理','建筑结构选型','室内设计原理'],elect:['城市设计','景观建筑','绿色建筑','建筑节能'],dir:'建筑师/规划师/室内/景观设计师'},
+  {kw:['工商','信息管理','管理','国际经济','金融','经济'],base:['管理学原理','微观经济学','宏观经济学','会计学','统计学','运筹学'],core:['市场营销学','财务管理','组织行为学','战略管理','计量经济学','管理信息系统'],elect:['投资学','国际贸易实务','电子商务','供应链管理'],dir:'管理/金融/咨询/商贸/分析师'},
+  {kw:['数学','信息与计算'],base:['数学分析(一)(二)(三)','高等代数(一)(二)','解析几何','常微分方程'],core:['实变函数','复变函数','概率论基础','近世代数','拓扑学','微分几何'],elect:['数论基础','泛函分析','运筹学优化','数学建模'],dir:'数学研究/数据科学/量化/教学'},
+  {kw:['物理','光电','光学'],base:['力学','热学','电磁学','光学','原子物理','数学物理方法'],core:['电动力学','量子力学','热力学与统计物理','固体物理','激光原理','光电子学'],core2:['傅里叶光学','光纤通信','光电检测技术','薄膜光学'],elect:['非线性光学','光谱学','计算物理','纳米材料'],dir:'光电/半导体/科研/光学工程师'},
+  {kw:['英语','日语','汉语言','哲学','人文'],base:['综合英语(一)(二)','英语听力','英语口语','英语写作','英美文学选读'],core:['语言学概论','翻译理论与实践','跨文化交际','第二外语','英语国家概况'],elect:['商务英语','英语教学法','英美文化史','文献检索'],dir:'教育/翻译/外贸/文化交流'},
+  {kw:['药学'],base:['有机化学','生物化学','分析化学','人体解剖生理学','医学基础'],core:['药物化学','药剂学','药理学','药物分析','天然药物化学','药事管理学'],elect:['临床药学','生物药剂学','新药研发','药代动力学'],dir:'制药/临床药学/药品研发/注册'},
+  {kw:['海洋'],base:['高等数学','大学物理','海洋科学导论','化学海洋学','海洋生物学基础'],core:['物理海洋学','海洋地质学','海洋探测技术','海洋信息处理','海洋资源开发'],elect:['卫星海洋遥感','海洋生态学','海洋观测技术','海洋GIS'],dir:'海洋科技/海洋资源/环境监测'},
+  {kw:['石油'],base:['工程力学','流体力学','地质学基础','油藏物理','渗流力学'],core:['油藏工程','钻井工程','采油工程','油田化学','提高采收率原理','石油地质学'],elect:['海洋油气开发','天然气工程','油藏数值模拟','智能油田'],dir:'石油工程/油藏/钻井/采油工程师'},
+  {kw:['食品'],base:['食品化学','生物化学','食品微生物学','食品工程原理','营养学基础'],core:['食品工艺学','食品保藏技术','食品质量与安全','食品分析','食品机械与设备','食品添加剂'],elect:['功能食品','食品包装','食品物流','食品标准与法规'],dir:'食品研发/品控/生产/检测工程师'},
+  {kw:['求实','试验班'],base:['数学分析','高等代数','大学物理','程序设计基础','工程导论','学术素养导引'],core:['学科前沿讲座','科研训练','专业分流导论','交叉学科研讨','创新实践'],elect:['学术英语','建模与仿真','科研写作','学科竞赛指导'],dir:'大类培养/分流后进入对应专业方向'}
+];
+function matchCourses(majorName){
+  for(var i=0;i<COURSE_LIB.length;i++){
+    var kws=COURSE_LIB[i].kw;
+    for(var j=0;j<kws.length;j++){if(majorName.indexOf(kws[j])>=0)return COURSE_LIB[i];}
+  }
+  return {base:['学科专业基础(一)','学科专业基础(二)','工程导论','专业概论'],core:['专业核心课(一)','专业核心课(二)','专业核心课(三)','专业实验(一)'],elect:['专业选修课(一)','专业选修课(二)','前沿专题讲座'],dir:'与所选专业对应的行业领域'};
+}
+function generateCourses(ctx){
+  var lib=matchCourses(ctx.majorName);
+  var isQiushi=ctx.collegeName.indexOf('求实')>=0;
+  if(isQiushi){lib=COURSE_LIB[COURSE_LIB.length-1];}
+  var isIntl=ctx.collegeName.indexOf('莱斯特')>=0||ctx.collegeName.indexOf('国际')>=0;
+  var s1=COMMON_S1.slice();
+  var s2=COMMON_S2.slice();
+  if(isIntl){s1.push('学术英语强化');s2.push('跨文化沟通');}
+  var terms=[
+    {t:'第1学期',courses:s1},
+    {t:'第2学期',courses:s2},
+    {t:'第3学期',courses:lib.base.slice(0,6)},
+    {t:'第4学期',courses:lib.base.slice(3).concat(lib.core.slice(0,3)).slice(0,6)},
+    {t:'第5学期',courses:lib.core.slice(2,8).slice(0,6)},
+    {t:'第6学期',courses:lib.core.slice(5).concat(lib.elect.slice(0,2)).slice(0,6)},
+    {t:'第7学期',courses:lib.elect.slice(0,5).concat(['生产实习/专业实践']).slice(0,6)},
+    {t:'第8学期',courses:['毕业设计(论文)','毕业实习','就业指导与职业规划']}
+  ];
+  return {terms:terms,dir:lib.dir};
+}
+function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function coursesToHtml(info){
+  var html='<div class="course-list">';
+  info.terms.forEach(function(tm){
+    html+='<div class="course-item"><div class="ci-head"><span class="ci-term">'+tm.t+'</span><span class="ci-name">共 '+tm.courses.length+' 门</span></div><div class="ci-courses">';
+    tm.courses.forEach(function(c){html+='<span class="ci-course">'+escapeHtml(c)+'</span>';});
+    html+='</div></div>';
+  });
+  html+='</div>';
+  return html;
+}
+var chatBody,chatInput,chatSend,chatHistory=[],restoringChat=false;
+function saveChatHistory(){try{sessionStorage.setItem('chat_history',JSON.stringify(chatHistory));}catch(e){}}
+function addMsg(role,text,extra){
+  var div=document.createElement('div');
+  div.className='msg '+(role==='user'?'user':'bot');
+  var ava=role==='user'?'我':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-3 3 3 3 0 01-3-3V5a3 3 0 013-3z"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/></svg>';
+  div.innerHTML='<div class="msg-ava">'+ava+'</div><div class="msg-bubble">'+text+(extra||'')+'</div>';
+  chatBody.appendChild(div);
+  chatBody.scrollTop=chatBody.scrollHeight;
+  if(!restoringChat){chatHistory.push({role:role,html:text+(extra||'')});saveChatHistory();}
+  return div;
+}
+function addTyping(){
+  var div=document.createElement('div');
+  div.className='msg bot';
+  div.innerHTML='<div class="msg-ava"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-3 3 3 3 0 01-3-3V5a3 3 0 013-3z"/><path d="M5 21v-2a4 4 0 014-4h6a4 4 0 014 4v2"/></svg></div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+  chatBody.appendChild(div);
+  chatBody.scrollTop=chatBody.scrollHeight;
+  return div;
+}
+function botReply(text,extra){
+  var t=addTyping();
+  setTimeout(function(){
+    t.querySelector('.msg-bubble').innerHTML=text+(extra||'');
+    chatBody.scrollTop=chatBody.scrollHeight;
+    chatHistory.push({role:'bot',html:text+(extra||'')});saveChatHistory();
+  },650);
+}
+function answerBot(q){
+  var ctx=STUDY_CTX;
+  var nq=normQuery(q);
+  var eq=normalizeExempt(q);
+  var has=function(){for(var i=0;i<arguments.length;i++){if(nq.indexOf(arguments[i])>=0)return true;}return false;};
+  if(eq.indexOf('以考代修')>=0){
+    if(eq.indexOf('雅思')>=0||eq.indexOf('托福')>=0){
+      botReply('<p><b>'+EXEMPT_INFO.ielts.title+'</b></p><p>'+EXEMPT_INFO.ielts.rows.join('<br>')+'</p><p>申请材料：'+EXEMPT_INFO.ielts.materials+'</p>');
+      return;
+    }
+    if(eq.indexOf('四六级')>=0){
+      botReply('<p><b>'+EXEMPT_INFO.cet.title+'</b></p><p>'+EXEMPT_INFO.cet.note+'</p><p>'+EXEMPT_INFO.cet.rows.join('<br>')+'</p>');
+      return;
+    }
+    if(nq.indexOf('材料')>=0||nq.indexOf('申请')>=0||nq.indexOf('怎么办')>=0||nq.indexOf('怎么弄')>=0||nq.indexOf('流程')>=0||nq.indexOf('需要什么')>=0||nq.indexOf('准备')>=0||nq.indexOf('要什么')>=0){
+      botReply('<p>申请以考代修所需材料：'+EXEMPT_INFO.ielts.materials+'</p><p>'+EXEMPT_INFO.faq+'</p>');
+      return;
+    }
+    if(nq.indexOf('选课')>=0||nq.indexOf('退课')>=0||nq.indexOf('跨学期')>=0||nq.indexOf('要不要选')>=0||nq.indexOf('需要选')>=0){
+      botReply('<p>'+EXEMPT_INFO.faq+'</p>');
+      return;
+    }
+    botReply('<p><b>英语以考代修政策</b></p><p>'+EXEMPT_INFO.intro+'</p><p><b>一、'+EXEMPT_INFO.ielts.title+'</b></p><p>'+EXEMPT_INFO.ielts.rows.join('<br>')+'<br>申请材料：'+EXEMPT_INFO.ielts.materials+'</p><p><b>二、'+EXEMPT_INFO.cet.title+'</b></p><p>'+EXEMPT_INFO.cet.note+' '+EXEMPT_INFO.cet.rows.join('；')+'</p><p><b>FAQ：</b>'+EXEMPT_INFO.faq+'</p>');
+    return;
+  }
+  var lq=q.toLowerCase().replace(/[\s，。、！？,.!?;；:：""''""''()（）【】\[\]{}\-—…~·\/\\@#%&*+=|`]/g,'');
+  if(lq.indexOf('考研建议')>=0||lq.indexOf('保研建议')>=0||lq.indexOf('推免建议')>=0||((lq.indexOf('考研')>=0||lq.indexOf('保研')>=0||lq.indexOf('推免')>=0)&&lq.indexOf('建议')>=0)){
+    botReply('<p>建议从第3学期起保持高 GPA，重点关注专业核心课；第5学期参加科研训练或学科竞赛；第6学期确定深造方向并准备复试。'+escapeHtml(ctx.collegeName)+'通常对拔尖创新书院学生有较高推免比例。</p>');
+    return;
+  }
+  for(var ci=0;ci<CONCEPTS.length;ci++){for(var ck=0;ck<CONCEPTS[ci].keys.length;ck++){if(lq.indexOf(CONCEPTS[ci].keys[ck].toLowerCase().replace(/\s/g,''))>=0){botReply('<p><b>'+CONCEPTS[ci].title+'</b></p><p>'+CONCEPTS[ci].desc+'</p>');return;}}}
+  if(has('课程')){
+    var info=generateCourses(ctx);
+    botReply('<p>根据你选择的 <b>'+escapeHtml(ctx.collegeName)+'</b> · <b>'+escapeHtml(ctx.majorName)+'</b>，为你整理了未来八个学期的课程规划：</p>',coursesToHtml(info));
+    return;
+  }
+  if(has('就业')){
+    var info=generateCourses(ctx);
+    botReply('<p>该专业的主要就业方向：<b>'+escapeHtml(info.dir)+'</b>。建议在第5-6学期关注行业实习，第7学期参加秋招或考研复习，第8学期完成毕业设计并落实去向。</p>');
+    return;
+  }
+  if(has('书院')){
+    var c=COLLEGES[ctx.college];
+    botReply('<p>'+escapeHtml(c.name)+'（'+c.en+'）位于 <b>'+escapeHtml(c.campus)+'</b>。'+escapeHtml(c.orient)+' 特色标签：'+c.tags.join('、')+'。</p>');
+    return;
+  }
+  if(has('专业')){
+    botReply('<p><b>'+escapeHtml(ctx.majorName)+'</b>（所属：'+escapeHtml(ctx.faculty)+'）。'+escapeHtml(ctx.majorDesc)+'</p>');
+    return;
+  }
+  if(has('考研')){
+    botReply('<p>建议从第3学期起保持高GPA，重点关注专业核心课；第5学期参加科研训练或学科竞赛；第6学期确定深造方向并准备复试。'+escapeHtml(ctx.collegeName)+'通常对拔尖创新书院学生有较高推免比例。</p>');
+    return;
+  }
+  if(has('竞赛')){
+    botReply('<p>推荐参加：挑战杯、数学建模、ACM-ICPC、电子设计、蓝桥杯、华为云开发者大赛等。可在左侧"大学生学科竞赛"页面查看办赛位置与官网。</p>');
+    return;
+  }
+  if(has('实习')){
+    botReply('<p>建议第4-5学期参加短学期专业实践，第7学期进行生产实习。可结合 '+escapeHtml(generateCourses(ctx).dir)+' 企业选择实习单位。</p>');
+    return;
+  }
+  if(has('感谢')){
+    botReply('<p>不客气！很高兴能帮到你，还有其他关于学业的问题随时问我。</p>');
+    return;
+  }
+  if(has('问候')){
+    botReply('<p>你好！我是学习规划助手。你可以问我：课程规划、就业方向、考研建议、学科竞赛、专业详情、英语以考代修等。</p>');
+    return;
+  }
+  botReply('<p>关于 <b>'+escapeHtml(ctx.majorName)+'</b> 的问题我已记录。你可以尝试问我：\"我的课程规划\"、\"就业方向\"、\"考研建议\"、\"学科竞赛\"、\"英语以考代修\"等，我会基于你的书院与专业作答。</p>');
+}
+function enterAssistant(){
+  var ck=document.getElementById('collegeSelect').value;
+  var c=COLLEGES[ck];
+  var parts=document.getElementById('majorSelect').value.split('-');
+  var m=MAJOR_GROUPS[+parts[0]].majors[+parts[1]];
+  var faculty=MAJOR_GROUPS[+parts[0]].faculty;
+  STUDY_CTX={college:ck,collegeName:c.name,majorName:m.name,faculty:faculty,majorDesc:m.desc};
+  switchView('assistant');
+  chatBody=document.getElementById('chatBody');
+  chatInput=document.getElementById('chatInput');
+  chatSend=document.getElementById('chatSend');
+  chatBody.innerHTML='';
+  var saved=null;
+  try{saved=JSON.parse(sessionStorage.getItem('chat_history')||'null');}catch(e){}
+  if(saved&&saved.length){
+    restoringChat=true;
+    for(var i=0;i<saved.length;i++){addMsg(saved[i].role,saved[i].html);}
+    restoringChat=false;
+    chatHistory=saved.slice();
+  }else{
+    chatHistory=[];
+    saveChatHistory();
+    addMsg('bot','<p>你好，我是 <b>学习规划助手</b>。已读取你在上一页的选择：</p><p>书院：<b>'+escapeHtml(c.name)+'</b><br>专业：<b>'+escapeHtml(m.name)+'</b>（'+escapeHtml(faculty)+'）</p><p>下面为你自动展示该专业未来八个学期的课程规划：</p>',coursesToHtml(generateCourses(STUDY_CTX)));
+    setTimeout(function(){
+      addMsg('bot','<p>你可以点击下方示例快速提问，或直接在输入框输入问题，我会基于你的书院与专业作答。</p>');
+    },400);
+  }
+  renderExamples();
+  chatInput.focus();
+}
+document.getElementById('confirmStudyBtn').addEventListener('click',enterAssistant);
+var EXAMPLE_GROUPS=[
+  ['这个专业就业方向是什么？','考研保研有哪些建议？','推荐哪些学科竞赛？','英语以考代修怎么申请？'],
+  ['我的未来课程有哪些？','实习去哪里比较好？','介绍一下我的书院','我的专业详情'],
+  ['雅思6分能免英语吗？','四六级多少分能代修？','保研推免比例如何？','秋招什么时候准备？'],
+  ['毕业去向都有哪些？','挑战杯怎么参加？','生产实习安排在何时？','专业核心课有哪些？'],
+  ['什么是 GPA？','学分是什么意思？','API 是什么？','考研制度讲解一下']
+];
+var exIndex=0;
+function renderExamples(){
+  var slides=document.getElementById('exSlides');
+  slides.innerHTML=EXAMPLE_GROUPS.map(function(group){
+    return '<div class="ex-slide">'+group.map(function(ex){return '<div class="ex-chip" data-ex="'+escapeHtml(ex)+'">'+escapeHtml(ex)+'</div>';}).join('')+'</div>';
+  }).join('');
+  slides.style.transform='translateX(0)';
+  exIndex=0;
+  slides.querySelectorAll('.ex-chip').forEach(function(chip){chip.addEventListener('click',function(){sendChat(chip.getAttribute('data-ex'));});});
+}
+document.getElementById('exNext').addEventListener('click',function(){
+  var slides=document.getElementById('exSlides');
+  exIndex=(exIndex+1)%EXAMPLE_GROUPS.length;
+  slides.style.transform='translateX(-'+(exIndex*100)+'%)';
+});
+function sendChat(text){
+  if(!chatInput)return;
+  var v=(text!=null?text:chatInput.value).trim();
+  if(!v)return;
+  addMsg('user',escapeHtml(v));
+  chatInput.value='';
+  chatInput.style.height='auto';
+  answerBot(v);
+}
+(function(){
+  var input=document.getElementById('chatInput');
+  var send=document.getElementById('chatSend');
+  send.addEventListener('click',function(){sendChat();});
+  input.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}});
+  input.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
+})();
+
+// ===== 学科竞赛 =====
+var CONTESTS=[
+  {tag:'科技创新',name:'"挑战杯"全国大学生课外学术科技作品竞赛',desc:'被誉为大学生科技创新的"奥林匹克"，由共青团中央等主办，每两年一届，涵盖自然科学、工程技术、哲学社会科学等领域。',
+   loc:'北京理工大学',locAddr:'北京市海淀区',lng:'116.310850',lat:'39.960914',official:'https://www.tiaozhanbei.net/'},
+  {tag:'创新创业',name:'中国国际大学生创新大赛（原"互联网+"）',desc:'教育部主办的最具影响力创新创业赛事，每年一届，覆盖本硕博，培育大学生创新创业项目。',
+   loc:'北京理工大学',locAddr:'北京市海淀区',lng:'116.310850',lat:'39.960914',official:'https://cy.ncss.cn/'},
+  {tag:'数学建模',name:'全国大学生数学建模竞赛',desc:'中国工业与应用数学学会主办，每年 9 月举行，三人一队，三天三夜完成建模论文，培养数学应用能力。',
+   loc:'中国工业与应用数学学会',locAddr:'北京市',lng:'116.407526',lat:'39.904030',official:'http://www.mcm.edu.cn/'},
+  {tag:'电子设计',name:'全国大学生电子设计竞赛',desc:'每两年一届，由西安交通大学承办，涵盖电子系统设计、嵌入式系统等，培养电子工程实践能力。',
+   loc:'西安交通大学',locAddr:'陕西省西安市',lng:'108.939645',lat:'34.343207',official:'https://nuedc.xjtu.edu.cn/'},
+  {tag:'程序设计',name:'ACM-ICPC 国际大学生程序设计竞赛',desc:'全球最具影响力的大学生程序设计竞赛，三人一队，5 小时内求解 10-13 道算法题，区域赛遍布全国。',
+   loc:'上海大学',locAddr:'上海市宝山区',lng:'121.395710',lat:'31.314023',official:'https://icpc.global/'},
+  {tag:'机械创新',name:'全国大学生机械创新设计大赛',desc:'每两年一届，教育部机械基础课程教学指导委员会主办，涵盖机械结构、机器人等创新设计。',
+   loc:'哈尔滨工业大学',locAddr:'黑龙江省哈尔滨市南岗区',lng:'126.633933',lat:'45.744963',official:'http://umcd.ict.edu.cn/'},
+  {tag:'软件信息',name:'"蓝桥杯"全国软件和信息技术专业人才大赛',desc:'工业和信息化部人才交流中心主办，每年一届，涵盖 Java/C/C++/Python/Web 等程序设计赛道。',
+   loc:'工业和信息化部人才交流中心',locAddr:'北京市海淀区',lng:'116.295850',lat:'39.906675',official:'https://dasai.lanqiao.cn/'},
+  {tag:'云计算',name:'华为云开发者大赛',desc:'华为云面向开发者举办的年度顶级技术赛事，涵盖人工智能、大数据、云计算、鸿蒙、昇腾等赛道，助力开发者基于华为云与华为根技术构建创新应用。',
+   loc:'华为技术有限公司',locAddr:'广东省深圳市龙岗区',lng:'114.054876',lat:'22.543099',official:'https://developer.huaweicloud.com/competition/list'}
+];
+document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
+  return '<div class="contest">'+
+    '<span class="contest-tag">'+ICO.trophy+' '+c.tag+'</span>'+
+    '<div class="contest-name">'+c.name+'</div>'+
+    '<div class="contest-desc">'+c.desc+'</div>'+
+    '<div class="contest-loc">'+
+      '<div class="loc-ico">'+ICO.pin+'</div>'+
+      '<div class="loc-txt">'+
+        '<div class="loc-name">'+c.loc+' · '+c.locAddr+'</div>'+
+        '<div class="loc-coord">'+c.lng+', '+c.lat+'</div>'+
+      '</div>'+
+      '<a class="loc-link" target="_blank" href="'+uriMarker(c.lng,c.lat,c.loc)+'">地图</a>'+
+    '</div>'+
+    '<div class="contest-actions">'+
+      '<a class="ca ca-official" target="_blank" href="'+c.official+'">'+ICO.link+'竞赛官网</a>'+
+      '<a class="ca ca-map" target="_blank" href="'+uriMarker(c.lng,c.lat,c.name+'办赛点')+'">'+ICO.pin+'办赛位置</a>'+
+    '</div>'+
+  '</div>';
+}).join('');
+(function(){var p=new URLSearchParams(location.search);var v=p.get('view');if(!v||!viewTitles[v])return;if(v==='study'){goStudyNav();return;}if(v==='assistant'){var sc=localStorage.getItem('study_college');if(sc&&document.querySelector('#collegeSelect option[value="'+sc+'"]')){document.getElementById('collegeSelect').value=sc;var sm=localStorage.getItem('study_major');if(sm&&document.querySelector('#majorSelect option[value="'+sm+'"]'))document.getElementById('majorSelect').value=sm;enterAssistant();}else{switchView('study');}return;}switchView(v);})();
+</script>
+<script src="protect.js"></script>
+</body>
+</html>
