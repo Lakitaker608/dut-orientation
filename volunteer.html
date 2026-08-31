@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大连理工大学 · 志愿服务平台指南</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+:root{
+  --bg:#F7F8FA;--surface:#FFFFFF;--surface-2:#F2F4F7;
+  --primary:#C62828;--primary-2:#B71C1C;--primary-light:#FDE8E8;--accent:#E53935;
+  --text-1:#0F1B2D;--text-2:#4A5A70;--text-3:#8A98AC;
+  --border:#E4E8EE;--border-strong:#D0D6DE;
+  --success:#16A34A;--warning:#E8A317;
+  --shadow-sm:0 1px 2px rgba(15,27,45,.04);
+  --shadow-md:0 6px 20px rgba(15,27,45,.06);
+  --shadow-lg:0 20px 50px rgba(15,27,45,.10);
+  --radius:14px;--radius-lg:20px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spacing:-.005em}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+svg{display:block}
+
+.sidebar{width:248px;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;position:fixed;left:0;top:0;height:100vh;display:flex;flex-direction:column;z-index:40;transition:transform .3s ease}
+.main{margin-left:248px;min-width:0;min-height:100vh;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:12px;padding:8px 8px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.brand-logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;flex-shrink:0;box-shadow:0 4px 12px rgba(198,40,40,.25)}
+.brand-name{font-size:15px;font-weight:600;line-height:1.3}
+.brand-sub{font-size:11px;color:var(--text-3);margin-top:2px;letter-spacing:.02em}
+.nav{flex:1;overflow-y:auto}
+.nav-label{font-size:11px;color:var(--text-3);font-weight:600;padding:12px 12px 6px;letter-spacing:.05em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:14px;color:var(--text-2);cursor:pointer;transition:all .15s ease;width:100%;text-align:left;border:none;background:none;font-family:inherit}
+.nav-item:hover{background:var(--surface-2);color:var(--text-1)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+.sidebar-foot{padding:12px 8px 4px;border-top:1px solid var(--border);margin-top:8px}
+.side-link{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-3);padding:6px 8px;border-radius:8px;cursor:pointer}
+.side-link:hover{color:var(--primary);background:var(--surface-2)}
+.side-link svg{width:15px;height:15px}
+.menu-toggle{display:none;width:36px;height:36px;border-radius:9px;align-items:center;justify-content:center;color:var(--text-2);margin-right:4px}
+.menu-toggle:hover{background:var(--surface-2)}
+.menu-toggle svg{width:18px;height:18px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,27,45,.4);z-index:35}
+.overlay.show{display:block}
+
+.topbar{height:60px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:20}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;color:var(--text-2);font-size:13px;transition:all .15s}
+.back-btn:hover{background:var(--surface-2);color:var(--text-1)}
+.back-btn svg{width:16px;height:16px}
+.topbar-title{font-size:16px;font-weight:600}
+.topbar-logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+
+.container{max-width:1080px;margin:0 auto;padding:28px 24px 60px}
+
+.hero{background:linear-gradient(135deg,#C62828 0%,#D32F2F 45%,#E53935 100%);border-radius:var(--radius-lg);padding:36px;color:#fff;position:relative;overflow:hidden;margin-bottom:28px}
+.hero::before{content:"";position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(229,57,53,.35),transparent 70%);border-radius:50%}
+.hero::after{content:"";position:absolute;bottom:-80px;left:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);border-radius:50%}
+.hero-inner{position:relative;z-index:1}
+.hero h1{font-size:24px;font-weight:700;margin-bottom:8px}
+.hero p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.6;max-width:580px}
+.hero-meta{display:flex;gap:18px;margin-top:18px;flex-wrap:wrap}
+.hero-meta .m{display:flex;align-items:center;gap:6px;font-size:12.5px;color:rgba(255,255,255,.9)}
+.hero-meta .m svg{width:15px;height:15px;opacity:.85}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;transition:all .2s}
+.stat:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.stat .s-num{font-size:22px;font-weight:700;color:var(--primary);line-height:1.2}
+.stat .s-num span{font-size:13px;font-weight:500;color:var(--text-3);margin-left:3px}
+.stat .s-label{font-size:12.5px;color:var(--text-2);margin-top:6px}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.section-title{font-size:18px;font-weight:600;display:flex;align-items:center;gap:10px}
+.section-title .bar{width:4px;height:18px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px}
+.section-sub{font-size:12.5px;color:var(--text-3)}
+
+.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:10px;font-size:13px;color:var(--text-2);background:var(--surface);border:1px solid var(--border);transition:all .15s;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit}
+.tab:hover{border-color:var(--border-strong)}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.tab .cnt{font-size:11px;opacity:.7;padding:1px 6px;border-radius:5px;background:rgba(255,255,255,.2)}
+.tab.active .cnt{background:rgba(255,255,255,.22)}
+
+.platforms{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.platform{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:all .2s;position:relative;overflow:hidden}
+.platform:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.platform::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+.platform-tag{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--primary-light);color:var(--primary);margin-bottom:10px;letter-spacing:.02em;display:inline-flex;align-items:center;gap:5px}
+.platform-tag svg{width:13px;height:13px}
+.platform-name{font-size:16px;font-weight:600;margin-bottom:8px;line-height:1.4}
+.platform-desc{font-size:12.5px;color:var(--text-2);line-height:1.6;margin-bottom:14px}
+.platform-org{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--surface-2);border-radius:10px;margin-bottom:14px}
+.platform-org .org-ico{width:28px;height:28px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:var(--shadow-sm)}
+.platform-org .org-ico svg{width:15px;height:15px;color:var(--accent)}
+.platform-org .org-txt{flex:1;min-width:0}
+.platform-org .org-name{font-size:12.5px;font-weight:600;color:var(--text-1)}
+.platform-org .org-meta{font-size:10.5px;color:var(--text-3);margin-top:1px}
+.platform-org .org-link{font-size:11px;color:var(--primary);font-weight:500;padding:4px 9px;border-radius:7px;background:var(--primary-light);transition:all .15s;flex-shrink:0}
+.platform-org .org-link:hover{background:var(--primary);color:#fff}
+.platform-actions{display:flex;gap:8px}
+.platform-actions .pa{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:500;padding:9px;border-radius:9px;transition:all .15s}
+.platform-actions .pa svg{width:14px;height:14px}
+.pa-official{background:var(--primary);color:#fff}
+.pa-official:hover{background:var(--primary-2);transform:translateY(-1px)}
+.pa-detail{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.pa-detail:hover{border-color:var(--accent);color:var(--accent)}
+
+.foot{text-align:center;padding:24px;font-size:12px;color:var(--text-3);letter-spacing:.04em}
+.foot .dot{display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;vertical-align:middle;margin:0 8px}
+
+.cv-hero{background:linear-gradient(135deg,#C62828 0%,#D32F2F 50%,#E53935 100%);border-radius:var(--radius-lg);padding:30px;color:#fff;position:relative;overflow:hidden;margin-bottom:20px}
+.cv-hero::before{content:"";position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(229,57,53,.32),transparent 70%);border-radius:50%}
+.cv-hero::after{content:"";position:absolute;bottom:-70px;left:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.10),transparent 70%);border-radius:50%}
+.cv-hero-inner{position:relative;z-index:1}
+.cv-hero h2{font-size:20px;font-weight:700;margin-bottom:8px}
+.cv-hero p{font-size:13.5px;color:rgba(255,255,255,.86);line-height:1.65;max-width:620px}
+.cv-hero-meta{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
+.cv-hero-meta .m{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.9)}
+.cv-hero-meta .m svg{width:14px;height:14px;opacity:.85}
+
+.cv-alert{background:var(--primary-light);border:1px solid rgba(198,40,40,.28);border-radius:var(--radius);padding:16px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start}
+.cv-alert-ico{width:38px;height:38px;border-radius:10px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cv-alert-ico svg{width:20px;height:20px}
+.cv-alert-txt{flex:1;min-width:0}
+.cv-alert-title{font-size:13.5px;font-weight:600;color:var(--primary);margin-bottom:4px}
+.cv-alert-desc{font-size:12.5px;color:var(--text-2);line-height:1.65}
+.cv-alert-desc b{color:var(--primary)}
+
+.cv-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.cv-card{background:var(--surface);border:1px solid rgba(198,40,40,.2);border-radius:var(--radius);padding:20px;transition:all .2s;position:relative;overflow:hidden}
+.cv-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.cv-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+.cv-card-tag{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--primary-light);color:var(--primary);margin-bottom:10px;letter-spacing:.02em}
+.cv-card-tag svg{width:13px;height:13px}
+.cv-card h3{font-size:15.5px;font-weight:600;margin-bottom:8px;line-height:1.4}
+.cv-card p{font-size:12.5px;color:var(--text-2);line-height:1.65}
+.cv-card p b{color:var(--text-1)}
+.cv-card ul{font-size:12.5px;color:var(--text-2);line-height:1.8;padding-left:2px;list-style:none}
+.cv-card ul li{position:relative;padding-left:14px}
+.cv-card ul li::before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.cv-card .cv-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--primary);font-weight:500;margin-top:12px;padding:6px 12px;border-radius:8px;background:var(--primary-light);transition:all .15s}
+.cv-card .cv-link:hover{background:var(--primary);color:#fff}
+.cv-card .cv-link svg{width:14px;height:14px}
+
+@media (max-width:760px){
+  .platforms,.stats,.cv-cards{grid-template-columns:1fr}
+  .container{padding:20px 16px 50px}
+  .hero{padding:28px 22px}
+  .hero h1{font-size:21px}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .menu-toggle{display:flex}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-logo">大工</div>
+    <div>
+      <div class="brand-name">校园生活助手</div>
+      <div class="brand-sub">大连理工大学 · 入学后</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-label">导航</div>
+    <button class="nav-item" onclick="location.href='campus-life.html?skip=1&view=home'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>概览
+    </button>
+    <button class="nav-item" onclick="location.href='campus-life.html?skip=1&view='+(localStorage.getItem('study_college')&&sessionStorage.getItem('chat_history')?'assistant':'study')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>学习规划
+    </button>
+    <button class="nav-item" onclick="location.href='campus-life.html?skip=1&view=location'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>学校地理位置
+    </button>
+    <button class="nav-item" onclick="location.href='campus-life.html?skip=1&view=life'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>周边生活与路线
+    </button>
+    <button class="nav-item" onclick="location.href='campus-life.html?skip=1&view=contest'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a1.5 1.5 0 010-3H6m12 3h1.5a1.5 1.5 0 000-3H18M6 6v6a6 6 0 0012 0V6M6 6h12M8 21h8M12 17v4"/></svg>大学生学科竞赛
+    </button>
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>志愿服务平台
+    </button>
+  </nav>
+  <div class="sidebar-foot">
+    <div class="side-link" onclick="location.href='entrance.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>返回入学入口
+    </div>
+    <div class="side-link" onclick="location.href='dut-orientation.html?skip=1'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>新生入学助手
+    </div>
+    <div class="side-link" onclick="window.open('https://www.dlut.edu.cn')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>大工官网
+    </div>
+  </div>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<div class="main">
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="menu-toggle" id="menuToggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+    <a class="back-btn" href="campus-life.html?skip=1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>返回校园生活
+    </a>
+    <div class="topbar-logo">大工</div>
+    <div class="topbar-title">志愿服务平台指南</div>
+  </div>
+  <div style="font-size:12px;color:var(--text-3)">大学生志愿服务线上平台汇总</div>
+</header>
+
+<div class="container">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>大学生志愿服务线上平台</h1>
+      <p>汇总全国主流志愿服务线上平台，涵盖志愿者注册、活动报名、工时记录、项目对接、保险保障与信用评价等全流程服务，助你一键直达官方入口，开启公益之旅。</p>
+      <div class="hero-meta">
+        <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>公益奉献 · 青春担当</span>
+        <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>信息来源于各平台官网</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="s-num">8<span>个</span></div><div class="s-label">主流平台</div></div>
+    <div class="stat"><div class="s-num">5<span>类</span></div><div class="s-label">平台类型</div></div>
+    <div class="stat"><div class="s-num">2<span>部</span></div><div class="s-label">国家部委主办</div></div>
+    <div class="stat"><div class="s-num">100<span>%</span></div><div class="s-label">官方直达</div></div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-title"><span class="bar"></span>校内志愿服务</div>
+    <div class="section-sub">书院组织 · 校团委指导 · 报名须知</div>
+  </div>
+
+  <div class="cv-hero">
+    <div class="cv-hero-inner">
+      <h2>大连理工大学校内志愿服务</h2>
+      <p>大连理工大学志愿服务工作由校团委统一指导，校青年志愿者协会统筹组织，各书院、学院志愿组织（志愿群）具体落实。涵盖支教助农、社区服务、赛会服务、环保宣传、关爱行动等品牌项目，是大工学子践行"团结、进取、求实、创新"校风、服务社会的重要途径。</p>
+      <div class="cv-hero-meta">
+        <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>校团委 · 校青协 · 书院志愿群</span>
+        <span class="m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>信息来源于大工官网及校团委</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-alert">
+    <div class="cv-alert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+    <div class="cv-alert-txt">
+      <div class="cv-alert-title">报名方式 · 重要提示</div>
+      <div class="cv-alert-desc">校内志愿活动<b>不设统一线上报名入口</b>，欲报名参加请<b>根据书院/学院发布的志愿活动通知，添加所在书院志愿群</b>（QQ群或微信群），在群内接龙报名或填写群内发布的报名表。各书院志愿群由书院志愿组织或辅导员发布，请关注书院通知群、公告栏及辅导员通知，及时入群以免错过报名。</div>
+    </div>
+  </div>
+
+  <div class="cv-cards">
+    <div class="cv-card">
+      <span class="cv-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>组织体系</span>
+      <h3>校内志愿服务组织体系</h3>
+      <ul>
+        <li><b>校团委</b>：志愿服务工作统筹指导单位，负责政策传达、项目审批与时长认定;</li>
+        <li><b>校青年志愿者协会（校青协）</b>：校级志愿组织，统筹校级品牌项目与志愿者管理;</li>
+        <li><b>书院/学院志愿组织</b>：各书院、学院设志愿部或志愿队，负责本院志愿活动组织与志愿群管理;</li>
+        <li><b>班级志愿委员</b>：各班设志愿委员，协助通知传达与报名组织。</li>
+      </ul>
+    </div>
+    <div class="cv-card">
+      <span class="cv-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>参加志愿活动的作用</span>
+      <h3>参加志愿服务的作用与意义</h3>
+      <ul>
+        <li><b>个人成长</b>：培养社会责任感与奉献精神，锻炼沟通组织能力，丰富阅历;</li>
+        <li><b>学业发展</b>：志愿时长是综合测评、评奖评优、保研推免的重要加分项或参考依据;</li>
+        <li><b>荣誉表彰</b>：可参评"优秀志愿者""志愿服务先进个人"等荣誉，丰富简历;</li>
+        <li><b>社会价值</b>：帮扶弱势群体、服务校园社区，传递正能量，体现青年担当。</li>
+      </ul>
+    </div>
+    <div class="cv-card">
+      <span class="cv-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>常见项目</span>
+      <h3>校内常见志愿服务项目</h3>
+      <ul>
+        <li><b>支教助农</b>：暑期"三下乡"社会实践、乡村支教夏令营、助农直播等;</li>
+        <li><b>赛会服务</b>：校运会、学术会议、大型活动引导、礼仪、后勤志愿服务;</li>
+        <li><b>社区服务</b>：敬老院探访、社区科普、义务维修、交通引导等;</li>
+        <li><b>环保宣传</b>：校园环保、海滩净滩、垃圾分类宣传、植树等;</li>
+        <li><b>关爱行动</b>：关爱留守儿童、助残服务、无偿献血宣传等。</li>
+      </ul>
+    </div>
+    <div class="cv-card">
+      <span class="cv-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>报名与时长认定</span>
+      <h3>报名流程与时长认定</h3>
+      <ul>
+        <li><b>关注通知</b>：留意书院志愿群、通知群、公告栏及辅导员通知;</li>
+        <li><b>入群报名</b>：添加所在书院志愿群，在群内接龙或填写报名表;</li>
+        <li><b>参加服务</b>：按活动要求签到参加，完成志愿服务任务;</li>
+        <li><b>时长记录</b>：由活动组织方在校内志愿系统或"志愿汇"等平台录入时长;</li>
+        <li><b>证明留存</b>：保留志愿服务记录与证明，便于评优与推免材料使用。</li>
+      </ul>
+      <a class="cv-link" target="_blank" href="http://huodong.dlut.edu.cn/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>校内活动网</a>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-title"><span class="bar"></span>志愿服务线上平台</div>
+    <div class="section-sub">官网直达 · 类型筛选 · 一键跳转</div>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="platforms" id="platforms"></div>
+
+</div>
+
+<div class="foot">大连理工大学 校园生活助手<span class="dot"></span>志愿服务平台信息来源于各官方平台</div>
+
+</div>
+
+<script>
+document.getElementById('menuToggle').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+});
+document.getElementById('overlay').addEventListener('click',function(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+});
+
+var ICO={
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
+  link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>',
+  external:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>',
+  building:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M9 2v4h6V2M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+};
+
+var PLATFORMS=[
+  {tag:'国家级平台',cat:'national',name:'中国志愿服务网（全国志愿服务信息系统）',
+   desc:'民政部主办建设的全国志愿服务信息系统，提供志愿者注册、志愿服务团队管理、项目发布、服务时间记录与证明等全流程服务，是全国志愿服务数据归集的核心枢纽。',
+   org:'中华人民共和国民政部',orgMeta:'党政机关 · 北京',official:'https://chinavolunteer.mca.gov.cn/'},
+  {tag:'青年志愿',cat:'youth',name:'志愿中国',
+   desc:'共青团中央指导下的注册志愿者信息系统，面向广大青年志愿者提供注册登记、活动报名、工时记录、信用评价等服务，是青年志愿者参与服务的核心入口与数据平台。',
+   org:'共青团中央',orgMeta:'群团组织 · 全国',official:'http://zyz.org.cn/'},
+  {tag:'综合应用',cat:'comprehensive',name:'志愿汇',
+   desc:'全国领先的志愿服务综合应用平台，提供志愿者注册管理、需求对接、保险保障、激励、信用评价等功能，构建线上互联、线下互动的"智慧公益"生态系统，支持 APP 移动端。',
+   org:'共青团中央',orgMeta:'综合平台 · APP',official:'https://www.zhiyuhui.com/'},
+  {tag:'大学生',cat:'college',name:'大学生志愿者网',
+   desc:'以践行社会主义核心价值观为宗旨，以"有梦想，一切皆有可能"为主题，致力于打造具有权威性、专业性的大学生志愿服务平台，为大学生开展与完善志愿服务工作服务。',
+   org:'大学生志愿者网',orgMeta:'专业平台 · 全国',official:'http://www.dxsvolunteer.com/'},
+  {tag:'青年志愿',cat:'youth',name:'中国青年志愿者网',
+   desc:'共青团中央青年志愿者工作部主管，发布青年志愿者行动资讯、志愿项目招募、典型事迹宣传，涵盖西部计划、关爱行动、海外计划等品牌项目，是青年志愿行动的权威信息源。',
+   org:'共青团中央青年志愿者工作部',orgMeta:'群团组织 · 全国',official:'http://www.zgqnjzm.com/'},
+  {tag:'公益基金',cat:'foundation',name:'中国志愿服务基金会',
+   desc:'全国性公募基金会，致力于志愿服务事业发展的资金筹集与项目资助，开展志愿服务能力提升培训、专项基金等业务，为志愿服务提供资金与资源保障。',
+   org:'中华人民共和国民政部',orgMeta:'公募基金会 · 北京',official:'http://www.cvf.org.cn/'},
+  {tag:'扶贫志愿',cat:'college',name:'善行100·温暖行动',
+   desc:'中国扶贫基金会主办的大学生志愿扶贫活动，组织大学生志愿者利用周末在邮局、商场等场所劝募爱心包裹，关爱贫困地区小学生，培养大学生公益意识与社会责任感。',
+   org:'中国扶贫基金会',orgMeta:'品牌项目 · 全国',official:'http://www.shanxing100.org/'},
+  {tag:'国家项目',cat:'youth',name:'大学生志愿服务西部计划',
+   desc:'由共青团中央、教育部、财政部、人社部联合实施，每年招募应届毕业生赴中西部基层开展教育、医疗、农技、扶贫等志愿服务 1-3 年，是大学生服务国家战略的标志性项目。',
+   org:'共青团中央 教育部 财政部 人社部',orgMeta:'国家计划 · 中西部',official:'http://xibu.youth.cn/'}
+];
+
+var CATEGORIES=[
+  {key:'all',name:'全部'},
+  {key:'national',name:'国家级平台'},
+  {key:'youth',name:'青年志愿'},
+  {key:'comprehensive',name:'综合应用'},
+  {key:'college',name:'大学生'},
+  {key:'foundation',name:'公益基金'}
+];
+
+var curCat='all';
+function getCount(cat){
+  if(cat==='all')return PLATFORMS.length;
+  return PLATFORMS.filter(function(p){return p.cat===cat;}).length;
+}
+function renderTabs(){
+  document.getElementById('tabs').innerHTML=CATEGORIES.map(function(c){
+    return '<button class="tab'+(c.key===curCat?' active':'')+'" data-cat="'+c.key+'">'+
+      c.name+'<span class="cnt">'+getCount(c.key)+'</span></button>';
+  }).join('');
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      curCat=t.dataset.cat;
+      renderTabs();
+      renderPlatforms();
+    });
+  });
+}
+function renderPlatforms(){
+  var list=curCat==='all'?PLATFORMS:PLATFORMS.filter(function(p){return p.cat===curCat;});
+  document.getElementById('platforms').innerHTML=list.map(function(p){
+    return '<div class="platform">'+
+      '<span class="platform-tag">'+ICO.heart+p.tag+'</span>'+
+      '<div class="platform-name">'+p.name+'</div>'+
+      '<div class="platform-desc">'+p.desc+'</div>'+
+      '<div class="platform-org">'+
+        '<div class="org-ico">'+ICO.building+'</div>'+
+        '<div class="org-txt">'+
+          '<div class="org-name">'+p.org+'</div>'+
+          '<div class="org-meta">'+p.orgMeta+'</div>'+
+        '</div>'+
+        '<a class="org-link" target="_blank" href="'+p.official+'">访问</a>'+
+      '</div>'+
+      '<div class="platform-actions">'+
+        '<a class="pa pa-official" target="_blank" href="'+p.official+'">'+ICO.link+'平台官网</a>'+
+        '<a class="pa pa-detail" target="_blank" href="'+p.official+'">'+ICO.external+'新窗口打开</a>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+renderTabs();
+renderPlatforms();
+</script>
+</body>
+</html>
