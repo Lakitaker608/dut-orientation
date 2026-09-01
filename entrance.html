@@ -16,11 +16,12 @@
 html,body{height:100%}
 body{font-family:var(--font);color:var(--text-1);overflow:hidden}
 
-/* ===== 背景渐变 + 装饰 ===== */
-.bg{position:fixed;inset:0;background:linear-gradient(135deg,#003F88 0%,#0052B4 45%,#0078D4 100%);z-index:0}
-.bg::before{content:"";position:absolute;top:-120px;right:-120px;width:420px;height:420px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%}
-.bg::after{content:"";position:absolute;bottom:-160px;left:10%;width:360px;height:360px;background:radial-gradient(circle,rgba(255,255,255,.10),transparent 70%);border-radius:50%}
-.bg .grid-deco{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+/* ===== 背景：校园风景图 + 虚化 + 蓝色遮罩 ===== */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden}
+.bg-img{position:absolute;inset:0;background:url('campus_bg.jpg') center/cover no-repeat;filter:blur(14px) brightness(.65);transform:scale(1.18)}
+.bg::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,63,136,.58) 0%,rgba(0,82,180,.45) 45%,rgba(0,120,212,.32) 100%);z-index:1}
+.bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 25%,rgba(0,31,64,.45) 100%);z-index:1}
+.bg .grid-deco{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);z-index:2}
 
 /* ===== 居中卡片 ===== */
 .stage{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -71,7 +72,7 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
 </style>
 </head>
 <body>
-<div class="bg"><div class="grid-deco"></div></div>
+<div class="bg"><div class="bg-img"></div><div class="grid-deco"></div></div>
 
 <div class="stage">
   <div class="card">
