@@ -1408,7 +1408,18 @@ function answerBot(q){
     botReply('<p>你好！我是学习规划助手。你可以问我：课程规划、就业方向、考研建议、学科竞赛、专业详情、英语以考代修等。</p>');
     return;
   }
-  botReply('<p>关于 <b>'+escapeHtml(ctx.majorName)+'</b> 的问题我已记录。你可以尝试问我：\"我的课程规划\"、\"就业方向\"、\"考研建议\"、\"学科竞赛\"、\"英语以考代修\"等，我会基于你的书院与专业作答。</p>');
+  var t=addTyping();
+  t.querySelector('.msg-bubble').innerHTML='<p>🤔 正在思考中...</p>';
+  var aiPrompt='你是大连理工大学的学习规划助手。学生来自'+ctx.collegeName+'，专业是'+ctx.majorName+'（所属：'+ctx.faculty+'）。请回答以下问题，回答要简洁、准确、友好，可以使用 HTML 标签（如 <p>、<b>）格式化。\n\n学生问题：'+q;
+  callZhipuAPI(aiPrompt,null,null,function(resp,err){
+    if(err){
+      t.querySelector('.msg-bubble').innerHTML='<p>抱歉，我暂时无法回答这个问题。你可以尝试问我："我的课程规划"、"就业方向"、"考研建议"、"学科竞赛"、"英语以考代修"等。</p>';
+    }else{
+      t.querySelector('.msg-bubble').innerHTML='<p>'+resp+'</p>';
+    }
+    chatBody.scrollTop=chatBody.scrollHeight;
+    chatHistory.push({role:'bot',html:t.querySelector('.msg-bubble').innerHTML});saveChatHistory();
+  });
 }
 function enterAssistant(){
   var ck=document.getElementById('collegeSelect').value;
