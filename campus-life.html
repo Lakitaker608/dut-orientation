@@ -320,6 +320,15 @@ svg{display:block}
 .chat-send:hover{background:var(--primary-2);transform:translateY(-1px)}
 .chat-send:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .chat-send svg{width:16px;height:16px}
+.chat-upload{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--surface-2);color:var(--text-2);font-size:18px;cursor:pointer;border:1px solid var(--border-strong);transition:all .15s;flex-shrink:0;position:relative;overflow:hidden}
+.chat-upload:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
+.chat-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.chat-upload .file-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700}
+.chat-upload.has-file .file-badge{display:flex}
+.file-preview{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--primary-light);border:1px solid var(--border);margin-bottom:8px;font-size:12.5px;color:var(--primary);max-width:100%}
+.file-preview .fp-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-preview .fp-remove{cursor:pointer;color:var(--text-3);font-size:16px;flex-shrink:0}
+.file-preview .fp-remove:hover{color:var(--accent)}
 .chat-hint{font-size:11px;color:var(--text-3);margin-top:8px;text-align:center}
 .chat-examples{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .ex-label{font-size:11.5px;color:var(--text-3);font-weight:500;flex-shrink:0}
@@ -558,6 +567,11 @@ svg{display:block}
           </button>
         </div>
         <div class="chat-input-row">
+          <div class="chat-upload" id="chatUpload" title="上传课程表文件">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            <input type="file" id="fileInput" accept=".txt,.jpg,.jpeg,.png,.pdf,.csv,.doc,.docx">
+            <span class="file-badge">1</span>
+          </div>
           <textarea class="chat-input" id="chatInput" rows="1" placeholder="向助手提问，或点击上方示例快速发送"></textarea>
           <button class="chat-send" id="chatSend">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -1465,6 +1479,120 @@ function sendChat(text){
   input.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}});
   input.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
 })();
+
+// ===== 课程表文件导入 + 智谱 GLM-4V 学习规划生成 =====
+var ZHIPU_API_KEY='d706933163f44d5fa45f0dcd3dd370e3.WeZw034t9OLrCmXo';
+var CAMPUS_COMMUTE_INFO={
+  lingshui:{name:'凌水主校区',canteen:'校内多个食堂（中心食堂、第五至第九食堂、博园餐厅），步行5-10分钟可达',playground:'校内标准田径场、篮球场、网球场，步行5分钟可达',commute:'校区面积较大，教学楼至宿舍步行约10-15分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
+  kaifa:{name:'开发区校区',canteen:'校内第六食堂，步行5分钟可达',playground:'校内运动场、篮球场，步行5分钟可达',commute:'校区紧凑，教学楼至宿舍步行约5-8分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
+  panjin:{name:'盘锦校区',canteen:'校内第三食堂、第八食堂（B03/B13楼），步行5分钟可达',playground:'校内田径场、球场，步行5分钟可达',commute:'校区紧凑，教学楼至宿舍步行约5-8分钟',sleep:'宿舍门禁23:00，建议22:30前返回'}
+};
+function getCampusKey(){
+  if(!STUDY_CTX||!STUDY_CTX.college)return 'lingshui';
+  var c=COLLEGES[STUDY_CTX.college];
+  if(!c)return 'lingshui';
+  if(c.campus.indexOf('凌水')>=0)return 'lingshui';
+  if(c.campus.indexOf('开发')>=0)return 'kaifa';
+  if(c.campus.indexOf('盘锦')>=0)return 'panjin';
+  return 'lingshui';
+}
+var uploadedFile=null;
+var fileInput=document.getElementById('fileInput');
+var chatUpload=document.getElementById('chatUpload');
+fileInput.addEventListener('change',function(e){
+  var f=e.target.files[0];
+  if(!f)return;
+  if(f.size>10*1024*1024){botReply('<p>文件过大（超过 10MB），请上传较小的课程表文件。</p>');return;}
+  uploadedFile=f;
+  chatUpload.classList.add('has-file');
+  var fp=document.createElement('div');
+  fp.className='file-preview';
+  fp.id='filePreview';
+  fp.innerHTML='<span>📎</span><span class="fp-name">'+escapeHtml(f.name)+' ('+Math.round(f.size/1024)+'KB)</span><span class="fp-remove" onclick="clearFile()">✕</span>';
+  var cb=document.getElementById('chatBody');
+  cb.appendChild(fp);
+  cb.scrollTop=cb.scrollHeight;
+  chatInput.placeholder='已上传'+f.name+'，输入要求后发送（如"帮我制定学习计划"）';
+  chatInput.focus();
+});
+function clearFile(){
+  uploadedFile=null;
+  fileInput.value='';
+  chatUpload.classList.remove('has-file');
+  chatInput.placeholder='向助手提问，或点击上方示例快速发送';
+  var fp=document.getElementById('filePreview');
+  if(fp)fp.remove();
+}
+function readFileAsText(f,cb){
+  var r=new FileReader();
+  r.onload=function(){cb(r.result);};
+  r.readAsText(f,'UTF-8');
+}
+function readFileAsBase64(f,cb){
+  var r=new FileReader();
+  r.onload=function(){cb(r.result.split(',')[1]);};
+  r.readAsDataURL(f);
+}
+function buildSchedulePrompt(fileText,userReq){
+  var ck=getCampusKey();
+  var ci=CAMPUS_COMMUTE_INFO[ck];
+  var campusInfo='校区：'+ci.name+'\n食堂：'+ci.canteen+'\n运动场：'+ci.playground+'\n通勤：'+ci.commute+'\n就寝：'+ci.sleep;
+  var majorInfo=STUDY_CTX?('书院：'+STUDY_CTX.collegeName+'，专业：'+STUDY_CTX.majorName):'';
+  return '你是一位大学生学习规划助手。请根据以下信息，为学生制定一份合理的每日学习规划。\n\n【学生信息】\n'+majorInfo+'\n\n【校区地理信息】\n'+campusInfo+'\n\n【课程表信息】\n'+(fileText||'（未提供课程表，请根据一般情况安排）')+'\n\n【学生要求】\n'+(userReq||'无特殊要求，请合理安排')+'\n\n【规划要求】\n1. 一日三餐：早餐7:00-7:30，午餐11:30-12:30，晚餐17:30-18:30（时间合理，考虑食堂距离）\n2. 运动时间：校园跑或运动至少30分钟（建议晨跑6:30-7:00或晚跑21:00-21:30）\n3. 通勤时间：根据校区地理信息预留足够通勤时间\n4. 就寝时间：保证6小时以上睡眠，建议23:00就寝6:00起床\n5. 自学时间：根据课程安排合理分配自习时间\n6. 娱乐时间：适当安排放松娱乐时间\n7. 请以时间表格式输出，每个时间段注明活动内容和时长\n8. 对学生的口语化要求请宽容理解，如"多睡会儿""少跑步"等\n\n请输出一份完整的每日学习规划时间表。';
+}
+function callZhipuAPI(prompt,fileBase64,fileType,cb){
+  if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
+  var url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
+  var messages=[{role:'user',content:[]}];
+  if(fileBase64){
+    var mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
+    messages[0].content.push({type:'image_url',image_url:{url:'data:'+mime+';base64,'+fileBase64}});
+  }
+  messages[0].content.push({type:'text',text:prompt});
+  var body=JSON.stringify({model:'glm-4v',messages:messages,temperature:0.7,max_tokens:2000});
+  fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body}).then(function(r){return r.json();}).then(function(d){if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{cb(null,JSON.stringify(d));}}).catch(function(e){cb(null,e.message);});
+}
+function generateSchedule(fileText,fileBase64,fileType,userReq){
+  botReply('<p>正在分析课程表并生成学习规划，请稍候...</p>');
+  var prompt=buildSchedulePrompt(fileText,userReq);
+  callZhipuAPI(prompt,fileBase64,fileType,function(resp,err){
+    if(err){
+      botReply('<p>⚠️ 规划生成失败：'+escapeHtml(err)+'</p><p>请检查 API Key 是否正确配置。</p>');
+      return;
+    }
+    var html='<p>📋 <b>已为你生成每日学习规划</b>（基于'+escapeHtml(CAMPUS_COMMUTE_INFO[getCampusKey()].name)+'校区信息）：</p>';
+    html+='<div style="background:var(--surface-2);border-radius:12px;padding:16px;margin:8px 0;font-size:13px;line-height:1.8;white-space:pre-wrap;border:1px solid rgba(0,63,136,.2)">'+escapeHtml(resp)+'</div>';
+    html+='<p style="font-size:12px;color:var(--text-3)">以上规划由 AI 根据你的课程表与校区信息生成，仅供参考，请根据实际情况调整。</p>';
+    botReply(html);
+  });
+}
+sendChat=function(text){
+  if(!chatInput)return;
+  var v=(text!=null?text:chatInput.value).trim();
+  if(!v)return;
+  addMsg('user',escapeHtml(v));
+  chatInput.value='';
+  chatInput.style.height='auto';
+  if(uploadedFile){
+    var f=uploadedFile;
+    var fname=f.name.toLowerCase();
+    var isImg=fname.endsWith('.jpg')||fname.endsWith('.jpeg')||fname.endsWith('.png');
+    var isTxt=fname.endsWith('.txt')||fname.endsWith('.csv')||fname.endsWith('.pdf')||fname.endsWith('.doc')||fname.endsWith('.docx');
+    clearFile();
+    if(isImg){
+      readFileAsBase64(f,function(b64){
+        var ext=fname.split('.').pop();
+        generateSchedule(null,b64,ext,v);
+      });
+    }else{
+      readFileAsText(f,function(txt){
+        generateSchedule(txt,null,null,v);
+      });
+    }
+  }else{
+    answerBot(v);
+  }
+};
 
 // ===== 学科竞赛 =====
 var CONTESTS=[
