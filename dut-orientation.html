@@ -240,6 +240,15 @@ img{max-width:100%;display:block}
 .chat-send{padding:11px 18px;background:var(--primary);color:#fff;border-radius:10px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px}
 .chat-send:hover{background:var(--primary-2)}
 .chat-send svg{width:16px;height:16px}
+.chat-upload{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;background:var(--surface-2);color:var(--text-2);cursor:pointer;border:1px solid var(--border);transition:all .15s;flex-shrink:0;position:relative;overflow:hidden}
+.chat-upload:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
+.chat-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.chat-upload .file-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700}
+.chat-upload.has-file .file-badge{display:flex}
+.file-preview{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--primary-light);border:1px solid var(--border);margin:8px 22px;font-size:12.5px;color:var(--primary);max-width:calc(100% - 44px)}
+.file-preview .fp-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-preview .fp-remove{cursor:pointer;color:var(--text-3);font-size:16px;flex-shrink:0}
+.file-preview .fp-remove:hover{color:var(--accent)}
 
 .chat-side{display:flex;flex-direction:column;gap:14px}
 .chat-side-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:18px}
@@ -713,6 +722,11 @@ img{max-width:100%;display:block}
               </button>
             </div>
             <div class="chat-input">
+              <div class="chat-upload" id="chatUpload" title="上传图片或文件（AI 解读）">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                <input type="file" id="fileInput" accept=".txt,.jpg,.jpeg,.png,.pdf,.csv,.doc,.docx">
+                <span class="file-badge">1</span>
+              </div>
               <input type="text" id="chatInput" placeholder="输入你的问题，按 Enter 发送..." onkeydown="if(event.key==='Enter')sendChat()">
               <button class="chat-send" onclick="sendChat()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
@@ -1014,7 +1028,7 @@ function matchAnswer(q){
   for(const item of qaDB){
     if(item.keys.some(k=>nq.includes(normQ(k))))return item.a;
   }
-  return '抱歉，我暂时无法准确理解这个问题 🤔 你可以尝试换个问法，或点击下方快捷按钮。关于更详细的信息，建议访问 <strong>迎新网 yx.dlut.edu.cn</strong> 或拨打学生处电话 <strong>0411-84708320</strong>。';
+  return null;
 }
 let chatHistory=[],restoringChat=false;
 function saveChatHistory(){try{sessionStorage.setItem('dut_chat_history',JSON.stringify(chatHistory));}catch(e){}}
@@ -1027,15 +1041,109 @@ function addMsg(text,who){
   msgs.scrollTop=msgs.scrollHeight;
   if(!restoringChat){chatHistory.push({text,who});saveChatHistory();}
 }
+// ===== 智谱 GLM-4V AI 问答（未匹配本地知识库时 fallback）=====
+const ZHIPU_API_KEY='d706933163f44d5fa45f0dcd3dd370e3.WeZw034t9OLrCmXo';
+let uploadedFile=null;
+const fileInputEl=document.getElementById('fileInput');
+const chatUploadEl=document.getElementById('chatUpload');
+fileInputEl.addEventListener('change',e=>{
+  const f=e.target.files[0];
+  if(!f)return;
+  if(f.size>10*1024*1024){addMsg('文件过大（超过 10MB），请上传较小的文件。','bot');return;}
+  uploadedFile=f;
+  chatUploadEl.classList.add('has-file');
+  const fp=document.createElement('div');
+  fp.className='file-preview';
+  fp.id='filePreview';
+  fp.innerHTML=`<span>📎</span><span class="fp-name">${f.name} (${Math.round(f.size/1024)}KB)</span><span class="fp-remove" onclick="clearFile()">✕</span>`;
+  const msgs=document.getElementById('chatMsgs');
+  msgs.appendChild(fp);
+  msgs.scrollTop=msgs.scrollHeight;
+  document.getElementById('chatInput').placeholder=`已上传${f.name}，输入问题后发送`;
+  document.getElementById('chatInput').focus();
+});
+function clearFile(){
+  uploadedFile=null;
+  fileInputEl.value='';
+  chatUploadEl.classList.remove('has-file');
+  document.getElementById('chatInput').placeholder='输入你的问题，按 Enter 发送...';
+  const fp=document.getElementById('filePreview');
+  if(fp)fp.remove();
+}
+function readFileAsText(f,cb){
+  const r=new FileReader();
+  r.onload=()=>cb(r.result);
+  r.readAsText(f,'UTF-8');
+}
+function readFileAsBase64(f,cb){
+  const r=new FileReader();
+  r.onload=()=>cb(r.result.split(',')[1]);
+  r.readAsDataURL(f);
+}
+function callZhipuAPI(prompt,fileBase64,fileType,cb){
+  if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
+  const url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
+  const content=[];
+  if(fileBase64){
+    const mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
+    content.push({type:'image_url',image_url:{url:`data:${mime};base64,${fileBase64}`}});
+  }
+  content.push({type:'text',text:prompt});
+  const body=JSON.stringify({model:'glm-4v',messages:[{role:'user',content}],temperature:0.7,max_tokens:2000});
+  fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body})
+    .then(r=>r.json())
+    .then(d=>{if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{cb(null,JSON.stringify(d));}})
+    .catch(e=>cb(null,e.message));
+}
+function askAI(question,fileText,fileBase64,fileType){
+  const msgs=document.getElementById('chatMsgs');
+  const tmp=document.createElement('div');
+  tmp.className='msg bot';
+  tmp.id='aiThinking';
+  tmp.innerHTML=`<div class="msg-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-3 3 3 3 0 01-3-3V5a3 3 0 013-3z"/><path d="M5 12a7 7 0 0014 0M12 19v3"/></svg></div><div class="msg-bubble">🤔 正在思考中...</div>`;
+  msgs.appendChild(tmp);
+  msgs.scrollTop=msgs.scrollHeight;
+  let prompt=`你是大连理工大学迎新助手"大工迎新小助手"。请回答以下关于新生入学、校园生活的问题。回答要简洁、准确、友好，可以使用 emoji 和简单 HTML 标签（如 <strong>）。如果涉及具体政策、日期或费用，请建议学生查看迎新网 yx.dlut.edu.cn 或拨打学生处电话 0411-84708320。\n\n学生问题：${question}`;
+  if(fileText)prompt+=`\n\n【附件文本内容】\n${fileText}`;
+  callZhipuAPI(prompt,fileBase64,fileType,(resp,err)=>{
+    const t=document.getElementById('aiThinking');
+    if(t)t.remove();
+    if(err){
+      addMsg(`抱歉，AI 回答失败：${err}。建议访问 <strong>迎新网 yx.dlut.edu.cn</strong> 或拨打学生处电话 <strong>0411-84708320</strong>。`,'bot');
+      return;
+    }
+    addMsg(resp,'bot');
+  });
+}
 function sendChat(){
   const input=document.getElementById('chatInput');
   const q=input.value.trim();
   if(!q)return;
   addMsg(q,'user');
   input.value='';
-  setTimeout(()=>{
-    addMsg(matchAnswer(q),'bot');
-  },500);
+  if(uploadedFile){
+    const f=uploadedFile;
+    const fname=f.name.toLowerCase();
+    const isImg=fname.endsWith('.jpg')||fname.endsWith('.jpeg')||fname.endsWith('.png');
+    clearFile();
+    if(isImg){
+      readFileAsBase64(f,b64=>{
+        const ext=fname.split('.').pop();
+        askAI(q,null,b64,ext);
+      });
+    }else{
+      readFileAsText(f,txt=>{
+        askAI(q,txt,null,null);
+      });
+    }
+    return;
+  }
+  const ans=matchAnswer(q);
+  if(ans){
+    setTimeout(()=>addMsg(ans,'bot'),500);
+  }else{
+    askAI(q,null,null,null);
+  }
 }
 function askQuick(q){
   document.getElementById('chatInput').value=q;
