@@ -1095,7 +1095,7 @@ function callZhipuAPI(prompt,fileBase64,fileType,cb){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   const url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
   const hasImg=!!fileBase64;
-  const model=hasImg?'glm-4v':'glm-4-flash';
+  const model=hasImg?'glm-4v':'glm-4.5-flash';
   let messages;
   if(hasImg){
     const mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
