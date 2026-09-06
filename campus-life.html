@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!--
+  campus-life.html - 校园生活助手
+  功能：学习规划助手（本地知识库 + GLM-4V AI fallback）、课程表导入与规划生成、
+        三校区实时天气、周边生活与路线、学科竞赛、卫星地图
+  技术：纯 HTML + 内联 CSS/JS，ES5 语法
+  依赖：protect.js（页面保护）、智谱 GLM-4V API、高德地图 URI
+-->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -1312,6 +1319,7 @@ function coursesToHtml(info){
 }
 var chatBody,chatInput,chatSend,chatHistory=[],restoringChat=false;
 function saveChatHistory(){try{sessionStorage.setItem('chat_history',JSON.stringify(chatHistory));}catch(e){}}
+// 添加聊天消息到界面并保存到 sessionStorage
 function addMsg(role,text,extra){
   var div=document.createElement('div');
   div.className='msg '+(role==='user'?'user':'bot');
@@ -1322,6 +1330,7 @@ function addMsg(role,text,extra){
   if(!restoringChat){chatHistory.push({role:role,html:text+(extra||'')});saveChatHistory();}
   return div;
 }
+// 显示打字动画的临时消息（不保存到历史）
 function addTyping(){
   var div=document.createElement('div');
   div.className='msg bot';
@@ -1330,6 +1339,7 @@ function addTyping(){
   chatBody.scrollTop=chatBody.scrollHeight;
   return div;
 }
+// 机器人回复：显示打字动画 → 延迟替换为实际内容
 function botReply(text,extra){
   var t=addTyping();
   setTimeout(function(){
@@ -1338,6 +1348,8 @@ function botReply(text,extra){
     chatHistory.push({role:'bot',html:text+(extra||'')});saveChatHistory();
   },650);
 }
+// 学习规划问答核心：依次匹配以考代修、考研建议、CONCEPTS 知识库、
+// 课程/就业/书院/专业等关键词，全部未命中时调用 GLM-4V AI 作答
 function answerBot(q){
   var ctx=STUDY_CTX;
   var nq=normQuery(q);
@@ -1544,6 +1556,7 @@ function readFileAsBase64(f,cb){
   r.onload=function(){cb(r.result.split(',')[1]);};
   r.readAsDataURL(f);
 }
+// 构建学习规划 prompt：注入校区地理、书院专业、课程表、学生要求
 function buildSchedulePrompt(fileText,userReq){
   var ck=getCampusKey();
   var ci=CAMPUS_COMMUTE_INFO[ck];
@@ -1551,18 +1564,25 @@ function buildSchedulePrompt(fileText,userReq){
   var majorInfo=STUDY_CTX?('书院：'+STUDY_CTX.collegeName+'，专业：'+STUDY_CTX.majorName):'';
   return '你是一位大学生学习规划助手。请根据以下信息，为学生制定一份合理的每日学习规划。\n\n【学生信息】\n'+majorInfo+'\n\n【校区地理信息】\n'+campusInfo+'\n\n【课程表信息】\n'+(fileText||'（未提供课程表，请根据一般情况安排）')+'\n\n【学生要求】\n'+(userReq||'无特殊要求，请合理安排')+'\n\n【规划要求】\n1. 一日三餐：早餐7:00-7:30，午餐11:30-12:30，晚餐17:30-18:30（时间合理，考虑食堂距离）\n2. 运动时间：校园跑或运动至少30分钟（建议晨跑6:30-7:00或晚跑21:00-21:30）\n3. 通勤时间：根据校区地理信息预留足够通勤时间\n4. 就寝时间：保证6小时以上睡眠，建议23:00就寝6:00起床\n5. 自学时间：根据课程安排合理分配自习时间\n6. 娱乐时间：适当安排放松娱乐时间\n7. 请以时间表格式输出，每个时间段注明活动内容和时长\n8. 对学生的口语化要求请宽容理解，如"多睡会儿""少跑步"等\n\n请输出一份完整的每日学习规划时间表。';
 }
+// 调用智谱 GLM API：有图片用 glm-4v，纯文本用 glm-4-flash（更快更稳）
 function callZhipuAPI(prompt,fileBase64,fileType,cb){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   var url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
-  var messages=[{role:'user',content:[]}];
-  if(fileBase64){
+  var hasImg=!!fileBase64;
+  var model=hasImg?'glm-4v':'glm-4-flash';
+  var messages;
+  if(hasImg){
     var mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
-    messages[0].content.push({type:'image_url',image_url:{url:'data:'+mime+';base64,'+fileBase64}});
+    messages=[{role:'user',content:[{type:'image_url',image_url:{url:'data:'+mime+';base64,'+fileBase64}},{type:'text',text:prompt}]}];
+  }else{
+    messages=[{role:'user',content:prompt}];
   }
-  messages[0].content.push({type:'text',text:prompt});
-  var body=JSON.stringify({model:'glm-4v',messages:messages,temperature:0.7,max_tokens:2000});
-  fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body}).then(function(r){return r.json();}).then(function(d){if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{cb(null,JSON.stringify(d));}}).catch(function(e){cb(null,e.message);});
+  var body=JSON.stringify({model:model,messages:messages,temperature:0.7,max_tokens:2000});
+  var ctrl=new AbortController();
+  var timer=setTimeout(function(){ctrl.abort();},15000);
+  fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{cb(null,JSON.stringify(d));}}).catch(function(e){clearTimeout(timer);cb(null,e.name==='AbortError'?'请求超时（15秒），请重试':e.message);});
 }
+// 生成学习规划：调用 GLM-4V 并以卡片形式展示结果
 function generateSchedule(fileText,fileBase64,fileType,userReq){
   botReply('<p>正在分析课程表并生成学习规划，请稍候...</p>');
   var prompt=buildSchedulePrompt(fileText,userReq);
