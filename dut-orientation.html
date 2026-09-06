@@ -1099,26 +1099,32 @@ function readFileAsBase64(f,cb){
   r.onload=()=>cb(r.result.split(',')[1]);
   r.readAsDataURL(f);
 }
-// 调用智谱 GLM API：有图片用 glm-4v，纯文本用 glm-4-flash（更快更稳）
+// 调用智谱 GLM API：支持模型自动回退，纯文本优先用免费文本模型
 function callZhipuAPI(prompt,fileBase64,fileType,cb){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   const url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
   const hasImg=!!fileBase64;
-  const model=hasImg?'glm-4v':'glm-4.5-flash';
-  let messages;
-  if(hasImg){
-    const mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
-    messages=[{role:'user',content:[{type:'image_url',image_url:{url:`data:${mime};base64,${fileBase64}`}},{type:'text',text:prompt}]}];
-  }else{
-    messages=[{role:'user',content:prompt}];
+  const models=hasImg?['glm-4v-flash','glm-4v']:['glm-4.5-flash','glm-4-flash','glm-4.7-flash'];
+  let mi=0;
+  function tryModel(){
+    if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
+    const model=models[mi];
+    let messages;
+    if(hasImg){
+      const mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
+      messages=[{role:'user',content:[{type:'image_url',image_url:{url:`data:${mime};base64,${fileBase64}`}},{type:'text',text:prompt}]}];
+    }else{
+      messages=[{role:'user',content:prompt}];
+    }
+    const body=JSON.stringify({model,messages,temperature:0.7,max_tokens:2000});
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),15000);
+    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body,signal:ctrl.signal})
+      .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+      .then(d=>{clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}})
+      .catch(e=>{clearTimeout(timer);mi++;tryModel();});
   }
-  const body=JSON.stringify({model,messages,temperature:0.7,max_tokens:2000});
-  const ctrl=new AbortController();
-  const timer=setTimeout(()=>ctrl.abort(),15000);
-  fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body,signal:ctrl.signal})
-    .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-    .then(d=>{clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{cb(null,JSON.stringify(d));}})
-    .catch(e=>{clearTimeout(timer);cb(null,e.name==='AbortError'?'请求超时（15秒），请重试':e.message);});
+  tryModel();
 }
 // AI 回答：显示思考动画 → 调用 GLM-4V → 替换为回答
 function askAI(question,fileText,fileBase64,fileType){
