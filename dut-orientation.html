@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!--
-  dut-orientation.html - 新生入学助手
-  功能：智能问答（本地知识库 + GLM-4V AI fallback）、报到清单、实时天气、
-        交通路线、书院风采、时间线、全局搜索
-  技术：纯 HTML + 内联 CSS/JS，ES6+ 语法
-  依赖：protect.js（页面保护）、智谱 GLM-4V API
--->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -217,12 +210,6 @@ img{max-width:100%;display:block}
 .chat-header .ch-title{font-size:15px;font-weight:600}
 .chat-header .ch-sub{font-size:12px;color:var(--success);display:flex;align-items:center;gap:5px}
 .chat-header .ch-sub .dot{width:6px;height:6px;background:var(--success);border-radius:50%}
-.chat-clear{margin-left:auto;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--border);color:var(--text-3);cursor:pointer;flex-shrink:0;transition:all .15s}
-.chat-clear:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
-.chat-clear svg{width:16px;height:16px}
-.ctx-menu{position:fixed;z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:4px;min-width:140px}
-.ctx-item{padding:8px 14px;font-size:13px;color:var(--text-2);cursor:pointer;border-radius:6px;transition:all .15s}
-.ctx-item:hover{background:var(--primary-light);color:var(--primary)}
 .chat-msgs{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px}
 .msg{display:flex;gap:10px;max-width:80%}
 .msg.bot{align-self:flex-start}
@@ -253,15 +240,6 @@ img{max-width:100%;display:block}
 .chat-send{padding:11px 18px;background:var(--primary);color:#fff;border-radius:10px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:6px}
 .chat-send:hover{background:var(--primary-2)}
 .chat-send svg{width:16px;height:16px}
-.chat-upload{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:10px;background:var(--surface-2);color:var(--text-2);cursor:pointer;border:1px solid var(--border);transition:all .15s;flex-shrink:0;position:relative;overflow:hidden}
-.chat-upload:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
-.chat-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
-.chat-upload .file-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700}
-.chat-upload.has-file .file-badge{display:flex}
-.file-preview{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--primary-light);border:1px solid var(--border);margin:8px 22px;font-size:12.5px;color:var(--primary);max-width:calc(100% - 44px)}
-.file-preview .fp-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.file-preview .fp-remove{cursor:pointer;color:var(--text-3);font-size:16px;flex-shrink:0}
-.file-preview .fp-remove:hover{color:var(--accent)}
 
 .chat-side{display:flex;flex-direction:column;gap:14px}
 .chat-side-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:18px}
@@ -725,9 +703,6 @@ img{max-width:100%;display:block}
                 <div class="ch-title">大工迎新小助手</div>
                 <div class="ch-sub"><span class="dot"></span>在线 · 随时为你解答</div>
               </div>
-              <button class="chat-clear" onclick="clearChat()" title="清除聊天记录">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-              </button>
             </div>
             <div class="chat-msgs" id="chatMsgs"></div>
             <div class="chat-examples">
@@ -738,11 +713,6 @@ img{max-width:100%;display:block}
               </button>
             </div>
             <div class="chat-input">
-              <div class="chat-upload" id="chatUpload" title="上传图片或文件（AI 解读）">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                <input type="file" id="fileInput" accept=".txt,.jpg,.jpeg,.png,.pdf,.csv,.doc,.docx">
-                <span class="file-badge">1</span>
-              </div>
               <input type="text" id="chatInput" placeholder="输入你的问题，按 Enter 发送..." onkeydown="if(event.key==='Enter')sendChat()">
               <button class="chat-send" onclick="sendChat()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
@@ -1029,7 +999,6 @@ const qaDB=[
   {keys:['电动车','电瓶车','电池','电瓶','电动车能带吗','电瓶车能带吗','电池能带吗','电瓶能带吗','电动车可以带吗','电瓶车可以带吗','电池可以带吗','电瓶可以带吗','能带电动车吗','能带电瓶车吗','能带电池吗','能带电瓶吗','可以带电动车吗','可以带电瓶车吗','可以带电池吗','可以带电瓶吗','带电动车','带电瓶车','带电池','带电瓶','自带电动车','自带电瓶车','自带电池','自带电瓶','电动车充电','电瓶车充电','电池充电','电瓶充电','私自充电','私充电','充电','能充电吗','可以充电吗','能在宿舍充电吗','可以在宿舍充电吗','宿舍充电','宿舍能充电吗','宿舍可以充电吗','100wh','100Wh','100WH','100瓦时','一百瓦时','100wh以上','100Wh以上','100WH以上','100瓦时以上','一百瓦时以上','电池100wh','电池100Wh','电池100瓦时','电池多少','电池多大','电池容量','电池能量','能量值','额定能量','额定能量值','电动车规定','电瓶车规定','电池规定','电瓶规定','电动车制度','电瓶车制度','电池制度','电瓶制度','电动车能放吗','电瓶车能放吗','电动车可以放吗','电瓶车可以放吗','能放电动车吗','能放电瓶车吗','可以放电动车吗','可以放电瓶车吗','放电动车','放电瓶车','存放电动车','存放电瓶车','电动车存放','电瓶车存放','禁止电动车','禁止电瓶车','禁止电池','禁止电瓶','严禁电动车','严禁电瓶车','严禁电池','严禁电瓶','不得带入','不得带','不能带入','不能带','不得带入宿舍','不得带进宿舍','不能带入宿舍','不能带进宿舍','电池带入','电池带进','电池带宿舍','电池进宿舍','电动车带宿舍','电瓶车带宿舍','电动车进宿舍','电瓶车进宿舍','电动车咋办','电瓶车咋办','电池咋办','电瓶咋办','电动车怎么办','电瓶车怎么办','电池怎么办','电瓶怎么办','电动车能放宿舍吗','电瓶车能放宿舍吗','电池能放宿舍吗','电瓶能放宿舍吗','电动车可以放宿舍吗','电瓶车可以放宿舍吗','电池可以放宿舍吗','电瓶可以放宿舍吗','电动车能进宿舍吗','电瓶车能进宿舍吗','电池能进宿舍吗','电瓶能进宿舍吗','电动车可以进宿舍吗','电瓶车可以进宿舍吗','电池可以进宿舍吗','电瓶可以进宿舍吗','电动车不让带','电瓶车不让带','电池不让带','电瓶不让带','电动车不让进','电瓶车不让进','电池不让进','电瓶不让进','电动车不让放','电瓶车不让放','电池不让放','电瓶不让放','电动车不让充电','电瓶车不让充电','电池不让充电','电瓶不让充电','电动车不能充电','电瓶车不能充电','电池不能充电','电瓶不能充电','电动车禁止充电','电瓶车禁止充电','电池禁止充电','电瓶禁止充电','电动车私自充电','电瓶车私自充电','电池私自充电','电瓶私自充电','电动车私充电','电瓶车私充电','电池私充电','电瓶私充电'],a:'<strong>电动车与电池规定：</strong><ul><li>禁止 <strong>存放电动车或电动车电池</strong></li><li>不得将额定能量值 <strong>100Wh以上</strong> 的电池带入宿舍或私自充电</li></ul>'},
   {keys:['你好','在吗','hi','hello','谢谢','感谢'],a:'你好！我是大工迎新小助手 😊 很高兴为你服务。你可以问我关于<strong>报到时间、必备材料、缴费、宿舍、户口、校园网、绿色通道</strong>等任何入学相关问题。'}
 ];
-// 问题归一化：去标点、语气词、口语替换，提升匹配容错
 function normQ(s){
   return s.toLowerCase()
     .replace(/[Ａ-Ｚａ-ｚ０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0))
@@ -1040,17 +1009,15 @@ function normQ(s){
     .replace(/(请问一下|请问下|请问|想问一下|想问下|想问|想知道|想了解|问一下|问下|咨询一下|咨询下|咨询|麻烦问一下|麻烦问下|麻烦问|帮我问一下|帮我问|帮我查一下|帮我查|帮问|查一下|查下|了解下|了解一下|告诉我|说下|说一下|请教一下|请教)/g,'')
     .replace(/(啊|呀|吧|哈|哦|噢|嘛|呐|噻|呗|啦|咯|喽|喂|嗯|吖|哇|哟|嘞|哒|哎|诶)/g,'');
 }
-// 本地知识库匹配，命中返回回答，未命中返回 null（交由 AI fallback）
 function matchAnswer(q){
   const nq=normQ(q);
   for(const item of qaDB){
     if(item.keys.some(k=>nq.includes(normQ(k))))return item.a;
   }
-  return null;
+  return '抱歉，我暂时无法准确理解这个问题 🤔 你可以尝试换个问法，或点击下方快捷按钮。关于更详细的信息，建议访问 <strong>迎新网 yx.dlut.edu.cn</strong> 或拨打学生处电话 <strong>0411-84708320</strong>。';
 }
 let chatHistory=[],restoringChat=false;
 function saveChatHistory(){try{sessionStorage.setItem('dut_chat_history',JSON.stringify(chatHistory));}catch(e){}}
-// 添加聊天消息到界面并保存到 sessionStorage
 function addMsg(text,who){
   const msgs=document.getElementById('chatMsgs');
   const div=document.createElement('div');
@@ -1060,170 +1027,20 @@ function addMsg(text,who){
   msgs.scrollTop=msgs.scrollHeight;
   if(!restoringChat){chatHistory.push({text,who});saveChatHistory();}
 }
-// ===== 智谱 GLM-4V AI 问答（未匹配本地知识库时 fallback）=====
-const ZHIPU_API_KEY='69808293f6d145d0b243be958ac0ddf6.v693lXm6mBivdBED';
-let uploadedFile=null;
-const fileInputEl=document.getElementById('fileInput');
-const chatUploadEl=document.getElementById('chatUpload');
-fileInputEl.addEventListener('change',e=>{
-  const f=e.target.files[0];
-  if(!f)return;
-  if(f.size>10*1024*1024){addMsg('文件过大（超过 10MB），请上传较小的文件。','bot');return;}
-  uploadedFile=f;
-  chatUploadEl.classList.add('has-file');
-  const fp=document.createElement('div');
-  fp.className='file-preview';
-  fp.id='filePreview';
-  fp.innerHTML=`<span>📎</span><span class="fp-name">${f.name} (${Math.round(f.size/1024)}KB)</span><span class="fp-remove" onclick="clearFile()">✕</span>`;
-  const msgs=document.getElementById('chatMsgs');
-  msgs.appendChild(fp);
-  msgs.scrollTop=msgs.scrollHeight;
-  document.getElementById('chatInput').placeholder=`已上传${f.name}，输入问题后发送`;
-  document.getElementById('chatInput').focus();
-});
-function clearFile(){
-  uploadedFile=null;
-  fileInputEl.value='';
-  chatUploadEl.classList.remove('has-file');
-  document.getElementById('chatInput').placeholder='输入你的问题，按 Enter 发送...';
-  const fp=document.getElementById('filePreview');
-  if(fp)fp.remove();
-}
-function readFileAsText(f,cb){
-  const r=new FileReader();
-  r.onload=()=>cb(r.result);
-  r.readAsText(f,'UTF-8');
-}
-function readFileAsBase64(f,cb){
-  const r=new FileReader();
-  r.onload=()=>cb(r.result.split(',')[1]);
-  r.readAsDataURL(f);
-}
-// 调用智谱 GLM API：支持模型自动回退，纯文本优先用免费文本模型
-function callZhipuAPI(prompt,fileBase64,fileType,cb){
-  if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
-  const url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
-  const hasImg=!!fileBase64;
-  const models=hasImg?['glm-4.6v-flash']:['glm-4.7-flash'];
-  let mi=0;
-  function tryModel(){
-    if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
-    const model=models[mi];
-    let messages;
-    if(hasImg){
-      const mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
-      messages=[{role:'user',content:[{type:'image_url',image_url:{url:`data:${mime};base64,${fileBase64}`}},{type:'text',text:prompt}]}];
-    }else{
-      messages=[{role:'user',content:prompt}];
-    }
-    const body=JSON.stringify({model,messages,temperature:0.7,max_tokens:2000});
-    const ctrl=new AbortController();
-    const timer=setTimeout(()=>ctrl.abort(),15000);
-    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body,signal:ctrl.signal})
-      .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-      .then(d=>{clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}})
-      .catch(e=>{clearTimeout(timer);mi++;tryModel();});
-  }
-  tryModel();
-}
-// AI 回答：显示思考动画 → 调用 GLM-4V → 替换为回答
-function askAI(question,fileText,fileBase64,fileType){
-  const msgs=document.getElementById('chatMsgs');
-  const tmp=document.createElement('div');
-  tmp.className='msg bot';
-  tmp.id='aiThinking';
-  tmp.innerHTML=`<div class="msg-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 013 3v1a3 3 0 01-3 3 3 3 0 01-3-3V5a3 3 0 013-3z"/><path d="M5 12a7 7 0 0014 0M12 19v3"/></svg></div><div class="msg-bubble">🤔 正在思考中...</div>`;
-  msgs.appendChild(tmp);
-  msgs.scrollTop=msgs.scrollHeight;
-  let prompt=`你是大连理工大学迎新助手"大工迎新小助手"。请回答以下关于新生入学、校园生活的问题。回答要简洁、准确、友好，可以使用 emoji 和简单 HTML 标签（如 <strong>）。如果涉及具体政策、日期或费用，请建议学生查看迎新网 yx.dlut.edu.cn 或拨打学生处电话 0411-84708320。\n\n学生问题：${question}`;
-  if(fileText)prompt+=`\n\n【附件文本内容】\n${fileText}`;
-  callZhipuAPI(prompt,fileBase64,fileType,(resp,err)=>{
-    const t=document.getElementById('aiThinking');
-    if(t)t.remove();
-    if(err){
-      addMsg(`抱歉，AI 回答失败：${err}。建议访问 <strong>迎新网 yx.dlut.edu.cn</strong> 或拨打学生处电话 <strong>0411-84708320</strong>。`,'bot');
-      return;
-    }
-    addMsg(resp,'bot');
-  });
-}
-// 发送消息：有上传文件时直接调 AI，否则先匹配本地知识库，未命中 fallback 到 AI
 function sendChat(){
   const input=document.getElementById('chatInput');
   const q=input.value.trim();
   if(!q)return;
   addMsg(q,'user');
   input.value='';
-  if(uploadedFile){
-    const f=uploadedFile;
-    const fname=f.name.toLowerCase();
-    const isImg=fname.endsWith('.jpg')||fname.endsWith('.jpeg')||fname.endsWith('.png');
-    clearFile();
-    if(isImg){
-      readFileAsBase64(f,b64=>{
-        const ext=fname.split('.').pop();
-        askAI(q,null,b64,ext);
-      });
-    }else{
-      readFileAsText(f,txt=>{
-        askAI(q,txt,null,null);
-      });
-    }
-    return;
-  }
-  const ans=matchAnswer(q);
-  if(ans){
-    setTimeout(()=>addMsg(ans,'bot'),500);
-  }else{
-    askAI(q,null,null,null);
-  }
+  setTimeout(()=>{
+    addMsg(matchAnswer(q),'bot');
+  },500);
 }
 function askQuick(q){
   document.getElementById('chatInput').value=q;
   sendChat();
 }
-// 清除聊天记录
-function clearChat(){
-  chatHistory=[];
-  saveChatHistory();
-  document.getElementById('chatMsgs').innerHTML='';
-  addMsg('聊天记录已清除，有什么可以帮你？','bot');
-}
-// 右键删除单条聊天记录
-let ctxMenu=null;
-function showCtxMenu(x,y,msgEl){
-  if(ctxMenu)ctxMenu.remove();
-  ctxMenu=document.createElement('div');
-  ctxMenu.className='ctx-menu';
-  ctxMenu.innerHTML='<div class="ctx-item">🗑 删除此条记录</div>';
-  ctxMenu.style.left=Math.min(x,window.innerWidth-160)+'px';
-  ctxMenu.style.top=Math.min(y,window.innerHeight-50)+'px';
-  ctxMenu.querySelector('.ctx-item').onclick=()=>{deleteSingleMsg(msgEl);ctxMenu.remove();ctxMenu=null;};
-  document.body.appendChild(ctxMenu);
-}
-function deleteSingleMsg(msgEl){
-  if(msgEl.classList.contains('user')){
-    const next=msgEl.nextElementSibling;
-    if(next&&next.classList.contains('bot'))next.remove();
-  }
-  if(msgEl.classList.contains('bot')){
-    const prev=msgEl.previousElementSibling;
-    if(prev&&prev.classList.contains('user'))prev.remove();
-  }
-  msgEl.remove();
-  chatHistory=[];
-  document.querySelectorAll('#chatMsgs .msg').forEach(m=>{
-    chatHistory.push({text:m.querySelector('.msg-bubble').innerHTML,who:m.classList.contains('bot')?'bot':'user'});
-  });
-  saveChatHistory();
-}
-document.getElementById('chatMsgs').addEventListener('contextmenu',e=>{
-  const msg=e.target.closest('.msg');
-  if(!msg)return;
-  e.preventDefault();e.stopPropagation();
-  showCtxMenu(e.clientX,e.clientY,msg);
-});
-document.addEventListener('click',()=>{if(ctxMenu){ctxMenu.remove();ctxMenu=null;}});
 
 // ===== 示例分组（右侧按键展开）=====
 const EXAMPLE_GROUPS=[
