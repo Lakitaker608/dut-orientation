@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!--
-  campus-life.html - 校园生活助手
-  功能：学习规划助手（本地知识库 + GLM-4V AI fallback）、课程表导入与规划生成、
-        三校区实时天气、周边生活与路线、学科竞赛、卫星地图
-  技术：纯 HTML + 内联 CSS/JS，ES5 语法
-  依赖：protect.js（页面保护）、智谱 GLM-4V API、高德地图 URI
--->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -292,12 +285,6 @@ svg{display:block}
 .asst-sub{font-size:12px;color:rgba(255,255,255,.78);margin-top:3px}
 .asst-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11.5px;color:rgba(255,255,255,.85);padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.12)}
 .asst-status .dot{width:7px;height:7px;border-radius:50%;background:#7BE495;box-shadow:0 0 6px #7BE495}
-.chat-clear{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.85);cursor:pointer;flex-shrink:0;transition:all .15s;margin-left:8px}
-.chat-clear:hover{background:rgba(255,255,255,.22);color:#fff}
-.chat-clear svg{width:16px;height:16px}
-.ctx-menu{position:fixed;z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:4px;min-width:140px}
-.ctx-item{padding:8px 14px;font-size:13px;color:var(--text-2);cursor:pointer;border-radius:6px;transition:all .15s}
-.ctx-item:hover{background:var(--primary-light);color:var(--primary)}
 .chat-body{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:18px;background:var(--surface-2);scroll-behavior:smooth}
 .chat-body::-webkit-scrollbar{width:8px}
 .chat-body::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px}
@@ -333,15 +320,6 @@ svg{display:block}
 .chat-send:hover{background:var(--primary-2);transform:translateY(-1px)}
 .chat-send:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .chat-send svg{width:16px;height:16px}
-.chat-upload{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--surface-2);color:var(--text-2);font-size:18px;cursor:pointer;border:1px solid var(--border-strong);transition:all .15s;flex-shrink:0;position:relative;overflow:hidden}
-.chat-upload:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
-.chat-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
-.chat-upload .file-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700}
-.chat-upload.has-file .file-badge{display:flex}
-.file-preview{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--primary-light);border:1px solid var(--border);margin-bottom:8px;font-size:12.5px;color:var(--primary);max-width:100%}
-.file-preview .fp-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.file-preview .fp-remove{cursor:pointer;color:var(--text-3);font-size:16px;flex-shrink:0}
-.file-preview .fp-remove:hover{color:var(--accent)}
 .chat-hint{font-size:11px;color:var(--text-3);margin-top:8px;text-align:center}
 .chat-examples{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .ex-label{font-size:11.5px;color:var(--text-3);font-weight:500;flex-shrink:0}
@@ -569,9 +547,6 @@ svg{display:block}
           <div class="asst-sub">面向大学学习的问答智能体 · 自动规划未来课程</div>
         </div>
         <div class="asst-status"><span class="dot"></span>在线</div>
-        <button class="chat-clear" onclick="clearChat()" title="清除聊天记录">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-        </button>
       </div>
       <div class="chat-body" id="chatBody"></div>
       <div class="chat-foot">
@@ -583,11 +558,6 @@ svg{display:block}
           </button>
         </div>
         <div class="chat-input-row">
-          <div class="chat-upload" id="chatUpload" title="上传课程表文件">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-            <input type="file" id="fileInput" accept=".txt,.jpg,.jpeg,.png,.pdf,.csv,.doc,.docx">
-            <span class="file-badge">1</span>
-          </div>
           <textarea class="chat-input" id="chatInput" rows="1" placeholder="向助手提问，或点击上方示例快速发送"></textarea>
           <button class="chat-send" id="chatSend">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -793,10 +763,7 @@ var CAMPUS_PLACES={
       {name:'锦辉购物广场(奥莱店)',addr:'高新园区黄浦路517号',lng:'121.532640',lat:'38.865350',mode:'walk',dist:'2.41 公里',time:'约 32 分钟',detail:'步行沿凌水路→黄浦路向南，评分 4.7',badges:[{t:'评分 4.7',c:'badge-rate'}]},
       {name:'万达影城(高新万达广场店)',addr:'黄浦路500号万达广场4层',lng:'121.533141',lat:'38.861318',mode:'walk',dist:'2.79 公里',time:'约 37 分钟',detail:'步行沿凌水路→黄浦路，评分 4.7，营业 08:00-24:00',badges:[{t:'评分 4.7',c:'badge-rate'}]},
       {name:'中影星美国际影城(软件园店)',addr:'软件园路1A-12号',lng:'121.535200',lat:'38.872100',mode:'walk',dist:'约 1.8 公里',time:'约 24 分钟',detail:'软件园路影院',badges:[]},
-      {name:'锦辉购物广场(书香园店)',addr:'高新园区数码路18号',lng:'121.536100',lat:'38.870200',mode:'walk',dist:'约 2.0 公里',time:'约 26 分钟',detail:'数码路购物中心',badges:[]},
-      {name:'万达广场(大连高新店)',addr:'黄浦路500号(海事大学地铁站C口)',lng:'121.533722',lat:'38.862156',mode:'walk',dist:'3.02 公里',time:'约 46 分钟',detail:'沿凌水路→黄浦路向南，大型商业综合体，含购物、餐饮、影院，营业 10:00-21:30',badges:[{t:'评分 4.8',c:'badge-rate'}]},
-      {name:'哈佛世纪购物商场',addr:'高新园区凌水路6-3号',lng:'121.518674',lat:'38.876213',mode:'walk',dist:'1.26 公里',time:'约 20 分钟',detail:'沿凌水路向西步行，校区最近商场，营业 07:30-20:30',badges:[{t:'评分 4.1',c:'badge-rate'}]},
-      {name:'开来商城',addr:'黑石礁尖山街241号(黑石礁地铁站C口)',lng:'121.556891',lat:'38.876853',mode:'walk',dist:'3.67 公里',time:'约 57 分钟',detail:'沿凌水路→中山路→尖山街步行，黑石礁商圈，营业 09:30-22:00',badges:[{t:'评分 3.9',c:'badge-rate'}]}
+      {name:'锦辉购物广场(书香园店)',addr:'高新园区数码路18号',lng:'121.536100',lat:'38.870200',mode:'walk',dist:'约 2.0 公里',time:'约 26 分钟',detail:'数码路购物中心',badges:[]}
     ]
   },
   transit:{
@@ -827,12 +794,7 @@ var CAMPUS_PLACES={
       items:[
         {name:'中环城市广场',addr:'辽河西路与东北四街交叉口',lng:'121.789425',lat:'39.061075',mode:'walk',dist:'4.77 公里',time:'约 64 分钟',detail:'沿图强路→铁山西路→辽河西路步行，评分 3.6',badges:[{t:'评分 3.6',c:'badge-rate'}]},
         {name:'万达影城(经开万达广场IMAX激光店)',addr:'辽河西路117号万达广场4层',lng:'121.784467',lat:'39.060285',mode:'walk',dist:'5.27 公里',time:'约 70 分钟',detail:'沿图强路→铁山西路→辽河西路，评分 4.8，营业 09:00-21:00',badges:[{t:'评分 4.8',c:'badge-rate'}]},
-        {name:'CGV影城(安盛购物广场店)',addr:'金马路189号安盛购物广场5层',lng:'121.780000',lat:'39.055000',mode:'walk',dist:'约 5.8 公里',time:'约 75 分钟',detail:'安盛购物广场内 CGV 影城',badges:[]},
-        {name:'万达广场(大连开发区店)',addr:'辽河西路117号',lng:'121.783216',lat:'39.059808',mode:'walk',dist:'5.31 公里',time:'约 74 分钟',detail:'沿图强路→铁山西路→辽河西路步行，大型商业综合体，含购物、餐饮、影院',badges:[{t:'评分 4.8',c:'badge-rate'}]},
-        {name:'澳东世纪购物广场',addr:'金州新区澳东园10号楼',lng:'121.845820',lat:'39.063035',mode:'walk',dist:'4.94 公里',time:'约 70 分钟',detail:'沿图强路→淮河西路步行，综合购物中心，营业 09:00-21:00',badges:[{t:'评分 4.6',c:'badge-rate'}]},
-        {name:'美和商城',addr:'辽河西路31号',lng:'121.801245',lat:'39.063718',mode:'walk',dist:'3.70 公里',time:'约 50 分钟',detail:'沿图强路→铁山西路→辽河西路步行，普通商场与综合市场，营业 09:30-22:00',badges:[{t:'评分 4.0',c:'badge-rate'}]},
-        {name:'金源商城',addr:'金源南里12号(1-6层)',lng:'121.818374',lat:'39.055817',mode:'walk',dist:'3.89 公里',time:'约 55 分钟',detail:'沿图强路→金源中路步行，多层商业商城，营业 08:00-20:00',badges:[{t:'评分 4.5',c:'badge-rate'}]},
-        {name:'太和商城',addr:'学府大街23号',lng:'121.825320',lat:'39.098980',mode:'walk',dist:'2.47 公里',time:'约 38 分钟',detail:'沿学府南街→学府大街步行，校区附近最近商场，营业 10:00-22:00',badges:[{t:'评分 3.9',c:'badge-rate'}]}
+        {name:'CGV影城(安盛购物广场店)',addr:'金马路189号安盛购物广场5层',lng:'121.780000',lat:'39.055000',mode:'walk',dist:'约 5.8 公里',time:'约 75 分钟',detail:'安盛购物广场内 CGV 影城',badges:[]}
       ]
     },
     transit:{
@@ -863,10 +825,7 @@ var CAMPUS_PLACES={
       items:[
         {name:'新页通百货超市',addr:'滨海大道与柴河路交叉口西280米',lng:'122.158659',lat:'40.718148',mode:'transit',dist:'6.02 公里',time:'约 83 分钟',detail:'辽东湾 2 路(理工大学西门→嘉恒伟业) 或 步行至辽东湾管委会乘 T1 路，评分 3.2',badges:[{t:'公交',c:'badge-transit'},{t:'评分 3.2',c:'badge-rate'}]},
         {name:'欧派国际影城',addr:'滨海大道与向海大道交叉口华源时代城3楼',lng:'122.173355',lat:'40.720498',mode:'transit',dist:'7.52 公里',time:'约 76 分钟',detail:'步行至辽东湾管委会乘 T1 路(→柏栎饭店) 步行到达，评分 4.5',badges:[{t:'公交',c:'badge-transit'},{t:'评分 4.5',c:'badge-rate'}]},
-        {name:'兴隆七彩城',addr:'辽东湾新区',lng:'122.130000',lat:'40.705000',mode:'transit',dist:'约 5 公里',time:'约 70 分钟',detail:'辽东湾 2 路可达，周边商业综合体',badges:[{t:'公交',c:'badge-transit'}]},
-        {name:'鑫和邻家百货(海景花园店)',addr:'海景花园南门旁',lng:'122.096765',lat:'40.709645',mode:'transit',dist:'4.41 公里',time:'约 63 分钟',detail:'辽东湾 2 路可达，海景花园社区百货',badges:[{t:'公交',c:'badge-transit'},{t:'评分 3.9',c:'badge-rate'}]},
-        {name:'雅玲百货超市',addr:'滨海大道与柴河路交叉口西220米',lng:'122.159501',lat:'40.718436',mode:'transit',dist:'6.04 公里',time:'约 87 分钟',detail:'步行至辽东湾管委会乘 T1 路可达，营业 05:30-22:00',badges:[{t:'公交',c:'badge-transit'},{t:'评分 3.4',c:'badge-rate'}]},
-        {name:'真实汇超市',addr:'修业路与五号公路交叉口西180米',lng:'122.150625',lat:'40.728475',mode:'transit',dist:'6.13 公里',time:'约 88 分钟',detail:'步行至辽东湾管委会乘 T1 路可达，社区综合超市',badges:[{t:'公交',c:'badge-transit'},{t:'评分 3.1',c:'badge-rate'}]}
+        {name:'兴隆七彩城',addr:'辽东湾新区',lng:'122.130000',lat:'40.705000',mode:'transit',dist:'约 5 公里',time:'约 70 分钟',detail:'辽东湾 2 路可达，周边商业综合体',badges:[{t:'公交',c:'badge-transit'}]}
       ]
     },
     transit:{
@@ -884,8 +843,8 @@ var CAMPUS_PLACES={
 
 // 渲染 Tabs（按当前校区）
 function curPlaces(){return CAMPUS_PLACES[curCampus];}
-var TABS=['fun','food','transit'];
-var curTab='fun';
+var TABS=['food','fun','transit'];
+var curTab='food';
 function renderTabs(){
   var P=curPlaces();
   document.getElementById('tabs').innerHTML=TABS.map(function(k){
@@ -1328,7 +1287,6 @@ function coursesToHtml(info){
 }
 var chatBody,chatInput,chatSend,chatHistory=[],restoringChat=false;
 function saveChatHistory(){try{sessionStorage.setItem('chat_history',JSON.stringify(chatHistory));}catch(e){}}
-// 添加聊天消息到界面并保存到 sessionStorage
 function addMsg(role,text,extra){
   var div=document.createElement('div');
   div.className='msg '+(role==='user'?'user':'bot');
@@ -1339,7 +1297,6 @@ function addMsg(role,text,extra){
   if(!restoringChat){chatHistory.push({role:role,html:text+(extra||'')});saveChatHistory();}
   return div;
 }
-// 显示打字动画的临时消息（不保存到历史）
 function addTyping(){
   var div=document.createElement('div');
   div.className='msg bot';
@@ -1348,7 +1305,6 @@ function addTyping(){
   chatBody.scrollTop=chatBody.scrollHeight;
   return div;
 }
-// 机器人回复：显示打字动画 → 延迟替换为实际内容
 function botReply(text,extra){
   var t=addTyping();
   setTimeout(function(){
@@ -1357,8 +1313,6 @@ function botReply(text,extra){
     chatHistory.push({role:'bot',html:text+(extra||'')});saveChatHistory();
   },650);
 }
-// 学习规划问答核心：依次匹配以考代修、考研建议、CONCEPTS 知识库、
-// 课程/就业/书院/专业等关键词，全部未命中时调用 GLM-4V AI 作答
 function answerBot(q){
   var ctx=STUDY_CTX;
   var nq=normQuery(q);
@@ -1429,62 +1383,8 @@ function answerBot(q){
     botReply('<p>你好！我是学习规划助手。你可以问我：课程规划、就业方向、考研建议、学科竞赛、专业详情、英语以考代修等。</p>');
     return;
   }
-  var t=addTyping();
-  t.querySelector('.msg-bubble').innerHTML='<p>🤔 正在思考中...</p>';
-  var aiPrompt='你是大连理工大学的学习规划助手。学生来自'+ctx.collegeName+'，专业是'+ctx.majorName+'（所属：'+ctx.faculty+'）。请回答以下问题，回答要简洁、准确、友好，可以使用 HTML 标签（如 <p>、<b>）格式化。\n\n学生问题：'+q;
-  callZhipuAPI(aiPrompt,null,null,function(resp,err){
-    if(err){
-      t.querySelector('.msg-bubble').innerHTML='<p>⚠️ AI 回答失败：'+escapeHtml(err)+'</p><p>你可以尝试问我："我的课程规划"、"就业方向"、"考研建议"、"学科竞赛"、"英语以考代修"等。</p>';
-    }else{
-      t.querySelector('.msg-bubble').innerHTML='<p>'+resp+'</p>';
-    }
-    chatBody.scrollTop=chatBody.scrollHeight;
-    chatHistory.push({role:'bot',html:t.querySelector('.msg-bubble').innerHTML});saveChatHistory();
-  });
+  botReply('<p>关于 <b>'+escapeHtml(ctx.majorName)+'</b> 的问题我已记录。你可以尝试问我：\"我的课程规划\"、\"就业方向\"、\"考研建议\"、\"学科竞赛\"、\"英语以考代修\"等，我会基于你的书院与专业作答。</p>');
 }
-// 清除聊天记录
-function clearChat(){
-  chatHistory=[];
-  saveChatHistory();
-  document.getElementById('chatBody').innerHTML='';
-  botReply('<p>聊天记录已清除，有什么可以帮你？</p>');
-}
-// 右键删除单条聊天记录
-var ctxMenu=null;
-function showCtxMenu(x,y,msgEl){
-  if(ctxMenu)ctxMenu.remove();
-  ctxMenu=document.createElement('div');
-  ctxMenu.className='ctx-menu';
-  ctxMenu.innerHTML='<div class="ctx-item">🗑 删除此条记录</div>';
-  ctxMenu.style.left=Math.min(x,window.innerWidth-160)+'px';
-  ctxMenu.style.top=Math.min(y,window.innerHeight-50)+'px';
-  ctxMenu.querySelector('.ctx-item').onclick=function(){deleteSingleMsg(msgEl);ctxMenu.remove();ctxMenu=null;};
-  document.body.appendChild(ctxMenu);
-}
-function deleteSingleMsg(msgEl){
-  if(msgEl.classList.contains('user')){
-    var next=msgEl.nextElementSibling;
-    if(next&&next.classList.contains('bot'))next.remove();
-  }
-  if(msgEl.classList.contains('bot')){
-    var prev=msgEl.previousElementSibling;
-    if(prev&&prev.classList.contains('user'))prev.remove();
-  }
-  msgEl.remove();
-  chatHistory=[];
-  var msgs=document.querySelectorAll('#chatBody .msg');
-  for(var i=0;i<msgs.length;i++){
-    chatHistory.push({role:msgs[i].classList.contains('bot')?'bot':'user',html:msgs[i].querySelector('.msg-bubble').innerHTML});
-  }
-  saveChatHistory();
-}
-document.getElementById('chatBody').addEventListener('contextmenu',function(e){
-  var msg=e.target.closest('.msg');
-  if(!msg)return;
-  e.preventDefault();e.stopPropagation();
-  showCtxMenu(e.clientX,e.clientY,msg);
-});
-document.addEventListener('click',function(){if(ctxMenu){ctxMenu.remove();ctxMenu=null;}});
 function enterAssistant(){
   var ck=document.getElementById('collegeSelect').value;
   var c=COLLEGES[ck];
@@ -1555,134 +1455,6 @@ function sendChat(text){
   input.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
 })();
 
-// ===== 课程表文件导入 + 智谱 GLM-4V 学习规划生成 =====
-var ZHIPU_API_KEY='69808293f6d145d0b243be958ac0ddf6.v693lXm6mBivdBED';
-var CAMPUS_COMMUTE_INFO={
-  lingshui:{name:'凌水主校区',canteen:'校内多个食堂（中心食堂、第五至第九食堂、博园餐厅），步行5-10分钟可达',playground:'校内标准田径场、篮球场、网球场，步行5分钟可达',commute:'校区面积较大，教学楼至宿舍步行约10-15分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
-  kaifa:{name:'开发区校区',canteen:'校内第六食堂，步行5分钟可达',playground:'校内运动场、篮球场，步行5分钟可达',commute:'校区紧凑，教学楼至宿舍步行约5-8分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
-  panjin:{name:'盘锦校区',canteen:'校内第三食堂、第八食堂（B03/B13楼），步行5分钟可达',playground:'校内田径场、球场，步行5分钟可达',commute:'校区紧凑，教学楼至宿舍步行约5-8分钟',sleep:'宿舍门禁23:00，建议22:30前返回'}
-};
-function getCampusKey(){
-  if(!STUDY_CTX||!STUDY_CTX.college)return 'lingshui';
-  var c=COLLEGES[STUDY_CTX.college];
-  if(!c)return 'lingshui';
-  if(c.campus.indexOf('凌水')>=0)return 'lingshui';
-  if(c.campus.indexOf('开发')>=0)return 'kaifa';
-  if(c.campus.indexOf('盘锦')>=0)return 'panjin';
-  return 'lingshui';
-}
-var uploadedFile=null;
-var fileInput=document.getElementById('fileInput');
-var chatUpload=document.getElementById('chatUpload');
-fileInput.addEventListener('change',function(e){
-  var f=e.target.files[0];
-  if(!f)return;
-  if(f.size>10*1024*1024){botReply('<p>文件过大（超过 10MB），请上传较小的课程表文件。</p>');return;}
-  uploadedFile=f;
-  chatUpload.classList.add('has-file');
-  var fp=document.createElement('div');
-  fp.className='file-preview';
-  fp.id='filePreview';
-  fp.innerHTML='<span>📎</span><span class="fp-name">'+escapeHtml(f.name)+' ('+Math.round(f.size/1024)+'KB)</span><span class="fp-remove" onclick="clearFile()">✕</span>';
-  var cb=document.getElementById('chatBody');
-  cb.appendChild(fp);
-  cb.scrollTop=cb.scrollHeight;
-  chatInput.placeholder='已上传'+f.name+'，输入要求后发送（如"帮我制定学习计划"）';
-  chatInput.focus();
-});
-function clearFile(){
-  uploadedFile=null;
-  fileInput.value='';
-  chatUpload.classList.remove('has-file');
-  chatInput.placeholder='向助手提问，或点击上方示例快速发送';
-  var fp=document.getElementById('filePreview');
-  if(fp)fp.remove();
-}
-function readFileAsText(f,cb){
-  var r=new FileReader();
-  r.onload=function(){cb(r.result);};
-  r.readAsText(f,'UTF-8');
-}
-function readFileAsBase64(f,cb){
-  var r=new FileReader();
-  r.onload=function(){cb(r.result.split(',')[1]);};
-  r.readAsDataURL(f);
-}
-// 构建学习规划 prompt：注入校区地理、书院专业、课程表、学生要求
-function buildSchedulePrompt(fileText,userReq){
-  var ck=getCampusKey();
-  var ci=CAMPUS_COMMUTE_INFO[ck];
-  var campusInfo='校区：'+ci.name+'\n食堂：'+ci.canteen+'\n运动场：'+ci.playground+'\n通勤：'+ci.commute+'\n就寝：'+ci.sleep;
-  var majorInfo=STUDY_CTX?('书院：'+STUDY_CTX.collegeName+'，专业：'+STUDY_CTX.majorName):'';
-  return '你是一位大学生学习规划助手。请根据以下信息，为学生制定一份合理的每日学习规划。\n\n【学生信息】\n'+majorInfo+'\n\n【校区地理信息】\n'+campusInfo+'\n\n【课程表信息】\n'+(fileText||'（未提供课程表，请根据一般情况安排）')+'\n\n【学生要求】\n'+(userReq||'无特殊要求，请合理安排')+'\n\n【规划要求】\n1. 一日三餐：早餐7:00-7:30，午餐11:30-12:30，晚餐17:30-18:30（时间合理，考虑食堂距离）\n2. 运动时间：校园跑或运动至少30分钟（建议晨跑6:30-7:00或晚跑21:00-21:30）\n3. 通勤时间：根据校区地理信息预留足够通勤时间\n4. 就寝时间：保证6小时以上睡眠，建议23:00就寝6:00起床\n5. 自学时间：根据课程安排合理分配自习时间\n6. 娱乐时间：适当安排放松娱乐时间\n7. 请以时间表格式输出，每个时间段注明活动内容和时长\n8. 对学生的口语化要求请宽容理解，如"多睡会儿""少跑步"等\n\n请输出一份完整的每日学习规划时间表。';
-}
-// 调用智谱 GLM API：支持模型自动回退，纯文本优先用免费文本模型
-function callZhipuAPI(prompt,fileBase64,fileType,cb){
-  if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
-  var url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
-  var hasImg=!!fileBase64;
-  var models=hasImg?['glm-4.6v-flash']:['glm-4.7-flash'];
-  var mi=0;
-  function tryModel(){
-    if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
-    var model=models[mi];
-    var messages;
-    if(hasImg){
-      var mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
-      messages=[{role:'user',content:[{type:'image_url',image_url:{url:'data:'+mime+';base64,'+fileBase64}},{type:'text',text:prompt}]}];
-    }else{
-      messages=[{role:'user',content:prompt}];
-    }
-    var body=JSON.stringify({model:model,messages:messages,temperature:0.7,max_tokens:2000});
-    var ctrl=new AbortController();
-    var timer=setTimeout(function(){ctrl.abort();},15000);
-    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}}).catch(function(e){clearTimeout(timer);mi++;tryModel();});
-  }
-  tryModel();
-}
-// 生成学习规划：调用 GLM-4V 并以卡片形式展示结果
-function generateSchedule(fileText,fileBase64,fileType,userReq){
-  botReply('<p>正在分析课程表并生成学习规划，请稍候...</p>');
-  var prompt=buildSchedulePrompt(fileText,userReq);
-  callZhipuAPI(prompt,fileBase64,fileType,function(resp,err){
-    if(err){
-      botReply('<p>⚠️ 规划生成失败：'+escapeHtml(err)+'</p><p>请检查 API Key 是否正确配置。</p>');
-      return;
-    }
-    var html='<p>📋 <b>已为你生成每日学习规划</b>（基于'+escapeHtml(CAMPUS_COMMUTE_INFO[getCampusKey()].name)+'校区信息）：</p>';
-    html+='<div style="background:var(--surface-2);border-radius:12px;padding:16px;margin:8px 0;font-size:13px;line-height:1.8;white-space:pre-wrap;border:1px solid rgba(0,63,136,.2)">'+escapeHtml(resp)+'</div>';
-    html+='<p style="font-size:12px;color:var(--text-3)">以上规划由 AI 根据你的课程表与校区信息生成，仅供参考，请根据实际情况调整。</p>';
-    botReply(html);
-  });
-}
-sendChat=function(text){
-  if(!chatInput)return;
-  var v=(text!=null?text:chatInput.value).trim();
-  if(!v)return;
-  addMsg('user',escapeHtml(v));
-  chatInput.value='';
-  chatInput.style.height='auto';
-  if(uploadedFile){
-    var f=uploadedFile;
-    var fname=f.name.toLowerCase();
-    var isImg=fname.endsWith('.jpg')||fname.endsWith('.jpeg')||fname.endsWith('.png');
-    var isTxt=fname.endsWith('.txt')||fname.endsWith('.csv')||fname.endsWith('.pdf')||fname.endsWith('.doc')||fname.endsWith('.docx');
-    clearFile();
-    if(isImg){
-      readFileAsBase64(f,function(b64){
-        var ext=fname.split('.').pop();
-        generateSchedule(null,b64,ext,v);
-      });
-    }else{
-      readFileAsText(f,function(txt){
-        generateSchedule(txt,null,null,v);
-      });
-    }
-  }else{
-    answerBot(v);
-  }
-};
-
 // ===== 学科竞赛 =====
 var CONTESTS=[
   {tag:'科技创新',name:'"挑战杯"全国大学生课外学术科技作品竞赛',desc:'被誉为大学生科技创新的"奥林匹克"，由共青团中央等主办，每两年一届，涵盖自然科学、工程技术、哲学社会科学等领域。',
@@ -1700,33 +1472,7 @@ var CONTESTS=[
   {tag:'软件信息',name:'"蓝桥杯"全国软件和信息技术专业人才大赛',desc:'工业和信息化部人才交流中心主办，每年一届，涵盖 Java/C/C++/Python/Web 等程序设计赛道。',
    loc:'工业和信息化部人才交流中心',locAddr:'北京市海淀区',lng:'116.295850',lat:'39.906675',official:'https://dasai.lanqiao.cn/'},
   {tag:'云计算',name:'华为云开发者大赛',desc:'华为云面向开发者举办的年度顶级技术赛事，涵盖人工智能、大数据、云计算、鸿蒙、昇腾等赛道，助力开发者基于华为云与华为根技术构建创新应用。',
-   loc:'华为技术有限公司',locAddr:'广东省深圳市龙岗区',lng:'114.054876',lat:'22.543099',official:'https://developer.huaweicloud.com/competition/list'},
-  {tag:'物理实验',name:'全国大学生物理实验竞赛',desc:'教育部主办的全国性物理实验竞赛，每两年一届，涵盖基础物理、近代物理等实验项目，培养物理实验技能与创新思维。',
-   loc:'北京理工大学',locAddr:'北京市海淀区',lng:'116.310850',lat:'39.960914',official:'http://phylab.bit.edu.cn/'},
-  {tag:'化学实验',name:'全国大学生化学实验竞赛',desc:'教育部高等学校化学教学指导委员会主办，每两年一届，涵盖无机、有机、分析、物化等实验赛道，考察实验操作与数据分析能力。',
-   loc:'浙江大学',locAddr:'浙江省杭州市西湖区',lng:'120.195460',lat:'30.269214',official:'http://chem.zju.edu.cn/'},
-  {tag:'土木建筑',name:'全国大学生结构设计竞赛',desc:'教育部主办的土木工程领域顶级竞赛，每两年一届，各校组队设计并制作结构模型，通过加载测试比拼承载力与轻量化设计。',
-   loc:'同济大学',locAddr:'上海市杨浦区四平路',lng:'121.506269',lat:'31.281904',official:'http://www.ccea.zju.edu.cn/structure/'},
-  {tag:'智能交通',name:'全国大学生智能汽车竞赛',desc:'教育部自动化教学指导委员会主办，每年一届，涵盖电磁、光电、创意、AI 视觉等组别，考察嵌入式系统与自动控制综合能力。',
-   loc:'清华大学',locAddr:'北京市海淀区清华园',lng:'116.326936',lat:'40.003213',official:'https://smartcar.cscse.com.cn/'},
-  {tag:'艺术设计',name:'全国大学生广告艺术大赛',desc:'全国性大学生广告艺术专业赛事，每年一届，涵盖平面海报、视频广告、动画、文案、UI 设计等赛道，激发创意与艺术表达。',
-   loc:'教育部高等学校教学指导委员会',locAddr:'北京市海淀区',lng:'116.310850',lat:'39.960914',official:'http://www.sun-ada.net/'},
-  {tag:'计算机设计',name:'全国大学生计算机设计大赛',desc:'教育部主办，每年一届，涵盖软件应用、数字媒体、人工智能、大数据、信息安全等赛道，考察计算机综合应用与设计能力。',
-   loc:'教育部高等学校计算机教学指导委员会',locAddr:'北京市海淀区',lng:'116.310850',lat:'39.960914',official:'http://jsjds.blcu.edu.cn/'},
-  {tag:'信息安全',name:'全国大学生信息安全竞赛',desc:'中央网信办指导、教育部主办，每年一届，涵盖 Web 安全、逆向分析、密码学、PWN 等方向，培养网络安全攻防实战人才。',
-   loc:'电子科技大学',locAddr:'四川省成都市成华区',lng:'104.098245',lat:'30.673683',official:'http://www.ciscn.cn/'},
-  {tag:'节能减排',name:'全国大学生节能减排社会实践与科技竞赛',desc:'教育部主办，每年一届，以"节能减排、绿色能源"为主题，涵盖科技作品与社会实践两类，培养低碳创新与工程实践能力。',
-   loc:'哈尔滨工业大学',locAddr:'黑龙江省哈尔滨市南岗区',lng:'126.633933',lat:'45.744963',official:'http://www.jienengjianpai.org/'},
-  {tag:'外语竞赛',name:'"外研社"全国大学生英语系列赛',desc:'外语教学与研究出版社主办，涵盖英语演讲、阅读、写作、翻译、辩论等赛道，每年一届，是国内最具影响力的大学生英语赛事。',
-   loc:'北京外国语大学',locAddr:'北京市海淀区西三环',lng:'116.310238',lat:'39.955164',official:'https://ucc.fltrp.com/'},
-  {tag:'电子商务',name:'全国大学生电子商务"创新、创意及创业"挑战赛',desc:'教育部主办，每年一届，涵盖三农电商、跨境电商、工业电商、直播电商等方向，培养电商运营与创新创业综合能力。',
-   loc:'西安交通大学',locAddr:'陕西省西安市碑林区',lng:'108.939645',lat:'34.343207',official:'http://www.xjtu.edu.cn/'},
-  {tag:'交通科技',name:'全国大学生交通科技大赛',desc:'教育部交通运输教学指导委员会主办，每年一届，涵盖交通规划、智能交通、载运工具、道路桥梁等方向，培养交通科技创新能力。',
-   loc:'北京交通大学',locAddr:'北京市海淀区西直门外',lng:'116.354660',lat:'39.949960',official:'http://jiaotong.bjtu.edu.cn/'},
-  {tag:'测绘技能',name:'全国大学生测绘技能大赛',desc:'教育部主办，每两年一届，涵盖水准测量、导线测量、数字测图、无人机航测等赛道，培养测绘工程实践与数据处理能力。',
-   loc:'武汉大学',locAddr:'湖北省武汉市洪山区',lng:'114.357351',lat:'30.532624',official:'http://www.sgg.whu.edu.cn/'},
-  {tag:'成图技术',name:'全国大学生先进成图技术与产品信息建模创新大赛',desc:'教育部主办，每年一届，涵盖机械、建筑、水利、道桥等工程图样赛道，考察二维制图与三维建模综合能力。',
-   loc:'华中科技大学',locAddr:'湖北省武汉市洪山区',lng:'114.418457',lat:'30.512688',official:'http://www.hust.edu.cn/'}
+   loc:'华为技术有限公司',locAddr:'广东省深圳市龙岗区',lng:'114.054876',lat:'22.543099',official:'https://developer.huaweicloud.com/competition/list'}
 ];
 document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
   return '<div class="contest">'+
