@@ -1061,7 +1061,7 @@ function addMsg(text,who){
   if(!restoringChat){chatHistory.push({text,who});saveChatHistory();}
 }
 // ===== 智谱 GLM-4V AI 问答（未匹配本地知识库时 fallback）=====
-const ZHIPU_API_KEY='d706933163f44d5fa45f0dcd3dd370e3.WeZw034t9OLrCmXo';
+const ZHIPU_API_KEY='69808293f6d145d0b243be958ac0ddf6.v693lXm6mBivdBED';
 let uploadedFile=null;
 const fileInputEl=document.getElementById('fileInput');
 const chatUploadEl=document.getElementById('chatUpload');
@@ -1104,7 +1104,7 @@ function callZhipuAPI(prompt,fileBase64,fileType,cb){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   const url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
   const hasImg=!!fileBase64;
-  const models=hasImg?['glm-4v-flash','glm-4v']:['glm-4.5-flash','glm-4-flash','glm-4.7-flash'];
+  const models=hasImg?['glm-4.6v-flash']:['glm-4.7-flash'];
   let mi=0;
   function tryModel(){
     if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
