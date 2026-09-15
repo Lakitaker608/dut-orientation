@@ -292,6 +292,12 @@ svg{display:block}
 .asst-sub{font-size:12px;color:rgba(255,255,255,.78);margin-top:3px}
 .asst-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11.5px;color:rgba(255,255,255,.85);padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.12)}
 .asst-status .dot{width:7px;height:7px;border-radius:50%;background:#7BE495;box-shadow:0 0 6px #7BE495}
+.chat-clear{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.85);cursor:pointer;flex-shrink:0;transition:all .15s;margin-left:8px}
+.chat-clear:hover{background:rgba(255,255,255,.22);color:#fff}
+.chat-clear svg{width:16px;height:16px}
+.ctx-menu{position:fixed;z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:4px;min-width:140px}
+.ctx-item{padding:8px 14px;font-size:13px;color:var(--text-2);cursor:pointer;border-radius:6px;transition:all .15s}
+.ctx-item:hover{background:var(--primary-light);color:var(--primary)}
 .chat-body{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:18px;background:var(--surface-2);scroll-behavior:smooth}
 .chat-body::-webkit-scrollbar{width:8px}
 .chat-body::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px}
@@ -563,6 +569,9 @@ svg{display:block}
           <div class="asst-sub">面向大学学习的问答智能体 · 自动规划未来课程</div>
         </div>
         <div class="asst-status"><span class="dot"></span>在线</div>
+        <button class="chat-clear" onclick="clearChat()" title="清除聊天记录">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        </button>
       </div>
       <div class="chat-body" id="chatBody"></div>
       <div class="chat-foot">
@@ -1425,7 +1434,7 @@ function answerBot(q){
   var aiPrompt='你是大连理工大学的学习规划助手。学生来自'+ctx.collegeName+'，专业是'+ctx.majorName+'（所属：'+ctx.faculty+'）。请回答以下问题，回答要简洁、准确、友好，可以使用 HTML 标签（如 <p>、<b>）格式化。\n\n学生问题：'+q;
   callZhipuAPI(aiPrompt,null,null,function(resp,err){
     if(err){
-      t.querySelector('.msg-bubble').innerHTML='<p>抱歉，我暂时无法回答这个问题。你可以尝试问我："我的课程规划"、"就业方向"、"考研建议"、"学科竞赛"、"英语以考代修"等。</p>';
+      t.querySelector('.msg-bubble').innerHTML='<p>⚠️ AI 回答失败：'+escapeHtml(err)+'</p><p>你可以尝试问我："我的课程规划"、"就业方向"、"考研建议"、"学科竞赛"、"英语以考代修"等。</p>';
     }else{
       t.querySelector('.msg-bubble').innerHTML='<p>'+resp+'</p>';
     }
@@ -1433,6 +1442,49 @@ function answerBot(q){
     chatHistory.push({role:'bot',html:t.querySelector('.msg-bubble').innerHTML});saveChatHistory();
   });
 }
+// 清除聊天记录
+function clearChat(){
+  chatHistory=[];
+  saveChatHistory();
+  document.getElementById('chatBody').innerHTML='';
+  botReply('<p>聊天记录已清除，有什么可以帮你？</p>');
+}
+// 右键删除单条聊天记录
+var ctxMenu=null;
+function showCtxMenu(x,y,msgEl){
+  if(ctxMenu)ctxMenu.remove();
+  ctxMenu=document.createElement('div');
+  ctxMenu.className='ctx-menu';
+  ctxMenu.innerHTML='<div class="ctx-item">🗑 删除此条记录</div>';
+  ctxMenu.style.left=Math.min(x,window.innerWidth-160)+'px';
+  ctxMenu.style.top=Math.min(y,window.innerHeight-50)+'px';
+  ctxMenu.querySelector('.ctx-item').onclick=function(){deleteSingleMsg(msgEl);ctxMenu.remove();ctxMenu=null;};
+  document.body.appendChild(ctxMenu);
+}
+function deleteSingleMsg(msgEl){
+  if(msgEl.classList.contains('user')){
+    var next=msgEl.nextElementSibling;
+    if(next&&next.classList.contains('bot'))next.remove();
+  }
+  if(msgEl.classList.contains('bot')){
+    var prev=msgEl.previousElementSibling;
+    if(prev&&prev.classList.contains('user'))prev.remove();
+  }
+  msgEl.remove();
+  chatHistory=[];
+  var msgs=document.querySelectorAll('#chatBody .msg');
+  for(var i=0;i<msgs.length;i++){
+    chatHistory.push({role:msgs[i].classList.contains('bot')?'bot':'user',html:msgs[i].querySelector('.msg-bubble').innerHTML});
+  }
+  saveChatHistory();
+}
+document.getElementById('chatBody').addEventListener('contextmenu',function(e){
+  var msg=e.target.closest('.msg');
+  if(!msg)return;
+  e.preventDefault();e.stopPropagation();
+  showCtxMenu(e.clientX,e.clientY,msg);
+});
+document.addEventListener('click',function(){if(ctxMenu){ctxMenu.remove();ctxMenu=null;}});
 function enterAssistant(){
   var ck=document.getElementById('collegeSelect').value;
   var c=COLLEGES[ck];
@@ -1504,7 +1556,7 @@ function sendChat(text){
 })();
 
 // ===== 课程表文件导入 + 智谱 GLM-4V 学习规划生成 =====
-var ZHIPU_API_KEY='d706933163f44d5fa45f0dcd3dd370e3.WeZw034t9OLrCmXo';
+var ZHIPU_API_KEY='69808293f6d145d0b243be958ac0ddf6.v693lXm6mBivdBED';
 var CAMPUS_COMMUTE_INFO={
   lingshui:{name:'凌水主校区',canteen:'校内多个食堂（中心食堂、第五至第九食堂、博园餐厅），步行5-10分钟可达',playground:'校内标准田径场、篮球场、网球场，步行5分钟可达',commute:'校区面积较大，教学楼至宿舍步行约10-15分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
   kaifa:{name:'开发区校区',canteen:'校内第六食堂，步行5分钟可达',playground:'校内运动场、篮球场，步行5分钟可达',commute:'校区紧凑，教学楼至宿舍步行约5-8分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
@@ -1564,23 +1616,29 @@ function buildSchedulePrompt(fileText,userReq){
   var majorInfo=STUDY_CTX?('书院：'+STUDY_CTX.collegeName+'，专业：'+STUDY_CTX.majorName):'';
   return '你是一位大学生学习规划助手。请根据以下信息，为学生制定一份合理的每日学习规划。\n\n【学生信息】\n'+majorInfo+'\n\n【校区地理信息】\n'+campusInfo+'\n\n【课程表信息】\n'+(fileText||'（未提供课程表，请根据一般情况安排）')+'\n\n【学生要求】\n'+(userReq||'无特殊要求，请合理安排')+'\n\n【规划要求】\n1. 一日三餐：早餐7:00-7:30，午餐11:30-12:30，晚餐17:30-18:30（时间合理，考虑食堂距离）\n2. 运动时间：校园跑或运动至少30分钟（建议晨跑6:30-7:00或晚跑21:00-21:30）\n3. 通勤时间：根据校区地理信息预留足够通勤时间\n4. 就寝时间：保证6小时以上睡眠，建议23:00就寝6:00起床\n5. 自学时间：根据课程安排合理分配自习时间\n6. 娱乐时间：适当安排放松娱乐时间\n7. 请以时间表格式输出，每个时间段注明活动内容和时长\n8. 对学生的口语化要求请宽容理解，如"多睡会儿""少跑步"等\n\n请输出一份完整的每日学习规划时间表。';
 }
-// 调用智谱 GLM API：有图片用 glm-4v，纯文本用 glm-4-flash（更快更稳）
+// 调用智谱 GLM API：支持模型自动回退，纯文本优先用免费文本模型
 function callZhipuAPI(prompt,fileBase64,fileType,cb){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   var url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
   var hasImg=!!fileBase64;
-  var model=hasImg?'glm-4v':'glm-4-flash';
-  var messages;
-  if(hasImg){
-    var mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
-    messages=[{role:'user',content:[{type:'image_url',image_url:{url:'data:'+mime+';base64,'+fileBase64}},{type:'text',text:prompt}]}];
-  }else{
-    messages=[{role:'user',content:prompt}];
+  var models=hasImg?['glm-4.6v-flash']:['glm-4.7-flash'];
+  var mi=0;
+  function tryModel(){
+    if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
+    var model=models[mi];
+    var messages;
+    if(hasImg){
+      var mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
+      messages=[{role:'user',content:[{type:'image_url',image_url:{url:'data:'+mime+';base64,'+fileBase64}},{type:'text',text:prompt}]}];
+    }else{
+      messages=[{role:'user',content:prompt}];
+    }
+    var body=JSON.stringify({model:model,messages:messages,temperature:0.7,max_tokens:2000});
+    var ctrl=new AbortController();
+    var timer=setTimeout(function(){ctrl.abort();},15000);
+    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}}).catch(function(e){clearTimeout(timer);mi++;tryModel();});
   }
-  var body=JSON.stringify({model:model,messages:messages,temperature:0.7,max_tokens:2000});
-  var ctrl=new AbortController();
-  var timer=setTimeout(function(){ctrl.abort();},15000);
-  fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{cb(null,JSON.stringify(d));}}).catch(function(e){clearTimeout(timer);cb(null,e.name==='AbortError'?'请求超时（15秒），请重试':e.message);});
+  tryModel();
 }
 // 生成学习规划：调用 GLM-4V 并以卡片形式展示结果
 function generateSchedule(fileText,fileBase64,fileType,userReq){
