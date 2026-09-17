@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+  volunteer.html - 志愿服务平台指南
+  功能：展示校内外志愿服务平台信息，按分类筛选并跳转官方注册入口
+  配色：红白主题（--primary:#C62828）
+-->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -146,8 +151,30 @@ svg{display:block}
 .cv-card .cv-link:hover{background:var(--primary);color:#fff}
 .cv-card .cv-link svg{width:14px;height:14px}
 
+.cv-orgs{margin-bottom:20px}
+.cv-orgs-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.campus-select{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;cursor:pointer;position:relative;min-width:180px;user-select:none}
+.campus-select:hover{border-color:var(--border-strong)}
+.campus-select svg{width:16px;height:16px;color:var(--text-3)}
+.campus-select .cs-current{font-weight:600;color:var(--text-1);flex:1}
+.campus-dropdown{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-md);z-index:10;overflow:hidden;display:none}
+.campus-dropdown.show{display:block}
+.campus-option{padding:10px 14px;font-size:13px;cursor:pointer;transition:all .15s}
+.campus-option:hover{background:var(--surface-2)}
+.campus-option.active{background:var(--primary-light);color:var(--primary);font-weight:600}
+.org-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.org-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:all .2s;display:flex;align-items:center;gap:12px}
+.org-item:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);border-color:var(--primary-light)}
+.org-ico-wx{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;font-weight:700;color:#fff;letter-spacing:0}
+.org-info{flex:1;min-width:0}
+.org-name-wx{font-size:13.5px;font-weight:600;color:var(--text-1);margin-bottom:3px}
+.org-desc-wx{font-size:11.5px;color:var(--text-3);line-height:1.5}
+.org-go{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;color:var(--primary);padding:6px 10px;border-radius:8px;background:var(--primary-light);transition:all .15s;flex-shrink:0;white-space:nowrap}
+.org-go:hover{background:var(--primary);color:#fff}
+.org-go svg{width:13px;height:13px}
+
 @media (max-width:760px){
-  .platforms,.stats,.cv-cards{grid-template-columns:1fr}
+  .platforms,.stats,.cv-cards,.org-list{grid-template-columns:1fr}
   .container{padding:20px 16px 50px}
   .hero{padding:28px 22px}
   .hero h1{font-size:21px}
@@ -309,6 +336,19 @@ svg{display:block}
     </div>
   </div>
 
+  <div class="cv-orgs">
+    <div class="cv-orgs-head">
+      <div class="section-title"><span class="bar"></span>各校区志愿组织公众号</div>
+      <div class="campus-select" id="campusSelect">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <span class="cs-current" id="campusCurrent">凌水主校区</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        <div class="campus-dropdown" id="campusDropdown"></div>
+      </div>
+    </div>
+    <div class="org-list" id="orgList"></div>
+  </div>
+
   <div class="section-head">
     <div class="section-title"><span class="bar"></span>志愿服务线上平台</div>
     <div class="section-sub">官网直达 · 类型筛选 · 一键跳转</div>
@@ -323,6 +363,7 @@ svg{display:block}
 </div>
 
 <script>
+// 侧边栏切换
 document.getElementById('menuToggle').addEventListener('click',function(){
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('show');
@@ -332,6 +373,7 @@ document.getElementById('overlay').addEventListener('click',function(){
   document.getElementById('overlay').classList.remove('show');
 });
 
+// SVG 图标库
 var ICO={
   heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
   link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>',
@@ -341,6 +383,7 @@ var ICO={
   star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
 };
 
+// 志愿服务平台数据
 var PLATFORMS=[
   {tag:'国家级平台',cat:'national',name:'中国志愿服务网（全国志愿服务信息系统）',
    desc:'民政部主办建设的全国志愿服务信息系统，提供志愿者注册、志愿服务团队管理、项目发布、服务时间记录与证明等全流程服务，是全国志愿服务数据归集的核心枢纽。',
@@ -368,6 +411,7 @@ var PLATFORMS=[
    org:'共青团中央 教育部 财政部 人社部',orgMeta:'国家计划 · 中西部',official:'http://xibu.youth.cn/'}
 ];
 
+// 分类标签
 var CATEGORIES=[
   {key:'all',name:'全部'},
   {key:'national',name:'国家级平台'},
@@ -378,10 +422,12 @@ var CATEGORIES=[
 ];
 
 var curCat='all';
+// 获取指定分类下的平台数量
 function getCount(cat){
   if(cat==='all')return PLATFORMS.length;
   return PLATFORMS.filter(function(p){return p.cat===cat;}).length;
 }
+// 渲染分类标签栏
 function renderTabs(){
   document.getElementById('tabs').innerHTML=CATEGORIES.map(function(c){
     return '<button class="tab'+(c.key===curCat?' active':'')+'" data-cat="'+c.key+'">'+
@@ -395,6 +441,7 @@ function renderTabs(){
     });
   });
 }
+// 渲染平台卡片列表
 function renderPlatforms(){
   var list=curCat==='all'?PLATFORMS:PLATFORMS.filter(function(p){return p.cat===curCat;});
   document.getElementById('platforms').innerHTML=list.map(function(p){
@@ -419,6 +466,70 @@ function renderPlatforms(){
 }
 renderTabs();
 renderPlatforms();
+
+var CAMPUS_ORGS=[
+  {key:'lingxui',name:'凌水主校区',orgs:[
+    {name:'大工能动青年',desc:'能源与动力学院青年志愿者组织'},
+    {name:'DUT人文团学',desc:'人文与社会科学学部团学组织'},
+    {name:'DUT公管青年',desc:'公共管理学院青年志愿者组织'},
+    {name:'DUT青春力航',desc:'航空航天学院青年志愿者组织'},
+    {name:'DUT机械青年',desc:'机械工程学院青年志愿者组织'}
+  ]},
+  {key:'kaifa',name:'开发区校区',orgs:[
+    {name:'大工软件学院青年汇',desc:'软件学院青年志愿者协会'},
+    {name:'DUT芯青年',desc:'开发区校区青年志愿者组织'}
+  ]},
+  {key:'panjin',name:'盘锦校区',orgs:[
+    {name:'大工盘锦校区青年汇',desc:'盘锦校区青年志愿者组织'}
+  ]}
+];
+
+var curCampus='lingxui';
+var wxIco='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.201 3.002 5.55a.59.59 0 01.213.665L2.6 17.44a.59.59 0 00.888.651l2.21-1.296a.592.592 0 01.496-.06 6.95 6.95 0 002.5.458h.067c-.022.243-.034.488-.034.734 0 3.954 3.89 7.242 8.69 7.242.86 0 1.69-.12 2.47-.34a.59.59 0 01.49.05l1.93 1.13a.59.59 0 00.88-.65l-.51-1.7a.59.59 0 01.21-.66c1.65-1.26 2.7-3.08 2.7-5.13 0-3.6-3.26-6.56-7.4-7.15-.68-3.2-4.02-5.66-8.02-5.66z"/></svg>';
+var linkIco='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>';
+
+function renderCampusDropdown(){
+  var dd=document.getElementById('campusDropdown');
+  dd.innerHTML=CAMPUS_ORGS.map(function(c){
+    return '<div class="campus-option'+(c.key===curCampus?' active':'')+'" data-key="'+c.key+'">'+c.name+'</div>';
+  }).join('');
+  dd.querySelectorAll('.campus-option').forEach(function(o){
+    o.addEventListener('click',function(e){
+      e.stopPropagation();
+      curCampus=o.dataset.key;
+      document.getElementById('campusCurrent').textContent=CAMPUS_ORGS.find(function(c){return c.key===curCampus;}).name;
+      dd.classList.remove('show');
+      renderOrgList();
+    });
+  });
+}
+
+function renderOrgList(){
+  var campus=CAMPUS_ORGS.find(function(c){return c.key===curCampus;});
+  document.getElementById('orgList').innerHTML=campus.orgs.map(function(o){
+    var ch=o.name.charAt(0);
+    var hue=0;for(var i=0;i<o.name.length;i++)hue+=o.name.charCodeAt(i);
+    hue=hue%360;
+    return '<div class="org-item">'+
+      '<div class="org-ico-wx" style="background:linear-gradient(135deg,hsl('+hue+',65%,52%),hsl('+((hue+40)%360)+',60%,45%))">'+ch+'</div>'+
+      '<div class="org-info">'+
+        '<div class="org-name-wx">'+o.name+'</div>'+
+        '<div class="org-desc-wx">'+o.desc+'</div>'+
+      '</div>'+
+      '<a class="org-go" target="_blank" href="https://weixin.sogou.com/weixin?type=1&query='+encodeURIComponent(o.name)+'">'+linkIco+'查看公众号</a>'+
+    '</div>';
+  }).join('');
+}
+
+document.getElementById('campusSelect').addEventListener('click',function(e){
+  if(e.target.closest('.campus-option'))return;
+  document.getElementById('campusDropdown').classList.toggle('show');
+});
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#campusSelect'))document.getElementById('campusDropdown').classList.remove('show');
+});
+renderCampusDropdown();
+renderOrgList();
 </script>
 </body>
 </html>
