@@ -1104,7 +1104,7 @@ function callZhipuAPI(prompt,fileBase64,fileType,cb,onFallback){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   const url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
   const hasImg=!!fileBase64;
-  const models=hasImg?['glm-4.6v-flash','glm-4v-flash','glm-4v']:['glm-4-flash','glm-4.7-flash','glm-4.5-flash'];
+  const models=hasImg?['glm-4.6v-flash','glm-4v-flash']:['glm-4-flash','glm-4.7-flash','glm-4.5-flash'];
   let mi=0;
   function tryModel(){
     if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
@@ -1112,7 +1112,7 @@ function callZhipuAPI(prompt,fileBase64,fileType,cb,onFallback){
     let messages;
     if(hasImg){
       const mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
-      messages=[{role:'user',content:[{type:'image_url',image_url:{url:`data:${mime};base64,${fileBase64}`}},{type:'text',text:prompt}]}];
+      messages=[{role:'user',content:[{type:'image_url',image_url:{url:fileBase64}},{type:'text',text:prompt}]}];
     }else{
       messages=[{role:'user',content:prompt}];
     }
