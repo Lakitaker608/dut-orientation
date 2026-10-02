@@ -190,6 +190,11 @@ svg{display:block}
 .sat-info .sat-link{color:var(--primary);font-weight:500;display:inline-flex;align-items:center;gap:4px}
 .sat-info .sat-link:hover{text-decoration:underline}
 .sat-links{display:inline-flex;align-items:center;gap:16px}
+/* ===== 学校地理位置虚化背景 ===== */
+#view-location{position:relative;overflow:hidden;border-radius:var(--radius-lg)}
+#view-location::before{content:"";position:absolute;inset:0;background:url('campus_bg.jpg') center/cover no-repeat;filter:blur(24px) brightness(.8);opacity:.24;z-index:0;pointer-events:none}
+#view-location > *{position:relative;z-index:1}
+
 
 /* ===== 校区卫星地图卡片（科技感）===== */
 .sat-map-card{background:linear-gradient(135deg,#0a0e1a 0%,#0d1b2a 100%);border:2px solid var(--accent);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md),0 0 24px rgba(0,163,224,.15);position:relative}
