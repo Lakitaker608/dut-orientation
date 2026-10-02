@@ -191,9 +191,10 @@ svg{display:block}
 .sat-info .sat-link:hover{text-decoration:underline}
 .sat-links{display:inline-flex;align-items:center;gap:16px}
 /* ===== 学校地理位置虚化背景 ===== */
-#view-location{position:relative;overflow:hidden;border-radius:var(--radius-lg)}
-#view-location::before{content:"";position:absolute;inset:0;background:url('campus_bg.jpg') center/cover no-repeat;filter:blur(24px) brightness(.8);opacity:.24;z-index:0;pointer-events:none}
-#view-location > *{position:relative;z-index:1}
+.main.loc-bg{position:relative}
+.main.loc-bg::before{content:"";position:absolute;inset:0;background:url('campus_bg.jpg') center center/cover no-repeat;filter:blur(22px) saturate(1.1);transform:scale(1.08);opacity:.55;z-index:0;pointer-events:none}
+.main.loc-bg::after{content:"";position:absolute;inset:0;background:rgba(247,248,250,.42);z-index:0;pointer-events:none}
+.main.loc-bg > .container,.main.loc-bg > .foot{position:relative;z-index:1}
 
 
 /* ===== 校区卫星地图卡片（科技感）===== */
