@@ -241,6 +241,24 @@ svg{display:block}
 .quick-card h3{font-size:16px;font-weight:600;margin-bottom:6px}
 .quick-card p{font-size:12.5px;color:var(--text-2);line-height:1.6}
 .quick-card .qa{font-size:12px;color:var(--primary);font-weight:500;margin-top:12px;display:inline-flex;align-items:center;gap:4px}
+/* ===== 大工校风一览 ===== */
+.style-section{margin-top:28px}
+.style-section .section-title{color:var(--primary);font-weight:700}
+.style-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.style-card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:all .2s;position:relative;display:flex;flex-direction:column}
+.style-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.style-card .img-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(135deg,var(--primary),var(--accent))}
+.style-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+.style-card:hover img{transform:scale(1.04)}
+.style-card .img-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;opacity:.85}
+.style-card .cap{padding:14px 16px;display:flex;align-items:center;gap:8px}
+.style-card .cap-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.style-card .cap-txt{font-size:13px;color:var(--text-1);font-weight:500}
+.style-card.feature{grid-column:span 2;grid-row:span 2}
+.style-card.feature .img-wrap{aspect-ratio:1/1}
+@media(max-width:1020px){.style-grid{grid-template-columns:repeat(2,1fr)}.style-card.feature{grid-column:span 2;grid-row:span 1}.style-card.feature .img-wrap{aspect-ratio:4/3}}
+@media(max-width:560px){.style-grid{grid-template-columns:1fr}.style-card.feature{grid-column:auto;grid-row:auto}}
+
 
 /* ===== 学习规划 ===== */
 .study-block{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:22px;margin-bottom:20px}
@@ -477,6 +495,71 @@ svg{display:block}
         <h3>大学生学科竞赛</h3>
         <p>挑战杯、数学建模、ACM-ICPC 等七大竞赛信息、办赛位置与官网直达。</p>
         <span class="qa">查看竞赛信息 →</span>
+      </div>
+    </div>
+    <!-- 大工校风一览 -->
+    <div class="section style-section">
+      <div class="section-head">
+        <div class="section-title"><span class="bar"></span>大工校风一览</div>
+        <div class="section-sub">校园活动 · 学术竞赛 · 青春风采</div>
+      </div>
+      <div class="style-grid">
+        <div class="style-card feature">
+          <div class="img-wrap">
+            <img src="dlut-photos/carnival-1.jpg" alt="校园文化节嘉年华" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">校园文化节嘉年华</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">校园文化节嘉年华</span></div>
+        </div>
+        <div class="style-card">
+          <div class="img-wrap">
+            <img src="dlut-photos/sports-1.jpg" alt="刘长春杯田径运动会" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">刘长春杯田径运动会</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">刘长春杯田径运动会</span></div>
+        </div>
+        <div class="style-card">
+          <div class="img-wrap">
+            <img src="dlut-photos/welcome-1.jpg" alt="迎新季 · 新大工人" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">迎新季 · 新大工人</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">迎新季 · 新大工人</span></div>
+        </div>
+        <div class="style-card">
+          <div class="img-wrap">
+            <img src="dlut-photos/tech-1.jpg" alt="春满校园科创实践" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">春满校园科创实践</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">春满校园科创实践</span></div>
+        </div>
+        <div class="style-card">
+          <div class="img-wrap">
+            <img src="dlut-photos/carnival-2.jpg" alt="社团展示互动" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">社团展示互动</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">社团展示互动</span></div>
+        </div>
+        <div class="style-card">
+          <div class="img-wrap">
+            <img src="dlut-photos/sports-2.jpg" alt="田径赛场风采" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">田径赛场风采</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">田径赛场风采</span></div>
+        </div>
+        <div class="style-card">
+          <div class="img-wrap">
+            <img src="dlut-photos/welcome-2.jpg" alt="迎新报到现场" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">迎新报到现场</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">迎新报到现场</span></div>
+        </div>
+        <div class="style-card">
+          <div class="img-wrap">
+            <img src="dlut-photos/tech-2.jpg" alt="实验室科研日常" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'">
+            <div class="img-placeholder" style="display:none">实验室科研日常</div>
+          </div>
+          <div class="cap"><span class="cap-dot"></span><span class="cap-txt">实验室科研日常</span></div>
+        </div>
       </div>
     </div>
   </section>
