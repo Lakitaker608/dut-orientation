@@ -795,6 +795,8 @@ function switchView(name){
   document.getElementById('viewTitle').textContent=viewTitles[name]||'';
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('overlay').classList.remove('show');
+  var mainArea=document.querySelector('.main');
+  if(mainArea)mainArea.classList.toggle('loc-bg',name==='location');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function goStudyNav(){
