@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!--
   campus-life.html - 校园生活助手
-  功能：学习规划助手（本地知识库 + GLM-4V AI fallback）、课程表导入与规划生成、
+  功能：学习规划助手（本地知识库 + GLM-4.6V/4.7 AI fallback）、课程表导入与规划生成、
         三校区实时天气、周边生活与路线、学科竞赛、卫星地图
   技术：纯 HTML + 内联 CSS/JS，ES5 语法
-  依赖：protect.js（页面保护）、智谱 GLM-4V API、高德地图 URI
+  依赖：protect.js（页面保护）、智谱 GLM-4.6V-Flash（图像识别）/GLM-4.7-Flash（文本理解）API、高德地图 URI
 -->
 <html lang="zh-CN">
 <head>
@@ -1486,7 +1486,7 @@ function botReply(text,extra){
   },650);
 }
 // 学习规划问答核心：依次匹配以考代修、考研建议、CONCEPTS 知识库、
-// 课程/就业/书院/专业等关键词，全部未命中时调用 GLM-4V AI 作答
+// 课程/就业/书院/专业等关键词，全部未命中时调用 GLM-4.7-Flash AI 作答
 function answerBot(q){
   var ctx=STUDY_CTX;
   var nq=normQuery(q);
@@ -1568,6 +1568,8 @@ function answerBot(q){
     }
     chatBody.scrollTop=chatBody.scrollHeight;
     chatHistory.push({role:'bot',html:t.querySelector('.msg-bubble').innerHTML});saveChatHistory();
+  },function(nextModel){
+    botReply('<p>⚠️ 当前模型繁忙，正在切换到备选模型 '+escapeHtml(nextModel)+'...</p>');
   });
 }
 // 清除聊天记录
@@ -1683,8 +1685,8 @@ function sendChat(text){
   input.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
 })();
 
-// ===== 课程表文件导入 + 智谱 GLM-4V 学习规划生成 =====
-var ZHIPU_API_KEY='d706933163f44d5fa45f0dcd3dd370e3.WeZw034t9OLrCmXo';
+// ===== 课程表文件导入 + 智谱 GLM-4.6V/4.7 学习规划生成 =====
+var ZHIPU_API_KEY='69808293f6d145d0b243be958ac0ddf6.v693lXm6mBivdBED';
 var CAMPUS_COMMUTE_INFO={
   lingshui:{name:'凌水主校区',canteen:'校内多个食堂（中心食堂、第五至第九食堂、博园餐厅），步行5-10分钟可达',playground:'校内标准田径场、篮球场、网球场，步行5分钟可达',commute:'校区面积较大，教学楼至宿舍步行约10-15分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
   kaifa:{name:'开发区校区',canteen:'校内第六食堂，步行5分钟可达',playground:'校内运动场、篮球场，步行5分钟可达',commute:'校区紧凑，教学楼至宿舍步行约5-8分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
@@ -1744,12 +1746,12 @@ function buildSchedulePrompt(fileText,userReq){
   var majorInfo=STUDY_CTX?('书院：'+STUDY_CTX.collegeName+'，专业：'+STUDY_CTX.majorName):'';
   return '你是一位大学生学习规划助手。请根据以下信息，为学生制定一份合理的每日学习规划。\n\n【学生信息】\n'+majorInfo+'\n\n【校区地理信息】\n'+campusInfo+'\n\n【课程表信息】\n'+(fileText||'（未提供课程表，请根据一般情况安排）')+'\n\n【学生要求】\n'+(userReq||'无特殊要求，请合理安排')+'\n\n【规划要求】\n1. 一日三餐：早餐7:00-7:30，午餐11:30-12:30，晚餐17:30-18:30（时间合理，考虑食堂距离）\n2. 运动时间：校园跑或运动至少30分钟（建议晨跑6:30-7:00或晚跑21:00-21:30）\n3. 通勤时间：根据校区地理信息预留足够通勤时间\n4. 就寝时间：保证6小时以上睡眠，建议23:00就寝6:00起床\n5. 自学时间：根据课程安排合理分配自习时间\n6. 娱乐时间：适当安排放松娱乐时间\n7. 请以时间表格式输出，每个时间段注明活动内容和时长\n8. 对学生的口语化要求请宽容理解，如"多睡会儿""少跑步"等\n\n请输出一份完整的每日学习规划时间表。';
 }
-// 调用智谱 GLM API：支持模型自动回退，纯文本优先用免费文本模型
-function callZhipuAPI(prompt,fileBase64,fileType,cb){
+// 调用智谱 GLM API：图像用 GLM-4.6V-Flash 识别，文本用 GLM-4.7-Flash 理解
+function callZhipuAPI(prompt,fileBase64,fileType,cb,onFallback){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   var url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
   var hasImg=!!fileBase64;
-  var models=hasImg?['glm-4v-flash','glm-4v']:['glm-4.5-flash','glm-4-flash','glm-4.7-flash'];
+  var models=hasImg?['glm-4.6v-flash','glm-4v-flash']:['glm-4-flash','glm-4.7-flash','glm-4.5-flash'];
   var mi=0;
   function tryModel(){
     if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
@@ -1764,11 +1766,11 @@ function callZhipuAPI(prompt,fileBase64,fileType,cb){
     var body=JSON.stringify({model:model,messages:messages,temperature:0.7,max_tokens:2000});
     var ctrl=new AbortController();
     var timer=setTimeout(function(){ctrl.abort();},15000);
-    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}}).catch(function(e){clearTimeout(timer);mi++;tryModel();});
+    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}}).catch(function(e){clearTimeout(timer);mi++;if(mi<models.length&&onFallback)onFallback(models[mi]);tryModel();});
   }
   tryModel();
 }
-// 生成学习规划：调用 GLM-4V 并以卡片形式展示结果
+// 生成学习规划：调用 GLM（图像 GLM-4.6V-Flash / 文本 GLM-4.7-Flash）并以卡片形式展示结果
 function generateSchedule(fileText,fileBase64,fileType,userReq){
   botReply('<p>正在分析课程表并生成学习规划，请稍候...</p>');
   var prompt=buildSchedulePrompt(fileText,userReq);
@@ -1781,6 +1783,8 @@ function generateSchedule(fileText,fileBase64,fileType,userReq){
     html+='<div style="background:var(--surface-2);border-radius:12px;padding:16px;margin:8px 0;font-size:13px;line-height:1.8;white-space:pre-wrap;border:1px solid rgba(0,63,136,.2)">'+escapeHtml(resp)+'</div>';
     html+='<p style="font-size:12px;color:var(--text-3)">以上规划由 AI 根据你的课程表与校区信息生成，仅供参考，请根据实际情况调整。</p>';
     botReply(html);
+  },function(nextModel){
+    botReply('<p>⚠️ 当前模型繁忙，正在切换到备选模型 '+escapeHtml(nextModel)+'...</p>');
   });
 }
 sendChat=function(text){
