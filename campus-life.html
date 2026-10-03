@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!--
   campus-life.html - 校园生活助手
-  功能：学习规划助手（本地知识库 + GLM-4.6V/4.7 AI fallback）、课程表导入与规划生成、
+  功能：学习规划助手（本地知识库 + GLM-4V AI fallback）、课程表导入与规划生成、
         三校区实时天气、周边生活与路线、学科竞赛、卫星地图
   技术：纯 HTML + 内联 CSS/JS，ES5 语法
-  依赖：protect.js（页面保护）、智谱 GLM-4.6V-Flash（图像识别）/GLM-4.7-Flash（文本理解）API、高德地图 URI
+  依赖：protect.js（页面保护）、智谱 GLM-4V API、高德地图 URI
 -->
 <html lang="zh-CN">
 <head>
@@ -190,12 +190,12 @@ svg{display:block}
 .sat-info .sat-link{color:var(--primary);font-weight:500;display:inline-flex;align-items:center;gap:4px}
 .sat-info .sat-link:hover{text-decoration:underline}
 .sat-links{display:inline-flex;align-items:center;gap:16px}
+
 /* ===== 学校地理位置虚化背景 ===== */
 .main.loc-bg{position:relative}
 .main.loc-bg::before{content:"";position:absolute;inset:0;background:url('campus_bg.jpg') center center/cover no-repeat;filter:blur(22px) saturate(1.1);transform:scale(1.08);opacity:.55;z-index:0;pointer-events:none}
 .main.loc-bg::after{content:"";position:absolute;inset:0;background:rgba(247,248,250,.42);z-index:0;pointer-events:none}
 .main.loc-bg > .container,.main.loc-bg > .foot{position:relative;z-index:1}
-
 
 /* ===== 校区卫星地图卡片（科技感）===== */
 .sat-map-card{background:linear-gradient(135deg,#0a0e1a 0%,#0d1b2a 100%);border:2px solid var(--accent);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md),0 0 24px rgba(0,163,224,.15);position:relative}
@@ -247,6 +247,7 @@ svg{display:block}
 .quick-card h3{font-size:16px;font-weight:600;margin-bottom:6px}
 .quick-card p{font-size:12.5px;color:var(--text-2);line-height:1.6}
 .quick-card .qa{font-size:12px;color:var(--primary);font-weight:500;margin-top:12px;display:inline-flex;align-items:center;gap:4px}
+
 /* ===== 大工校风一览 ===== */
 .style-section{margin-top:28px}
 .style-section .section-title{color:var(--primary);font-weight:700}
@@ -264,7 +265,6 @@ svg{display:block}
 .style-card.feature .img-wrap{aspect-ratio:1/1}
 @media(max-width:1020px){.style-grid{grid-template-columns:repeat(2,1fr)}.style-card.feature{grid-column:span 2;grid-row:span 1}.style-card.feature .img-wrap{aspect-ratio:4/3}}
 @media(max-width:560px){.style-grid{grid-template-columns:1fr}.style-card.feature{grid-column:auto;grid-row:auto}}
-
 
 /* ===== 学习规划 ===== */
 .study-block{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:22px;margin-bottom:20px}
@@ -503,6 +503,7 @@ svg{display:block}
         <span class="qa">查看竞赛信息 →</span>
       </div>
     </div>
+
     <!-- 大工校风一览 -->
     <div class="section style-section">
       <div class="section-head">
@@ -875,8 +876,7 @@ var CAMPUS_PLACES={
       {name:'学府餐厅(明德路店)',addr:'凌工路2号大连理工大学内',lng:'121.529701',lat:'38.881412',mode:'walk',dist:'215 米',time:'约 3 分钟',detail:'校内餐厅，沿德邻路→尚书路→明德路步行即达',badges:[{t:'校内',c:'badge-near'},{t:'评分 4.2',c:'badge-rate'}]},
       {name:'沁园餐厅(红凌路)',addr:'凌水路2号大连理工大学西山生活区内',lng:'121.527100',lat:'38.879200',mode:'walk',dist:'校内',time:'约 5 分钟',detail:'西山生活区食堂',badges:[{t:'校内',c:'badge-near'}]},
       {name:'大连理工大学博园餐厅',addr:'凌工路2号',lng:'121.528100',lat:'38.882100',mode:'walk',dist:'校内',time:'约 4 分钟',detail:'校内博园餐厅',badges:[{t:'校内',c:'badge-near'}]},
-      {name:'小花卷味道餐厅(理工西门店)',addr:'凌水街道栾金村406号',lng:'121.526800',lat:'38.878500',mode:'walk',dist:'约 350 米',time:'约 5 分钟',detail:'理工西门附近特色餐厅',badges:[]}
-,
+      {name:'小花卷味道餐厅(理工西门店)',addr:'凌水街道栾金村406号',lng:'121.526800',lat:'38.878500',mode:'walk',dist:'约 350 米',time:'约 5 分钟',detail:'理工西门附近特色餐厅',badges:[]},
       {name:'小田园家常菜烧烤(文萃轩小区店)',addr:'凌水线段0K-9K+800米',lng:'121.534159',lat:'38.879126',mode:'walk',dist:'0.82 公里',time:'约 13 分钟',detail:'人均 ¥67，营业 10:00-14:00,16:00-23:00',badges:[{t:'评分 4.3',c:'badge-rate'}]},
       {name:'晚风小筑火锅烤肉自助',addr:'凌水街道红凌路852号',lng:'121.524487',lat:'38.886995',mode:'walk',dist:'1.01 公里',time:'约 15 分钟',detail:'人均 ¥80',badges:[{t:'评分 4.0',c:'badge-rate'}]},
       {name:'我们只做鱼(高新店)',addr:'红凌路峦翠园772-3我们只做鱼高新店',lng:'121.524633',lat:'38.890633',mode:'walk',dist:'1.43 公里',time:'约 21 分钟',detail:'人均 ¥63，营业 10:00-19:30',badges:[{t:'评分 4.3',c:'badge-rate'}]},
@@ -923,8 +923,7 @@ var CAMPUS_PLACES={
       items:[
         {name:'得来速餐厅(知润山店)',addr:'知润山北门东300米',lng:'121.818088',lat:'39.080387',mode:'walk',dist:'805 米',time:'约 11 分钟',detail:'沿图强路→学府南街步行即达，评分 3.8',badges:[{t:'评分 3.8',c:'badge-rate'}]},
         {name:'裕丰快餐厅(馨佳园店)',addr:'馨佳园',lng:'121.815000',lat:'39.083000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近馨佳园快餐厅',badges:[]},
-        {name:'大连大学食堂',addr:'学府大街大连大学内',lng:'121.820000',lat:'39.082000',mode:'walk',dist:'约 1.2 公里',time:'约 15 分钟',detail:'毗邻大连大学，可步行前往',badges:[]}
-,
+        {name:'大连大学食堂',addr:'学府大街大连大学内',lng:'121.820000',lat:'39.082000',mode:'walk',dist:'约 1.2 公里',time:'约 15 分钟',detail:'毗邻大连大学，可步行前往',badges:[]},
         {name:'小芝同学披萨',addr:'图强街知润山小区112号楼',lng:'121.814343',lat:'39.080139',mode:'walk',dist:'0.82 公里',time:'约 12 分钟',detail:'图强街知润山小区披萨店，可外带',badges:[{t:'评分 3.4',c:'badge-rate'}]},
         {name:'森林狼过桥米线焖肉饭(大学店)',addr:'学府南路远洋时代城二期71-12',lng:'121.820682',lat:'39.081015',mode:'walk',dist:'0.95 公里',time:'约 14 分钟',detail:'人均 ¥22，营业 09:00-21:00',badges:[{t:'评分 3.8',c:'badge-rate'}]},
         {name:'邹立国火锅煎烤食材(远洋时代城店)',addr:'远洋时代城71-14号',lng:'121.821010',lat:'39.081145',mode:'walk',dist:'0.98 公里',time:'约 14 分钟',detail:'人均 ¥60，营业 09:00-20:00',badges:[{t:'评分 4.0',c:'badge-rate'}]},
@@ -972,8 +971,7 @@ var CAMPUS_PLACES={
       items:[
         {name:'三年十六班主题餐厅(辽滨店)',addr:'直方街与庆誉路交叉口东200米',lng:'122.123309',lat:'40.700879',mode:'walk',dist:'1.88 公里',time:'约 25 分钟',detail:'沿明德路→德榜路→复州路→直方街步行，评分 4.3，营业 10:00-21:00',badges:[{t:'评分 4.3',c:'badge-rate'}]},
         {name:'罗森便利店(盘锦校区店)',addr:'大工路2号大连理工大学盘锦校区内',lng:'122.124016',lat:'40.690242',mode:'walk',dist:'校内',time:'约 2 分钟',detail:'校内便利店',badges:[{t:'校内',c:'badge-near'}]},
-        {name:'祥惠百货超市(物流大厦店)',addr:'辽东湾新区物流大厦',lng:'122.125000',lat:'40.692000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近百货超市',badges:[]}
-,
+        {name:'祥惠百货超市(物流大厦店)',addr:'辽东湾新区物流大厦',lng:'122.125000',lat:'40.692000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近百货超市',badges:[]},
         {name:'大连理工大学第八食堂',addr:'大洼区大工路2号大连理工大学(盘锦校区)B13楼',lng:'122.123275',lat:'40.689225',mode:'walk',dist:'0.12 公里',time:'约 2 分钟',detail:'校内 B13 楼学生食堂，性价比高',badges:[{t:'校内',c:'badge-near'},{t:'评分 4.1',c:'badge-rate'}]},
         {name:'大连理工大学第三食堂',addr:'大工路2号大连理工大学(盘锦校区)B03楼',lng:'122.122613',lat:'40.686471',mode:'walk',dist:'0.43 公里',time:'约 7 分钟',detail:'校内 B03 楼学生食堂，性价比高',badges:[{t:'校内',c:'badge-near'},{t:'评分 3.9',c:'badge-rate'}]},
         {name:'0090汉堡工厂(大连理工大学盘锦校区店)',addr:'大工路2号',lng:'122.122488',lat:'40.686422',mode:'walk',dist:'0.44 公里',time:'约 7 分钟',detail:'人均 ¥14，营业 10:00-21:00',badges:[{t:'评分 3.3',c:'badge-rate'}]},
@@ -1488,7 +1486,7 @@ function botReply(text,extra){
   },650);
 }
 // 学习规划问答核心：依次匹配以考代修、考研建议、CONCEPTS 知识库、
-// 课程/就业/书院/专业等关键词，全部未命中时调用 GLM-4.7-Flash AI 作答
+// 课程/就业/书院/专业等关键词，全部未命中时调用 GLM-4V AI 作答
 function answerBot(q){
   var ctx=STUDY_CTX;
   var nq=normQuery(q);
@@ -1570,8 +1568,6 @@ function answerBot(q){
     }
     chatBody.scrollTop=chatBody.scrollHeight;
     chatHistory.push({role:'bot',html:t.querySelector('.msg-bubble').innerHTML});saveChatHistory();
-  },function(nextModel){
-    botReply('<p>⚠️ 当前模型繁忙，正在切换到备选模型 '+escapeHtml(nextModel)+'...</p>');
   });
 }
 // 清除聊天记录
@@ -1687,8 +1683,8 @@ function sendChat(text){
   input.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px';});
 })();
 
-// ===== 课程表文件导入 + 智谱 GLM-4.6V/4.7 学习规划生成 =====
-var ZHIPU_API_KEY='69808293f6d145d0b243be958ac0ddf6.v693lXm6mBivdBED';
+// ===== 课程表文件导入 + 智谱 GLM-4V 学习规划生成 =====
+var ZHIPU_API_KEY='d706933163f44d5fa45f0dcd3dd370e3.WeZw034t9OLrCmXo';
 var CAMPUS_COMMUTE_INFO={
   lingshui:{name:'凌水主校区',canteen:'校内多个食堂（中心食堂、第五至第九食堂、博园餐厅），步行5-10分钟可达',playground:'校内标准田径场、篮球场、网球场，步行5分钟可达',commute:'校区面积较大，教学楼至宿舍步行约10-15分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
   kaifa:{name:'开发区校区',canteen:'校内第六食堂，步行5分钟可达',playground:'校内运动场、篮球场，步行5分钟可达',commute:'校区紧凑，教学楼至宿舍步行约5-8分钟',sleep:'宿舍门禁23:00，建议22:30前返回'},
@@ -1748,12 +1744,12 @@ function buildSchedulePrompt(fileText,userReq){
   var majorInfo=STUDY_CTX?('书院：'+STUDY_CTX.collegeName+'，专业：'+STUDY_CTX.majorName):'';
   return '你是一位大学生学习规划助手。请根据以下信息，为学生制定一份合理的每日学习规划。\n\n【学生信息】\n'+majorInfo+'\n\n【校区地理信息】\n'+campusInfo+'\n\n【课程表信息】\n'+(fileText||'（未提供课程表，请根据一般情况安排）')+'\n\n【学生要求】\n'+(userReq||'无特殊要求，请合理安排')+'\n\n【规划要求】\n1. 一日三餐：早餐7:00-7:30，午餐11:30-12:30，晚餐17:30-18:30（时间合理，考虑食堂距离）\n2. 运动时间：校园跑或运动至少30分钟（建议晨跑6:30-7:00或晚跑21:00-21:30）\n3. 通勤时间：根据校区地理信息预留足够通勤时间\n4. 就寝时间：保证6小时以上睡眠，建议23:00就寝6:00起床\n5. 自学时间：根据课程安排合理分配自习时间\n6. 娱乐时间：适当安排放松娱乐时间\n7. 请以时间表格式输出，每个时间段注明活动内容和时长\n8. 对学生的口语化要求请宽容理解，如"多睡会儿""少跑步"等\n\n请输出一份完整的每日学习规划时间表。';
 }
-// 调用智谱 GLM API：图像用 GLM-4.6V-Flash 识别，文本用 GLM-4.7-Flash 理解
-function callZhipuAPI(prompt,fileBase64,fileType,cb,onFallback){
+// 调用智谱 GLM API：支持模型自动回退，纯文本优先用免费文本模型
+function callZhipuAPI(prompt,fileBase64,fileType,cb){
   if(!ZHIPU_API_KEY){cb(null,'API Key 未配置');return;}
   var url='https://open.bigmodel.cn/api/paas/v4/chat/completions';
   var hasImg=!!fileBase64;
-  var models=hasImg?['glm-4.6v-flash','glm-4v-flash']:['glm-4-flash','glm-4.7-flash','glm-4.5-flash'];
+  var models=hasImg?['glm-4v-flash','glm-4v']:['glm-4.5-flash','glm-4-flash','glm-4.7-flash'];
   var mi=0;
   function tryModel(){
     if(mi>=models.length){cb(null,'所有模型均不可用，请检查 API Key 额度');return;}
@@ -1761,18 +1757,18 @@ function callZhipuAPI(prompt,fileBase64,fileType,cb,onFallback){
     var messages;
     if(hasImg){
       var mime=fileType==='jpg'?'image/jpeg':fileType==='png'?'image/png':'image/jpeg';
-      messages=[{role:'user',content:[{type:'image_url',image_url:{url:fileBase64}},{type:'text',text:prompt}]}];
+      messages=[{role:'user',content:[{type:'image_url',image_url:{url:'data:'+mime+';base64,'+fileBase64}},{type:'text',text:prompt}]}];
     }else{
       messages=[{role:'user',content:prompt}];
     }
     var body=JSON.stringify({model:model,messages:messages,temperature:0.7,max_tokens:2000});
     var ctrl=new AbortController();
     var timer=setTimeout(function(){ctrl.abort();},15000);
-    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}}).catch(function(e){clearTimeout(timer);mi++;if(mi<models.length&&onFallback)onFallback(models[mi]);tryModel();});
+    fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+ZHIPU_API_KEY},body:body,signal:ctrl.signal}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(d){clearTimeout(timer);if(d.choices&&d.choices[0]){cb(d.choices[0].message.content,null);}else{throw new Error('响应格式异常');}}).catch(function(e){clearTimeout(timer);mi++;tryModel();});
   }
   tryModel();
 }
-// 生成学习规划：调用 GLM（图像 GLM-4.6V-Flash / 文本 GLM-4.7-Flash）并以卡片形式展示结果
+// 生成学习规划：调用 GLM-4V 并以卡片形式展示结果
 function generateSchedule(fileText,fileBase64,fileType,userReq){
   botReply('<p>正在分析课程表并生成学习规划，请稍候...</p>');
   var prompt=buildSchedulePrompt(fileText,userReq);
@@ -1785,8 +1781,6 @@ function generateSchedule(fileText,fileBase64,fileType,userReq){
     html+='<div style="background:var(--surface-2);border-radius:12px;padding:16px;margin:8px 0;font-size:13px;line-height:1.8;white-space:pre-wrap;border:1px solid rgba(0,63,136,.2)">'+escapeHtml(resp)+'</div>';
     html+='<p style="font-size:12px;color:var(--text-3)">以上规划由 AI 根据你的课程表与校区信息生成，仅供参考，请根据实际情况调整。</p>';
     botReply(html);
-  },function(nextModel){
-    botReply('<p>⚠️ 当前模型繁忙，正在切换到备选模型 '+escapeHtml(nextModel)+'...</p>');
   });
 }
 sendChat=function(text){
