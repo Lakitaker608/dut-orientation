@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+  entrance.html - 新生入口页
+  功能：展示报到状态选择，引导已报到/未报到新生进入对应页面
+  背景：校园风景图（虚化 + 蓝色遮罩）
+-->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -23,9 +28,12 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
 .bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 25%,rgba(0,31,64,.45) 100%);z-index:1}
 .bg .grid-deco{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);z-index:2}
 
-/* ===== 居中卡片 ===== */
-.stage{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.card{width:100%;max-width:520px;background:var(--surface);border-radius:var(--radius-lg);padding:44px 40px 36px;box-shadow:0 30px 80px rgba(0,31,64,.35);animation:rise .6s cubic-bezier(.16,1,.3,1) both}
+/* ===== 布局：左·报到状态卡 + 右·姓名设置卡 ===== */
+.stage{position:relative;z-index:1;height:100vh;overflow-y:auto;display:flex;align-items:center;justify-content:center;padding:24px}
+.stage-inner{width:100%;max-width:940px;margin:auto;display:flex;align-items:stretch;gap:22px}
+.card{width:100%;background:var(--surface);border-radius:var(--radius-lg);padding:44px 40px 36px;box-shadow:0 30px 80px rgba(0,31,64,.35);animation:rise .6s cubic-bezier(.16,1,.3,1) both}
+.card-main{flex:1 1 auto;min-width:0;max-width:560px}
+.card-name{flex:0 0 336px;width:336px;padding:36px 32px 30px;display:flex;flex-direction:column;animation-delay:.12s}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
 /* ===== 头部 ===== */
@@ -63,7 +71,50 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
 .foot{margin-top:28px;text-align:center;font-size:11.5px;color:var(--text-3);letter-spacing:.04em}
 .foot .dot{display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;vertical-align:middle;margin:0 8px}
 
+/* ===== 姓名设置卡 ===== */
+.nm-head{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.nm-ico{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 8px 18px rgba(0,63,136,.22)}
+.nm-ico svg{width:20px;height:20px}
+.nm-head h2{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.nm-head p{font-size:11.5px;color:var(--text-3);margin-top:3px;letter-spacing:.02em}
+
+.nm-avatar{width:76px;height:76px;border-radius:50%;margin:0 auto 18px;background:linear-gradient(135deg,var(--primary-light),#DCE7F8);border:1.5px solid #D7E2F2;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:600;letter-spacing:-.02em;transition:all .25s ease}
+.nm-avatar svg{width:32px;height:32px;color:var(--primary)}
+.nm-avatar.is-set{background:linear-gradient(135deg,var(--primary),var(--accent));border-color:transparent;color:#fff;box-shadow:0 12px 26px rgba(0,63,136,.28)}
+
+.nm-field{margin-bottom:10px}
+.nm-label{display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:8px;letter-spacing:.02em}
+.nm-input{width:100%;height:46px;padding:0 14px;font-family:inherit;font-size:15px;color:var(--text-1);background:#FAFBFD;border:1.5px solid var(--border);border-radius:12px;outline:none;transition:all .2s ease}
+.nm-input::placeholder{color:var(--text-3)}
+.nm-input:hover{border-color:#C9D4E4}
+.nm-input:focus{background:var(--surface);border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,63,136,.10)}
+.nm-count{float:right;font-size:11px;color:var(--text-3);font-weight:400}
+
+.nm-status{height:18px;font-size:12px;color:var(--text-3);margin:2px 0 14px;opacity:0;transform:translateY(-2px);transition:all .25s ease;display:flex;align-items:center;gap:6px}
+.nm-status.show{opacity:1;transform:translateY(0)}
+.nm-status.ok{color:#0E9F6E}
+.nm-status.err{color:#D64545}
+.nm-status svg{width:13px;height:13px;flex-shrink:0}
+
+.nm-actions{display:flex;gap:10px}
+.nm-btn{flex:1;height:42px;border:none;border-radius:12px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s ease;letter-spacing:.02em}
+.nm-btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 10px 22px rgba(0,63,136,.24)}
+.nm-btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 14px 26px rgba(0,63,136,.3)}
+.nm-btn-primary:active{transform:translateY(0)}
+.nm-btn-ghost{flex:0 0 84px;background:#F2F5F9;color:var(--text-2)}
+.nm-btn-ghost:hover{background:#E9EEF5;color:var(--text-1)}
+
+.nm-foot{margin-top:auto;padding-top:20px;font-size:11px;color:var(--text-3);line-height:1.7;letter-spacing:.02em}
+.nm-foot .pin{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);vertical-align:middle;margin-right:6px}
+.nm-foot .line{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin-bottom:14px}
+
 /* ===== 响应式 ===== */
+@media (max-width:900px){
+  .stage{align-items:flex-start}
+  .stage-inner{flex-direction:column;max-width:560px;gap:18px}
+  .card-name{flex:none;width:100%;padding:30px 28px 26px}
+  .nm-avatar{width:64px;height:64px;font-size:26px;margin-bottom:14px}
+}
 @media (max-width:480px){
   .card{padding:36px 24px 28px}
   .head h1{font-size:21px}
@@ -75,44 +126,166 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
 <div class="bg"><div class="bg-img"></div><div class="grid-deco"></div></div>
 
 <div class="stage">
-  <div class="card">
-    <div class="head">
-      <div class="logo">大工</div>
-      <h1>大连理工大学</h1>
-      <div class="sub">新生入学助手 · 报到引导</div>
-    </div>
+  <div class="stage-inner">
 
-    <div class="divider"></div>
+    <!-- 左：报到状态选择 -->
+    <section class="card card-main">
+      <div class="head">
+        <div class="logo">大工</div>
+        <h1>大连理工大学</h1>
+        <div class="sub">新生入学助手 · 报到引导</div>
+      </div>
 
-    <div class="prompt">欢迎使用新生入学助手<br>请先选择您的<b>报到状态</b>，我们将为您呈现对应内容</div>
+      <div class="divider"></div>
 
-    <div class="opts">
-      <button class="opt opt-primary" onclick="location.href='campus-life.html?skip=1'">
-        <div class="opt-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+      <div class="prompt"><span id="greetLine">欢迎使用新生入学助手</span><br>请先选择您的<b>报到状态</b>，我们将为您呈现对应内容</div>
+
+      <div class="opts">
+        <button class="opt opt-primary" onclick="location.href='campus-life.html?skip=1'">
+          <div class="opt-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+          </div>
+          <div class="opt-txt">
+            <div class="t">我已报到 <span class="tag">校园生活</span></div>
+            <div class="d">已报到新生，进入校园生活与学科竞赛指南</div>
+          </div>
+          <svg class="opt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+
+        <button class="opt opt-ghost" onclick="location.href='dut-orientation.html?skip=1'">
+          <div class="opt-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <div class="opt-txt">
+            <div class="t">我还未报到 <span class="tag tag-ghost">入学助手</span></div>
+            <div class="d">未报到新生，进入新生入学助手主页，查看报到指南</div>
+          </div>
+          <svg class="opt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <div class="foot">大连理工大学 欢迎您<span class="dot"></span>祝您学业顺利</div>
+    </section>
+
+    <!-- 右：设置本人姓名 -->
+    <aside class="card card-name">
+      <div class="nm-head">
+        <div class="nm-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
-        <div class="opt-txt">
-          <div class="t">我已报到 <span class="tag">校园生活</span></div>
-          <div class="d">已报到新生，进入校园生活与学科竞赛指南</div>
+        <div>
+          <h2>设置本人姓名</h2>
+          <p>用于个性化显示</p>
         </div>
-        <svg class="opt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </button>
+      </div>
 
-      <button class="opt opt-ghost" onclick="location.href='dut-orientation.html?skip=1'">
-        <div class="opt-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        </div>
-        <div class="opt-txt">
-          <div class="t">我还未报到 <span class="tag tag-ghost">入学助手</span></div>
-          <div class="d">未报到新生，进入新生入学助手主页，查看报到指南</div>
-        </div>
-        <svg class="opt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </button>
-    </div>
+      <div class="nm-avatar" id="nmAvatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
 
-    <div class="foot">大连理工大学 欢迎您<span class="dot"></span>祝您学业顺利</div>
+      <div class="nm-field">
+        <label class="nm-label" for="nmInput">姓名 <span class="nm-count" id="nmCount">0/16</span></label>
+        <input class="nm-input" id="nmInput" type="text" maxlength="16" placeholder="请输入您的姓名" autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="nm-status" id="nmStatus"></div>
+
+      <div class="nm-actions">
+        <button class="nm-btn nm-btn-primary" id="nmSave" type="button">保存</button>
+        <button class="nm-btn nm-btn-ghost" id="nmClear" type="button">清除</button>
+      </div>
+
+      <div class="nm-foot">
+        <div class="line"></div>
+        <span class="pin"></span>信息通过浏览器本地存储<br><span class="pin"></span>关闭标签页或重启后依然保留
+      </div>
+    </aside>
+
   </div>
 </div>
+<script>
+/* ===== 本人姓名：localStorage 本地永久存储 ===== */
+(function(){
+  'use strict';
+  var KEY='dut_student_name',MAX=16;
+  var input=document.getElementById('nmInput'),
+      avatar=document.getElementById('nmAvatar'),
+      count=document.getElementById('nmCount'),
+      status=document.getElementById('nmStatus'),
+      greet=document.getElementById('greetLine');
+  var AVATAR_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+  var timer=null,debounce=null;
+
+  function get(){try{return localStorage.getItem(KEY)||'';}catch(e){return '';}}
+  function set(v){try{localStorage.setItem(KEY,v);return true;}catch(e){return false;}}
+  function del(){try{localStorage.removeItem(KEY);}catch(e){}}
+
+  function tip(msg,type){
+    status.className='nm-status show'+(type?' '+type:'');
+    status.innerHTML=(type==='ok'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>'
+      : type==='err'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>' : '')+msg;
+    clearTimeout(timer);
+    timer=setTimeout(function(){status.className='nm-status';},2200);
+  }
+
+  function render(name,silent){
+    if(name){
+      avatar.className='nm-avatar is-set';
+      avatar.textContent=name.slice(0,1);
+      greet.textContent=name+' 同学，欢迎回来';
+    }else{
+      avatar.className='nm-avatar';
+      avatar.innerHTML=AVATAR_ICON;
+      greet.textContent='欢迎使用新生入学助手';
+    }
+    count.textContent=name.length+'/'+MAX;
+    if(!silent)document.title=name?name+' · 大连理工大学新生入口':'大连理工大学 · 新生入口';
+  }
+
+  /* 保存（写入 localStorage，永久保留） */
+  function save(explicit){
+    var v=input.value.replace(/\s+/g,' ').trim().slice(0,MAX);
+    if(!v){
+      if(explicit){tip('请输入您的姓名','err');input.focus();}
+      return false;
+    }
+    if(v!==input.value){                    // 仅在需要规范化时回写，避免光标跳动
+      var pos=input.selectionStart;
+      input.value=v;
+      try{input.setSelectionRange(pos,pos);}catch(e){}
+    }
+    if(set(v)){render(v);if(explicit)tip('已保存至本地','ok');}
+    else if(explicit)tip('当前浏览器不支持本地存储','err');
+    return true;
+  }
+
+  /* 读取并回填 */
+  (function init(){
+    var saved=get();
+    input.value=saved;
+    render(saved,true);
+  })();
+
+  /* 输入时即时写入，未点保存也不会丢失 */
+  input.addEventListener('input',function(){
+    count.textContent=input.value.replace(/\s+/g,' ').trim().length+'/'+MAX;
+    clearTimeout(debounce);
+    debounce=setTimeout(function(){save(false);},400);
+  });
+  input.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();save(true);}
+  });
+  input.addEventListener('blur',function(){save(false);});
+
+  document.getElementById('nmSave').addEventListener('click',function(){save(true);});
+  document.getElementById('nmClear').addEventListener('click',function(){
+    if(!input.value&&!get()){tip('尚未设置姓名','err');return;}
+    del();input.value='';render('');tip('已清除本地姓名','ok');
+  });
+})();
+</script>
 <script src="protect.js"></script>
 </body>
 </html>
