@@ -232,6 +232,21 @@ svg{display:block}
 .rt-day-temp{font-size:13px;font-weight:600;color:var(--text-1)}
 .rt-day-temp .lo{color:var(--text-3);font-weight:400;margin-left:4px}
 
+/* ===== 实时日期时间条 ===== */
+.rt-clockbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:11px 20px;background:var(--surface-2);border-bottom:1px solid var(--border)}
+.rt-clock-main{display:flex;align-items:center;gap:9px;min-width:0}
+.rt-clock-main>svg{width:15px;height:15px;color:var(--primary);flex-shrink:0}
+.rt-clock-date{font-size:13px;font-weight:600;color:var(--text-1)}
+.rt-clock-time{font-size:14px;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.03em}
+.rt-clock-meta{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--text-3);flex-wrap:wrap}
+.rt-live{display:inline-flex;align-items:center;gap:5px;color:var(--accent);font-weight:600}
+.rt-live i{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:rtPulse 1.6s ease-in-out infinite}
+@keyframes rtPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,163,224,.55)}50%{opacity:.5;box-shadow:0 0 0 5px rgba(0,163,224,0)}}
+.rt-stale{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;padding:4px 10px;border-radius:20px;background:#FFF4E5;color:#B26A00;font-size:11px;font-weight:600;border:1px solid #FFE0B2}
+.rt-src{display:inline-flex;align-items:center;gap:5px}
+.rt-src svg{width:12px;height:12px}
+@media(max-width:640px){.rt-clockbar{flex-direction:column;align-items:flex-start;gap:7px}}
+
 /* ===== Views ===== */
 .view{display:none;animation:fade .35s ease}
 .view.active{display:block}
@@ -714,6 +729,22 @@ svg{display:block}
           </select>
         </div>
       </div>
+      <!-- 实时日期时间 -->
+      <div class="rt-clockbar">
+        <div class="rt-clock-main">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span class="rt-clock-date" id="rtDate">--</span>
+          <span class="rt-clock-time" id="rtTime">--:--:--</span>
+        </div>
+        <div class="rt-clock-meta">
+          <span class="rt-live"><i></i>实时更新</span>
+          <span id="rtAsOf">数据更新于 --</span>
+          <span class="rt-src">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 22a15 15 0 010-20"/></svg>
+            高德地图 MCP · maps_weather
+          </span>
+        </div>
+      </div>
       <div class="rt-content" id="rtContent"></div>
     </div>
 
@@ -1066,38 +1097,79 @@ renderTabs();renderPlaces();
 
 // ===== 校区实时天气（数据由 maps_weather 提供）=====
 var rtWeatherData={
-  lingshui:{name:'凌水主校区',area:'大连市甘井子区',forecasts:[
-    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'阴',daytemp:'27',nighttemp:'22',daywind:'北',daypower:'1-3'},
-    {date:'2026-08-29',week:'6',dayweather:'多云',nightweather:'晴',daytemp:'27',nighttemp:'23',daywind:'西南',daypower:'1-3'},
-    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'多云',daytemp:'29',nighttemp:'21',daywind:'西南',daypower:'4'},
-    {date:'2026-08-31',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'28',nighttemp:'19',daywind:'北',daypower:'5'}
+  lingshui:{name:'凌水主校区',area:'大连市甘井子区',adcode:'210211',forecasts:[
+    {date:'2026-10-04',week:'7',dayweather:'阵雨',nightweather:'晴',daytemp:'20',nighttemp:'13',daywind:'北',daypower:'5'},
+    {date:'2026-10-05',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'19',nighttemp:'15',daywind:'西北',daypower:'5'},
+    {date:'2026-10-06',week:'2',dayweather:'晴',nightweather:'晴',daytemp:'23',nighttemp:'15',daywind:'西北',daypower:'1-3'},
+    {date:'2026-10-07',week:'3',dayweather:'晴',nightweather:'晴',daytemp:'23',nighttemp:'17',daywind:'南',daypower:'4'}
   ]},
-  kaifa:{name:'开发区校区',area:'大连市金州区',forecasts:[
-    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'阴',daytemp:'27',nighttemp:'22',daywind:'北',daypower:'1-3'},
-    {date:'2026-08-29',week:'6',dayweather:'多云',nightweather:'晴',daytemp:'27',nighttemp:'22',daywind:'西南',daypower:'1-3'},
-    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'多云',daytemp:'29',nighttemp:'21',daywind:'西南',daypower:'4'},
-    {date:'2026-08-31',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'27',nighttemp:'19',daywind:'北',daypower:'5'}
+  kaifa:{name:'开发区校区',area:'大连市金州区',adcode:'210213',forecasts:[
+    {date:'2026-10-04',week:'7',dayweather:'雷阵雨',nightweather:'晴',daytemp:'20',nighttemp:'13',daywind:'北',daypower:'5'},
+    {date:'2026-10-05',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'19',nighttemp:'15',daywind:'西北',daypower:'4'},
+    {date:'2026-10-06',week:'2',dayweather:'晴',nightweather:'晴',daytemp:'23',nighttemp:'14',daywind:'西北',daypower:'1-3'},
+    {date:'2026-10-07',week:'3',dayweather:'晴',nightweather:'晴',daytemp:'23',nighttemp:'17',daywind:'南',daypower:'4'}
   ]},
-  panjin:{name:'盘锦校区',area:'盘锦市大洼区',forecasts:[
-    {date:'2026-08-28',week:'5',dayweather:'阴',nightweather:'多云',daytemp:'26',nighttemp:'20',daywind:'北',daypower:'1-3'},
-    {date:'2026-08-29',week:'6',dayweather:'阴',nightweather:'晴',daytemp:'29',nighttemp:'17',daywind:'西南',daypower:'1-3'},
-    {date:'2026-08-30',week:'7',dayweather:'多云',nightweather:'晴',daytemp:'26',nighttemp:'17',daywind:'西南',daypower:'1-3'},
-    {date:'2026-08-31',week:'1',dayweather:'多云',nightweather:'晴',daytemp:'25',nighttemp:'18',daywind:'北',daypower:'1-3'}
+  panjin:{name:'盘锦校区',area:'盘锦市大洼区',adcode:'211104',forecasts:[
+    {date:'2026-10-04',week:'7',dayweather:'阵雨',nightweather:'多云',daytemp:'16',nighttemp:'9',daywind:'东北',daypower:'4'},
+    {date:'2026-10-05',week:'1',dayweather:'晴',nightweather:'晴',daytemp:'20',nighttemp:'8',daywind:'西北',daypower:'1-3'},
+    {date:'2026-10-06',week:'2',dayweather:'晴',nightweather:'晴',daytemp:'22',nighttemp:'9',daywind:'西北',daypower:'1-3'},
+    {date:'2026-10-07',week:'3',dayweather:'晴',nightweather:'晴',daytemp:'22',nighttemp:'16',daywind:'南',daypower:'1-3'}
   ]}
 };
+// 数据快照时间（由高德地图 MCP maps_weather 拉取）
+var RT_ASOF='2026-10-04 09:39';
+
 function rtIcon(w){
-  var m=[['雪','❄️'],['大雨','⛈️'],['中雨','🌧️'],['小雨','🌦️'],['雨','🌧️'],['晴','☀️'],['多云','⛅'],['阴','☁️']];
+  var m=[['雷阵雨','⛈️'],['雷','⛈️'],['雪','❄️'],['大雨','⛈️'],['中雨','🌧️'],['阵雨','🌦️'],['小雨','🌦️'],['雨','🌧️'],['晴','☀️'],['多云','⛅'],['阴','☁️']];
   for(var i=0;i<m.length;i++){if(w.indexOf(m[i][0])>=0)return m[i][1];}
   return '🌤️';
 }
 function rtWeek(n){return ['日','一','二','三','四','五','六'][n]}
-function renderRtWeather(key){
+function rtPad(n){return n<10?'0'+n:''+n;}
+
+/* ===== 实时日期时间（每秒刷新）===== */
+function tickRtClock(){
+  var d=new Date();
+  var de=document.getElementById('rtDate');
+  var te=document.getElementById('rtTime');
+  if(de)de.textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 星期'+rtWeek(d.getDay());
+  if(te)te.textContent=rtPad(d.getHours())+':'+rtPad(d.getMinutes())+':'+rtPad(d.getSeconds());
+}
+tickRtClock();
+setInterval(tickRtClock,1000);
+(function(){var a=document.getElementById('rtAsOf');if(a)a.textContent='数据更新于 '+RT_ASOF;})();
+
+/* ===== 日期自适应：按当前日期对齐预报，避免隔日后日期错位 ===== */
+function rtBuild(key){
   var d=rtWeatherData[key];
-  var t=d.forecasts[0];
+  var t0=new Date();t0.setHours(0,0,0,0);
+  var p=d.forecasts[0].date.split('-');
+  var base=new Date(Number(p[0]),Number(p[1])-1,Number(p[2]));base.setHours(0,0,0,0);
+  var diff=Math.round((t0-base)/86400000);
+  var stale=false;
+  if(diff<0)diff=0;
+  if(diff>=d.forecasts.length){stale=true;diff=0;}
+  var list=[];
+  for(var i=0;i+diff<d.forecasts.length;i++){
+    var f=d.forecasts[i+diff];
+    var dt=new Date(t0.getTime()+i*86400000);
+    list.push({date:dt.getFullYear()+'-'+rtPad(dt.getMonth()+1)+'-'+rtPad(dt.getDate()),
+      week:String(dt.getDay()),
+      dayweather:f.dayweather,nightweather:f.nightweather,
+      daytemp:f.daytemp,nighttemp:f.nighttemp,
+      daywind:f.daywind,daypower:f.daypower});
+  }
+  return {name:d.name,area:d.area,list:list,stale:stale};
+}
+
+function renderRtWeather(key){
+  var d=rtBuild(key);
+  var t=d.list[0];
+  var staleHtml=d.stale?'<span class="rt-stale">⚠ 预报已超出缓存范围，建议重新拉取</span>':'';
   var now='<div class="rt-now">'+
     '<div class="rt-now-icon">'+rtIcon(t.dayweather)+'</div>'+
     '<div class="rt-now-info">'+
-      '<div class="rt-now-area">'+d.name+' · '+d.area+' · 今天</div>'+
+      '<div class="rt-now-area">'+d.name+' · '+d.area+' · 今天 '+t.date.slice(5)+'</div>'+
       '<div class="rt-now-temp">'+t.daytemp+'<span class="unit">℃</span></div>'+
       '<div class="rt-now-desc">'+
         '<span>天气 '+t.dayweather+'</span>'+
@@ -1105,10 +1177,10 @@ function renderRtWeather(key){
         '<span>'+t.daywind+'风 '+t.daypower+'级</span>'+
       '</div>'+
     '</div>'+
-  '</div>';
-  var future='<div class="rt-future">'+d.forecasts.map(function(f){
+  '</div>'+staleHtml;
+  var future='<div class="rt-future">'+d.list.map(function(f,i){
     return '<div class="rt-day">'+
-      '<div class="rt-day-date">'+f.date.slice(5)+' 周'+rtWeek(Number(f.week))+'</div>'+
+      '<div class="rt-day-date">'+(i===0?'今天':f.date.slice(5)+' 周'+rtWeek(Number(f.week)))+'</div>'+
       '<div class="rt-day-icon">'+rtIcon(f.dayweather)+'</div>'+
       '<div class="rt-day-temp">'+f.daytemp+'°<span class="lo">'+f.nighttemp+'°</span></div>'+
     '</div>';
