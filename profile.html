@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<!--
+  profile.html - 个人中心（独立页面）
+  功能：展示 entrance.html 保存的姓名（姓氏头像）、可编辑/清除姓名；
+        「我的收藏」汇总 campus-life.html / dut-orientation.html 中收藏的全部卡片
+  存储：localStorage['dut_student_name'] 姓名    localStorage['dut_favorites'] 收藏
+  技术：纯 HTML + 内联 CSS/JS，ES5 语法
+  依赖：favorites.js（收藏读写引擎）、protect.js（页面保护，?dev=1 可关闭）
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人中心 · 我的收藏 · 大连理工大学</title>
+<script>(function(){var p=new URLSearchParams(location.search);if(!p.get('skip')){location.replace('entrance.html');}})();</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+:root{
+  --bg:#F7F8FA;--surface:#FFFFFF;--surface-2:#F2F4F7;
+  --primary:#003F88;--primary-2:#0052B4;--primary-light:#E8F0FB;--accent:#00A3E0;
+  --text-1:#0F1B2D;--text-2:#4A5A70;--text-3:#8A98AC;
+  --border:#E4E8EE;--border-strong:#D0D6DE;
+  --success:#16A34A;--warning:#E8A317;--danger:#E5484D;
+  --shadow-sm:0 1px 2px rgba(15,27,45,.04);
+  --shadow-md:0 6px 20px rgba(15,27,45,.06);
+  --shadow-lg:0 20px 50px rgba(15,27,45,.10);
+  --radius:14px;--radius-lg:20px;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spacing:-.005em}
+
+/* ===== 顶栏 ===== */
+.topbar{position:sticky;top:0;z-index:50;height:58px;display:flex;align-items:center;gap:14px;padding:0 22px;background:var(--surface);border-bottom:1px solid var(--border)}
+.tb-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);text-decoration:none;padding:6px 11px;border-radius:9px;transition:all .15s}
+.tb-back:hover{background:var(--surface-2);color:var(--primary)}
+.tb-back svg{width:15px;height:15px}
+.tb-logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-title{font-size:15px;font-weight:600}
+.tb-spacer{flex:1}
+.tb-links{display:flex;gap:8px}
+.tb-link{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-2);text-decoration:none;padding:7px 12px;border:1px solid var(--border);border-radius:9px;transition:all .15s;white-space:nowrap}
+.tb-link:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+
+/* ===== 主体 ===== */
+.wrap{max-width:1080px;margin:0 auto;padding:22px 22px 60px;display:flex;flex-direction:column;gap:18px}
+
+.pf-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:24px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.pf-avatar{position:relative;width:68px;height:68px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:27px;font-weight:600;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 6px 18px rgba(0,63,136,.22)}
+.pf-avatar.empty{background:var(--surface-2);color:var(--text-3);box-shadow:none}
+.pf-avatar svg{width:30px;height:30px}
+.pf-avatar[data-n]:after{content:attr(data-n);position:absolute;top:-2px;right:-2px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--warning);color:#fff;font-size:11px;font-weight:700;line-height:22px;text-align:center;box-shadow:0 0 0 3px var(--surface);box-sizing:border-box}
+.pf-avatar.empty[data-n]:after{background:var(--primary)}
+.pf-info{flex:1;min-width:220px}
+.pf-name{font-size:20px;font-weight:650;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-sub{font-size:13px;color:var(--text-3);margin-top:6px;line-height:1.65}
+.pf-stats{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+.stat{background:var(--surface-2);border-radius:12px;padding:9px 16px;min-width:96px}
+.stat .n{font-size:19px;font-weight:700;color:var(--primary);line-height:1.2}
+.stat .l{font-size:11.5px;color:var(--text-3);margin-top:3px}
+.pf-acts{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12.5px;font-weight:500;padding:9px 15px;border-radius:10px;border:none;cursor:pointer;transition:all .15s;white-space:nowrap;font-family:inherit}
+.btn svg{width:14px;height:14px}
+.btn-1{background:var(--primary-light);color:var(--primary)}
+.btn-1:hover{background:var(--primary);color:#fff}
+.btn-2{background:var(--surface-2);color:var(--text-2)}
+.btn-2:hover{background:#FDECEC;color:var(--danger)}
+.pf-edit{display:none;gap:8px;margin-top:13px;align-items:center;flex-wrap:wrap}
+.pf-edit.show{display:flex}
+.pf-input{flex:1;min-width:150px;max-width:260px;font-family:inherit;font-size:13.5px;padding:9px 12px;border:1px solid var(--border-strong);border-radius:10px;color:var(--text-1);background:var(--surface)}
+.pf-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
+.pf-tip{font-size:11.5px;color:var(--text-3)}
+
+/* ===== 我的收藏 ===== */
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:22px 24px 24px}
+.sec-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sec-title{font-size:16px;font-weight:650;display:flex;align-items:center;gap:9px}
+.sec-title svg{width:17px;height:17px;color:var(--warning)}
+.sec-title .cnt{font-size:11.5px;font-weight:600;color:var(--primary);background:var(--primary-light);border-radius:7px;padding:2px 8px}
+.tb-spacer2{flex:1}
+.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:11px;flex-wrap:wrap}
+.tab{font-family:inherit;font-size:12.5px;padding:7px 13px;border:none;background:none;border-radius:8px;color:var(--text-2);cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--primary)}
+.tab.on{background:var(--surface);color:var(--primary);font-weight:600;box-shadow:var(--shadow-sm)}
+.search{display:flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);min-width:190px}
+.search svg{width:14px;height:14px;color:var(--text-3);flex-shrink:0}
+.search input{border:none;outline:none;font-family:inherit;font-size:13px;color:var(--text-1);width:100%;background:none}
+
+.fav-list{display:flex;flex-direction:column;gap:10px}
+.fi{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;transition:all .16s ease}
+.fi:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.fi-ico{width:38px;height:38px;border-radius:11px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fi-ico svg{width:18px;height:18px}
+.fi-main{flex:1;min-width:0}
+.fi-t{font-size:14.5px;font-weight:600;color:var(--text-1);line-height:1.4;word-break:break-word}
+.fi-d{font-size:12.5px;color:var(--text-2);margin-top:4px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fi-meta{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+.chip{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--surface-2);color:var(--text-2);line-height:1.6;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip.page{background:var(--primary-light);color:var(--primary);font-weight:500}
+.fi-u{font-size:11.5px;color:var(--text-3);margin-top:7px;word-break:break-all;display:flex;align-items:center;gap:5px}
+.fi-u svg{width:12px;height:12px;flex-shrink:0}
+.fi-acts{display:flex;gap:6px;flex-shrink:0}
+.iact{width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--surface);color:var(--text-2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;padding:0}
+.iact svg{width:15px;height:15px}
+.iact:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+.iact.del:hover{border-color:var(--danger);color:var(--danger);background:#FDECEC}
+
+.empty{text-align:center;padding:52px 20px}
+.empty svg{width:52px;height:52px;color:var(--border-strong);margin-bottom:14px}
+.empty h4{font-size:15px;font-weight:600;color:var(--text-1);margin-bottom:7px}
+.empty p{font-size:13px;color:var(--text-3);line-height:1.75}
+.empty .go{display:inline-flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+
+.pc-toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(10px);background:rgba(15,27,45,.92);color:#fff;font-size:13px;padding:10px 18px;border-radius:10px;z-index:200;opacity:0;transition:all .22s ease;pointer-events:none}
+.pc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:720px){
+  .topbar{padding:0 14px;gap:9px;height:auto;min-height:56px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+  .tb-links{width:100%;order:3}
+  .wrap{padding:16px 14px 46px}
+  .pf-card{padding:18px;gap:15px}
+  .pf-acts{flex-direction:row;width:100%}
+  .pf-acts .btn{flex:1}
+  .sec{padding:18px 16px 20px}
+  .search{min-width:100%}
+  .fi-acts{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="tb-back" href="entrance.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>入学入口
+  </a>
+  <div class="tb-logo">大工</div>
+  <div class="tb-title">个人中心</div>
+  <div class="tb-spacer"></div>
+  <div class="tb-links">
+    <a class="tb-link" href="campus-life.html?skip=1">校园生活助手</a>
+    <a class="tb-link" href="dut-orientation.html?skip=1">新生入学助手</a>
+    <a class="tb-link" href="volunteer.html">志愿服务平台</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 个人信息 -->
+  <section class="pf-card">
+    <div class="pf-avatar empty" id="pfAvatar"></div>
+    <div class="pf-info">
+      <div class="pf-name" id="pfName">未设置姓名</div>
+      <div class="pf-sub" id="pfSub">在下方填写姓名后，校园生活助手与新生入学助手的右上角会同步显示头像。</div>
+      <div class="pf-edit" id="pfEdit">
+        <input class="pf-input" id="pfInput" type="text" maxlength="16" placeholder="请输入姓名（最多 16 字）" autocomplete="off">
+        <button class="btn btn-1" id="pfSave">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>保存
+        </button>
+        <button class="btn btn-2" id="pfCancel">取消</button>
+        <span class="pf-tip">姓氏将作为头像</span>
+      </div>
+      <div class="pf-stats" id="pfStats"></div>
+    </div>
+    <div class="pf-acts">
+      <button class="btn btn-1" id="pfBtnEdit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span id="pfBtnEditTxt">设置姓名</span>
+      </button>
+      <button class="btn btn-2" id="pfBtnClear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>清除姓名
+      </button>
+    </div>
+  </section>
+
+  <!-- 我的收藏 -->
+  <section class="sec">
+    <div class="sec-head">
+      <div class="sec-title">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>
+        我的收藏<span class="cnt" id="favCnt">0</span>
+      </div>
+      <div class="tb-spacer2"></div>
+      <div class="tabs" id="favTabs"></div>
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input id="favSearch" type="text" placeholder="搜索标题 / 描述 / 链接" autocomplete="off">
+      </label>
+    </div>
+    <div class="fav-list" id="favList"></div>
+  </section>
+
+</div>
+
+<script src="favorites.js"></script>
+<script>
+/* ===== 个人中心：姓名 + 我的收藏 ===== */
+(function(){
+  'use strict';
+  var NAME_KEY='dut_student_name';
+  var ICO_USER='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+  var ICO_LINK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>';
+  var ICO_OPEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
+  var ICO_COPY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+  var ICO_DEL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>';
+  var ICO_STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>';
+  var ICO_EMPTY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>';
+
+  function $(id){return document.getElementById(id);}
+  function clean(s){return (s||'').replace(/\s+/g,' ').trim();}
+  function esc(s){
+    return (s||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function toast(msg){
+    try{
+      var t=$('pfToast');
+      if(!t){t=document.createElement('div');t.id='pfToast';t.className='pc-toast';document.body.appendChild(t);}
+      t.textContent=msg;t.className='pc-toast show';
+      clearTimeout(t._tm);t._tm=setTimeout(function(){t.className='pc-toast';},1900);
+    }catch(e){}
+  }
+
+  /* ---------- 姓名 ---------- */
+  function getName(){
+    try{return (localStorage.getItem(NAME_KEY)||'').replace(/\s+/g,' ').trim();}catch(e){return '';}
+  }
+  function setName(v){
+    try{localStorage.setItem(NAME_KEY,clean(v));return true;}catch(e){return false;}
+  }
+  function initialOf(n){
+    if(!n)return '';
+    var c=n.charAt(0);
+    return /[A-Za-z]/.test(c)?c.toUpperCase():c;
+  }
+
+  var av=$('pfAvatar'),nm=$('pfName'),sub=$('pfSub'),stats=$('pfStats'),
+      editBox=$('pfEdit'),input=$('pfInput'),btnEditTxt=$('pfBtnEditTxt');
+
+  function renderProfile(){
+    var name=getName(),ini=initialOf(name),n=favCount();
+    av.className='pf-avatar'+(name?'':' empty');
+    av.innerHTML=name?esc(ini):ICO_USER;
+    if(n>0)av.setAttribute('data-n',n>99?'99+':''+n);else av.removeAttribute('data-n');
+    nm.textContent=name?name+' 同学':'未设置姓名';
+    sub.innerHTML=name
+      ? '已在校园生活助手、新生入学助手右上角同步显示「'+esc(ini)+'」头像 · 共收藏 '+n+' 条内容'
+      : '在下方填写姓名后，校园生活助手与新生入学助手的右上角会同步显示头像。';
+    btnEditTxt.textContent=name?'修改姓名':'设置姓名';
+  }
+
+  function showEdit(on){
+    editBox.className='pf-edit'+(on?' show':'');
+    if(on){input.value=getName();input.focus();input.select();}
+  }
+  $('pfBtnEdit').onclick=function(){showEdit(!/ show/.test(editBox.className));};
+  $('pfCancel').onclick=function(){showEdit(false);};
+  $('pfSave').onclick=function(){
+    var v=clean(input.value);
+    if(!v){toast('请输入姓名');input.focus();return;}
+    if(setName(v)){renderProfile();showEdit(false);toast('已保存：'+v);}
+    else toast('保存失败，请检查浏览器存储权限');
+  };
+  input.onkeydown=function(e){if(e.key==='Enter'){$('pfSave').click();}else if(e.key==='Escape'){showEdit(false);}};
+  $('pfBtnClear').onclick=function(){
+    var name=getName();
+    if(!name){toast('尚未设置姓名');return;}
+    if(!window.confirm('确定清除已保存的姓名「'+name+'」吗？\n（收藏内容不会受影响）'))return;
+    try{localStorage.removeItem(NAME_KEY);}catch(e){}
+    renderProfile();showEdit(false);toast('已清除姓名');
+  };
+
+  /* ---------- 收藏 ---------- */
+  function favCount(){try{return (window.DLUTFav&&window.DLUTFav.count)?window.DLUTFav.count():0;}catch(e){return 0;}}
+  function favAll(){
+    try{return (window.DLUTFav&&window.DLUTFav.all)?window.DLUTFav.all():[];}catch(e){return [];}
+  }
+  var state={filter:'all',q:''};
+
+  function hostOf(u){
+    try{
+      var a=document.createElement('a');a.href=u;
+      if(a.protocol==='http:'||a.protocol==='https:'){
+        return (a.hostname||'').replace(/^www\./,'');
+      }
+      var m=/^([a-z][a-z0-9+.-]*):/i.exec(u);
+      return m?m[1]:u;
+    }catch(e){return u;}
+  }
+  function shortUrl(u){
+    var s=String(u||'').replace(/^https?:\/\//,'').replace(/\/$/,'');
+    return s.length>72?s.slice(0,72)+'…':s;
+  }
+  function timeText(ts){
+    if(!ts)return '';
+    var d=new Date(ts);
+    if(isNaN(d.getTime()))return '';
+    function p(x){return x<10?'0'+x:''+x;}
+    return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
+  }
+
+  function renderTabs(list){
+    var map={},order=[],i,html='';
+    for(i=0;i<list.length;i++){
+      var f=list[i].p||'other';
+      if(!map[f]){map[f]={n:list[i].pn||'其他页面',c:0};order.push(f);}
+      map[f].c++;
+    }
+    function tab(key,label,active){
+      return '<button class="tab'+(active?' on':'')+'" data-f="'+esc(key)+'">'+esc(label)+'</button>';
+    }
+    html+=tab('all','全部 '+list.length,state.filter==='all');
+    for(i=0;i<order.length;i++){
+      html+=tab(order[i],map[order[i]].n+' '+map[order[i]].c,state.filter===order[i]);
+    }
+    $('favTabs').innerHTML=html;
+    if(state.filter!=='all'&&!map[state.filter])state.filter='all';
+  }
+
+  function renderList(){
+    var all=favAll(),i,it,html='',shown=0;
+    all.sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+
+    $('favCnt').textContent=all.length;
+
+    /* 统计卡片 */
+    var pages={},pc=0;
+    for(i=0;i<all.length;i++){var f=all[i].p||'other';if(!pages[f]){pages[f]=0;pc++;}pages[f]++;}
+    var topName='—',topNum=0;
+    for(var k in pages){if(pages[k]>topNum){topNum=pages[k];topName=(function(ff){
+      for(var j=0;j<all.length;j++){if((all[j].p||'other')===ff)return all[j].pn||'其他页面';}
+      return '其他页面';
+    })(k);}}
+    stats.innerHTML=
+      '<div class="stat"><div class="n">'+all.length+'</div><div class="l">收藏总数</div></div>'+
+      '<div class="stat"><div class="n">'+pc+'</div><div class="l">来源页面</div></div>'+
+      '<div class="stat"><div class="n" style="font-size:14px;padding-top:3px;padding-bottom:3px">'+esc(topName)+'</div><div class="l">收藏最多 · '+topNum+' 条</div></div>';
+
+    renderTabs(all);
+
+    var q=clean(state.q).toLowerCase();
+    for(i=0;i<all.length;i++){
+      it=all[i];
+      if(state.filter!=='all'&&(it.p||'other')!==state.filter)continue;
+      if(q){
+        var hay=((it.t||'')+' '+(it.d||'')+' '+(it.u||'')+' '+(it.s||'')).toLowerCase();
+        if(hay.indexOf(q)<0)continue;
+      }
+      shown++;
+      html+=
+        '<div class="fi" data-id="'+esc(it.id||'')+'">'+
+          '<div class="fi-ico">'+ICO_STAR+'</div>'+
+          '<div class="fi-main">'+
+            '<div class="fi-t">'+esc(it.t||'（无标题）')+'</div>'+
+            (it.d?'<div class="fi-d">'+esc(it.d)+'</div>':'')+
+            '<div class="fi-meta">'+
+              '<span class="chip page">'+esc(it.pn||'其他页面')+'</span>'+
+              (it.s?'<span class="chip">'+esc(it.s)+'</span>':'')+
+              (it.ts?'<span class="chip">'+esc(timeText(it.ts))+'</span>':'')+
+            '</div>'+
+            '<div class="fi-u">'+ICO_LINK+'<span>'+esc(shortUrl(it.u))+'</span></div>'+
+          '</div>'+
+          '<div class="fi-acts">'+
+            '<a class="iact" data-act="open" href="'+esc(it.u||'#')+'" target="_blank" rel="noopener" title="打开链接">'+ICO_OPEN+'</a>'+
+            '<button class="iact" data-act="copy" title="复制链接">'+ICO_COPY+'</button>'+
+            '<button class="iact del" data-act="del" title="取消收藏">'+ICO_DEL+'</button>'+
+          '</div>'+
+        '</div>';
+    }
+
+    if(!shown){
+      html=
+        '<div class="empty">'+ICO_EMPTY+
+        '<h4>'+(all.length?'没有匹配的收藏':'暂无收藏内容')+'</h4>'+
+        '<p>'+(all.length
+          ? '试试切换上方的分类，或清空搜索关键词。'
+          : '在「校园生活助手」「新生入学助手」页面，点击卡片右上角的<br>星标按钮即可收藏，收藏后会自动汇总到这里。')+'</p>'+
+        (all.length?'':'<div class="go">'+
+          '<a class="tb-link" href="campus-life.html?skip=1">去校园生活助手</a>'+
+          '<a class="tb-link" href="dut-orientation.html?skip=1">去新生入学助手</a>'+
+          '<a class="tb-link" href="volunteer.html">去志愿服务平台</a>'+
+        '</div>')+'</div>';
+    }
+    $('favList').innerHTML=html;
+  }
+
+  /* ---------- 交互 ---------- */
+  $('favTabs').addEventListener('click',function(e){
+    var t=e.target;
+    while(t&&t!==this&&!(t.classList&&t.classList.contains('tab')))t=t.parentNode;
+    if(!t||t===this)return;
+    state.filter=t.getAttribute('data-f')||'all';
+    renderList();
+  });
+  var sTimer=null;
+  $('favSearch').addEventListener('input',function(e){
+    clearTimeout(sTimer);
+    var v=e.target.value;
+    sTimer=setTimeout(function(){state.q=v;renderList();},180);
+  });
+
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    while(t&&t!==document.body&&!(t.getAttribute&&t.getAttribute('data-act')))t=t.parentNode;
+    if(!t||!t.getAttribute)return;
+    var act=t.getAttribute('data-act');
+    if(act==='open')return; /* <a> 原生跳转 */
+    var row=t;
+    while(row&&row!==document.body&&!(row.classList&&row.classList.contains('fi')))row=row.parentNode;
+    if(!row)return;
+    var id=row.getAttribute('data-id')||'';
+    var all=favAll(),item=null,i;
+    for(i=0;i<all.length;i++){if(all[i].id===id){item=all[i];break;}}
+    if(!item)return;
+    if(act==='copy'){
+      var u=item.u||'',ok=false;
+      try{
+        var ta=document.createElement('textarea');
+        ta.value=u;ta.style.position='fixed';ta.style.opacity='0';
+        document.body.appendChild(ta);ta.select();
+        ok=document.execCommand('copy');
+        document.body.removeChild(ta);
+      }catch(err){ok=false;}
+      if(!ok&&navigator.clipboard){try{navigator.clipboard.writeText(u);ok=true;}catch(err2){}}
+      toast(ok?'已复制链接':'复制失败，请手动复制');
+    }else if(act==='del'){
+      try{window.DLUTFav.remove(id);}catch(err){}
+      toast('已取消收藏：'+(item.t||''));
+      renderList();
+    }
+  });
+
+  window.addEventListener('dlut:favchange',function(){renderProfile();renderList();});
+  window.addEventListener('storage',function(e){
+    if(!e.key||e.key===NAME_KEY)renderProfile();
+    if(!e.key||e.key===(window.DLUTFav?window.DLUTFav.key:'dut_favorites'))renderList();
+  });
+
+  renderProfile();
+  renderList();
+})();
+</script>
+<script src="protect.js"></script>
+</body>
+</html>
