@@ -385,6 +385,37 @@ img{max-width:100%;display:block}
 .hero h1{font-size:24px}
 .topbar{padding:0 18px}
 }
+
+/* ===== 个人中心（顶栏右上角 · 姓氏头像） ===== */
+.topbar-right{display:flex;align-items:center;gap:12px}
+.pc{position:relative;flex-shrink:0}
+.pc-btn{display:flex;align-items:center;gap:10px;padding:5px 13px 5px 5px;border-radius:999px;background:var(--surface);border:1px solid var(--border);transition:all .18s ease;max-width:230px}
+.pc-btn:hover{border-color:var(--primary);background:var(--primary-light)}
+.pc-btn:active{transform:scale(.98)}
+.pc-avatar{position:relative;width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 2px 8px rgba(0,63,136,.25)}
+.pc-avatar.empty{background:var(--surface-2);color:var(--text-3);box-shadow:none}
+.pc-avatar svg{width:18px;height:18px}
+.pc-avatar[data-n]:after{content:attr(data-n);position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--warning);color:#fff;font-size:10px;font-weight:700;line-height:17px;text-align:center;box-shadow:0 0 0 2px var(--surface);box-sizing:border-box}
+.pc-avatar.empty[data-n]:after{background:var(--primary)}
+.pc-meta{display:flex;flex-direction:column;align-items:flex-start;line-height:1.3;min-width:0}
+.pc-name{font-size:13px;font-weight:600;color:var(--text-1);max-width:112px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-sub{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:4px}
+.pc-sub .dot{width:6px;height:6px;border-radius:50%;background:var(--success)}
+.pc-btn:hover .pc-name{color:var(--primary)}
+.pc-toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(10px);background:rgba(15,27,45,.92);color:#fff;font-size:13px;padding:10px 18px;border-radius:10px;z-index:200;opacity:0;transition:all .22s ease;pointer-events:none}
+.pc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== 卡片收藏星标 ===== */
+.fav-host{position:relative}
+.fav-btn{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.92);border:1px solid var(--border);color:var(--text-3);cursor:pointer;z-index:5;transition:all .16s ease;box-shadow:0 1px 3px rgba(15,27,45,.06)}
+.fav-btn svg{width:16px;height:16px}
+.fav-btn:hover{color:var(--warning);border-color:var(--warning);transform:scale(1.12)}
+.fav-btn:focus{outline:none;box-shadow:0 0 0 3px rgba(232,163,23,.25)}
+.fav-btn.on{background:var(--warning);border-color:var(--warning);color:#fff}
+.fav-btn.on svg{fill:currentColor}
+.link-tile.fav-host{padding-right:48px}
+
+@media(max-width:640px){.pc-meta{display:none}.pc-btn{padding:4px}}
 </style>
 </head>
 <body>
@@ -470,7 +501,16 @@ img{max-width:100%;display:block}
         <button class="icon-btn" title="通知">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>
         </button>
-        <div class="avatar">新</div>
+        <!-- ===== 个人中心（右上角 · 姓氏头像） ===== -->
+        <div class="pc" id="pcCenter">
+          <a class="pc-btn" id="pcBtn" href="profile.html?skip=1" title="个人中心 · 我的收藏">
+            <span class="pc-avatar empty" id="pcAvatar"></span>
+            <span class="pc-meta">
+              <span class="pc-name" id="pcName">未设置姓名</span>
+              <span class="pc-sub" id="pcSub">个人中心</span>
+            </span>
+          </a>
+        </div>
       </div>
     </header>
 
@@ -1576,6 +1616,36 @@ if(savedChat&&savedChat.length){
   addMsg('你好！我是 <strong>大工迎新小助手</strong> 👋<br>欢迎来到大连理工大学！我可以帮你解答关于入学报到的各类问题，比如：<ul><li>什么时候报到？</li><li>需要准备哪些材料？</li><li>学费怎么缴？宿舍怎么样？</li></ul>请在下方输入你的问题，或点击快捷按钮开始对话。','bot');
 }
 </script>
+<script>
+/* ===== 个人中心：读取 entrance.html 保存的姓名（localStorage: dut_student_name），以姓氏作头像 ===== */
+(function(){
+  'use strict';
+  var KEY='dut_student_name';
+  var box=document.getElementById('pcCenter');
+  if(!box)return;
+  var ICO_USER='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+  function $(id){return document.getElementById(id);}
+  var link=$('pcBtn'),av=$('pcAvatar'),nm=$('pcName'),sub=$('pcSub');
+  function favCount(){try{return (window.DLUTFav&&window.DLUTFav.count)?window.DLUTFav.count():0;}catch(e){return 0;}}
+
+  function get(){try{return (localStorage.getItem(KEY)||'').replace(/\s+/g,' ').trim();}catch(e){return '';}}
+  function initial(n){if(!n)return '';var c=n.charAt(0);return /[A-Za-z]/.test(c)?c.toUpperCase():c;}
+
+  function render(){
+    var name=get(),ini=initial(name),n=favCount();
+    av.className='pc-avatar'+(name?'':' empty');
+    av.innerHTML=name?ini:ICO_USER;
+    if(n>0)av.setAttribute('data-n',n>99?'99+':''+n);else av.removeAttribute('data-n');
+    nm.textContent=name?name+' 同学':'未设置姓名';
+    sub.innerHTML=(name?'<span class="dot"></span>':'')+'个人中心';
+    link.title=name?(name+' · 个人中心（我的收藏 '+n+' 条）'):('个人中心 · 我的收藏 '+n+' 条');
+  }
+  window.addEventListener('dlut:favchange',render);
+  window.addEventListener('storage',function(e){if(!e.key||e.key===KEY)render();});
+  render();
+})();
+</script>
+<script src="favorites.js"></script>
 <script src="protect.js"></script>
 </body>
 </html>
