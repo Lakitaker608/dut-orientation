@@ -222,6 +222,8 @@
       list=document.querySelectorAll(RULES[i].sel);
       for(j=0;j<list.length;j++){
         el=list[j];
+        /* 显式声明不要收藏的卡片（如来源链接与其它卡片重复、会导致星标联动串号的实景图） */
+        if(el.getAttribute('data-nofav'))continue;
         if(el.getAttribute('data-fav-init'))continue;
         info=extract(el,RULES[i]);
         if(!info)continue;
