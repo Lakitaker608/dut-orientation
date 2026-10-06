@@ -386,6 +386,61 @@ img{max-width:100%;display:block}
 .topbar{padding:0 18px}
 }
 
+
+/* ===== 大工校园景色 ===== */
+.sc-count{font-size:12.5px;color:var(--text-3)}
+.sc-intro{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);margin-bottom:16px}
+.sc-intro-ico{font-size:24px;line-height:1}
+.sc-intro-t{font-size:15px;font-weight:600;color:var(--text-1);margin-bottom:4px}
+.sc-intro-d{font-size:13px;color:var(--text-2);line-height:1.7}
+.sc-season-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.sc-season{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all .2s}
+.sc-season:hover{border-color:var(--primary);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.sc-season.active{background:var(--primary-light);border-color:var(--primary)}
+.sc-sico{font-size:26px;line-height:1;margin-bottom:6px}
+.sc-sname{font-size:14px;font-weight:600;color:var(--text-1)}
+.sc-skw{font-size:12px;color:var(--text-3);margin-top:3px}
+.sc-campus-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.sc-campus{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:13px;color:var(--text-2);line-height:1.6}
+.sc-cn{font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sc-cnum{font-size:11.5px;font-weight:500;color:var(--primary);background:var(--primary-light);padding:3px 9px;border-radius:20px}
+.sc-ca{color:var(--text-3);font-size:12px;margin-bottom:4px}
+.sc-filter{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-bottom:16px}
+.sc-fgroup{display:flex;align-items:center;gap:10px;min-width:0}
+.sc-flabel{font-size:12.5px;color:var(--text-3);font-weight:500;flex-shrink:0}
+.sc-chips{display:flex;gap:8px;flex-wrap:wrap}
+.sc-chip{padding:6px 13px;border-radius:20px;font-size:12.5px;font-weight:500;background:var(--surface);border:1px solid var(--border);color:var(--text-2);cursor:pointer;transition:all .18s}
+.sc-chip:hover{border-color:var(--primary);color:var(--primary)}
+.sc-chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+.sc-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;transition:all .2s;position:relative;display:flex;flex-direction:column}
+.sc-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.sc-pic{position:relative;width:100%;padding-top:66%;background:var(--surface-2);overflow:hidden}
+.sc-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}
+.sc-card:hover .sc-pic img{transform:scale(1.05)}
+.sc-badges{position:absolute;left:10px;top:10px;display:flex;gap:6px}
+.sc-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.92);color:var(--text-1);backdrop-filter:blur(4px)}
+.sc-badge.season{background:var(--primary);color:#fff}
+.sc-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column}
+.sc-t{font-size:14.5px;font-weight:600;color:var(--text-1);margin-bottom:6px;padding-right:28px}
+.sc-d{font-size:12.5px;color:var(--text-2);line-height:1.65;flex:1}
+.sc-src{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;margin-top:12px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;background:var(--primary-light);color:var(--primary);transition:all .18s}
+.sc-src:hover{background:var(--primary);color:#fff}
+.sc-src svg{width:13px;height:13px}
+.sc-empty{text-align:center;padding:40px 20px;background:var(--surface);border:1px dashed var(--border-strong);border-radius:var(--radius);margin-bottom:16px}
+.sc-empty-ico{font-size:30px;margin-bottom:8px}
+.sc-empty-t{font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:6px}
+.sc-empty-d{font-size:12.5px;color:var(--text-2);line-height:1.6}
+.sc-foot{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text-3);line-height:1.6;padding:12px 14px;background:var(--surface-2);border-radius:10px}
+.sc-foot svg{width:14px;height:14px;flex-shrink:0;margin-top:2px}
+@media(max-width:1100px){.sc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){
+.sc-season-row{grid-template-columns:repeat(2,1fr)}
+.sc-campus-row{grid-template-columns:1fr}
+.sc-grid{grid-template-columns:1fr}
+.sc-filter{gap:12px}
+.sc-intro{flex-direction:column;gap:8px}
+}
 /* ===== 个人中心（顶栏右上角 · 姓氏头像） ===== */
 .topbar-right{display:flex;align-items:center;gap:12px}
 .pc{position:relative;flex-shrink:0}
@@ -577,6 +632,82 @@ img{max-width:100%;display:block}
             <p>关于报到、住宿、缴费、户口迁移等问题，随时向我提问。</p>
             <div class="card-link">立即提问 →</div>
           </div>
+        </div>
+
+        <div class="section-head">
+          <div class="section-title"><span class="bar"></span>大工校园景色</div>
+          <div class="sc-count" id="scCount"></div>
+        </div>
+
+        <div class="sc-intro">
+          <span class="sc-intro-ico">🏞️</span>
+          <div>
+            <div class="sc-intro-t">一校两地三区，四季各有风景</div>
+            <div class="sc-intro-d">大连理工大学实行「一校、两地、三区」办学格局——主校区坐落凌水河畔，开发区校区依锦屏山而建，盘锦校区毗邻辽河三角洲湿地。下列实景照片均来自大连理工大学官网、大工新闻网及各校区官网公开发布的官方摄影。</div>
+          </div>
+        </div>
+
+        <div class="sc-season-row" id="scSeasonRow">
+      <div class="sc-season" data-s="春">
+        <div class="sc-sico">🌸</div>
+        <div class="sc-sname">春 · 4 月</div>
+        <div class="sc-skw">玉兰 · 樱花 · 二月兰</div>
+      </div>
+      <div class="sc-season" data-s="夏">
+        <div class="sc-sico">☀️</div>
+        <div class="sc-sname">夏 · 7—8 月</div>
+        <div class="sc-skw">绿荫 · 凌水湖 · 水杉</div>
+      </div>
+      <div class="sc-season" data-s="秋">
+        <div class="sc-sico">🍂</div>
+        <div class="sc-sname">秋 · 10—11 月</div>
+        <div class="sc-skw">银杏长廊 · 梧桐疏影</div>
+      </div>
+      <div class="sc-season" data-s="冬">
+        <div class="sc-sico">❄️</div>
+        <div class="sc-sname">冬 · 12—1 月</div>
+        <div class="sc-skw">雪松 · 红砖覆雪</div>
+      </div>
+        </div>
+
+        <div class="sc-campus-row" id="scCampusRow">
+      <div class="sc-campus"><div class="sc-cn"><span class="sc-cn-h">主校区</span><span class="sc-cnum">21 张实景</span></div><div class="sc-ca">大连市甘井子区凌工路 2 号</div><div class="sc-cf">1949 年建校的老校区，红砖建筑群、凌水河与伯川、令希两座图书馆坐落其间</div></div>
+      <div class="sc-campus"><div class="sc-cn"><span class="sc-cn-h">开发区校区</span><span class="sc-cnum">7 张实景</span></div><div class="sc-ca">大连市金普新区图强路 321 号</div><div class="sc-cf">依锦屏山而建，樱花大道、学苑桥、人工湖与「翔」广场构成现代校园天际线</div></div>
+      <div class="sc-campus"><div class="sc-cn"><span class="sc-cn-h">盘锦校区</span><span class="sc-cnum">10 张实景</span></div><div class="sc-ca">盘锦市辽东湾新区大工路 2 号</div><div class="sc-cf">辽河三角洲湿地的生态校园，与著名的红海滩相邻</div></div>
+        </div>
+
+        <div class="sc-filter">
+          <div class="sc-fgroup">
+            <span class="sc-flabel">校区</span>
+            <div class="sc-chips" id="scFilterCampus">
+              <button class="sc-chip active" data-f="all">全部</button>
+              <button class="sc-chip" data-f="主校区">主校区（凌水）</button>
+              <button class="sc-chip" data-f="开发区校区">开发区校区</button>
+              <button class="sc-chip" data-f="盘锦校区">盘锦校区</button>
+            </div>
+          </div>
+          <div class="sc-fgroup">
+            <span class="sc-flabel">季节</span>
+            <div class="sc-chips" id="scFilterSeason">
+              <button class="sc-chip active" data-f="all">全部</button>
+              <button class="sc-chip" data-f="春">🌸 春</button>
+              <button class="sc-chip" data-f="夏">☀️ 夏</button>
+              <button class="sc-chip" data-f="秋">🍂 秋</button>
+              <button class="sc-chip" data-f="冬">❄️ 冬</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sc-grid" id="scGrid"></div>
+        <div class="sc-empty" id="scEmpty" style="display:none">
+          <div class="sc-empty-ico">📷</div>
+          <div class="sc-empty-t">该组合暂无官方公开实景照片</div>
+          <div class="sc-empty-d">换个校区或季节看看，或直接前往<a href="https://www.dlut.edu.cn/xxgk/xyfg.htm" target="_blank" rel="noopener">学校官网「校园风光」</a>浏览更多。</div>
+        </div>
+
+        <div class="sc-foot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <span>图片均为外链引用，版权归大连理工大学及相关摄影作者所有；点击卡片「查看原图」可跳转至官方发布页面的原始大图。</span>
         </div>
       </section>
 
@@ -976,6 +1107,112 @@ document.getElementById('overlay').addEventListener('click',()=>{
   var v=p.get('view');
   if(v&&viewTitles[v]&&v!=='home') switchView(v);
 })();
+
+// ===== 大工校园景色 =====
+const SCENES=[
+  {c:'主校区',s:'春',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5nm6C2nz7inl7aMQm94UNrkMz9sUmWq7UmUPnNQVUmv8MzG0gihFp2hmCIa0MkysL1hfUShfUNMkMN7DUzvao7W7ozLZnNCZLNUiMNLaL8WFLzlZUmLsLzrFM49sLR-Jqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/139645.htm',n:'大工新闻网 · 春满校园'},
+  {c:'主校区',s:'春',u:'https://www.dlut.edu.cn/virtual_attach_file.vsb?afc=5LzWCkLNCaMz74UQzUaM8UYMm9snRUqZM8WfoR-PUl78oRC0gihFp2hmCIa0nSyDnShfUYhkM4CaM4lbUzTRnRCDnlrRLzlinNCsLN7aMRrFo7U8L4-PMmfFLzLsUmCJqjfjo4OeoDnO65UYLR-YgDTJQty0gzL0gzLJqdpnx&amp;oid=1805768438&amp;e=.jpg',p:'https://www.dlut.edu.cn/xxgk/xyfg.htm',n:'大工官网 · 校园风光'},
+  {c:'主校区',s:'春',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5LR-CZMzWRL4lsnQNl8L7V7L4-8n7rqVo7rVUmGbozn2Ul70gihFp2hmCIa0oShfnSybokysMmMRoRUZU87boRL4LzL8Mz-ZUzWkLzM7oRrFUzLPLz7aLmrFMNr2LRGJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/91344.htm',n:'大工新闻网 · 报春'},
+  {c:'主校区',s:'春',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5UmrC7ozNaUmCsnQ7lYMNM2L4UsUmGqiM7r7Mm9YU8-aLmU0gihFp2hmCIa0USyPUSybLYy4U4UDnzNZozAfnzU8UmvaMlLbLz-inmW2UzMFUl-DnzAfnNnFnR9aL4lJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/91344.htm',n:'大工新闻网 · 报春'},
+  {c:'主校区',s:'春',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5M7lCiM8C4nR-PUQ8-ZUNrRMmN4L4GqYLRNaL87soRWRMml0gihFp2hmCIa0UYybMYh2U1yinmNiU4NDnzlPnRU4nNW7LR9YnRCPLz78Uz6FU4ARM4WVUNWFL4CsU8UJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/135365.htm',n:'大工新闻网 · 春启大工'},
+  {c:'主校区',s:'春',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5nN7C4U4f7nzGbLQRVknlMfUz-sL4rqRL46kUzGPoz94nR70gihFp2hmCIa0USyPnSy4M1y8L7lDU8Q7nz-4oRC4UzlPLRM7LmQ2n7C8nRWFUzf7nz7DLz6FM8MRUz9Jqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/135365.htm',n:'大工新闻网 · 春启大工'},
+  {c:'主校区',s:'夏',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=PLm6YkMlnRLlLaU4N-YUmlPLzA2LR-8YUzA7L4UaL7rkoR-0gihFp2hmCIa0MkyZUShknSyaoRAkL8CsL4nkU8CDMRrRLm9PnRf2MmGaUmVFolW2olCio7WFo7LDUNUJqjfjo4OeoDnOp26N_dAs6YhXptQ0g47aLm-0LzlPL4CigtA8pUicc&amp;oid=1819948287&amp;tid=1022&amp;nid=151365&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1022/151365.htm',n:'大工新闻网 · 暑期焕新校园'},
+  {c:'主校区',s:'夏',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=PozGYYMz9PoRvYM48CYoRLsM8UDMRM8VnzCso7QRLmviU4U0gihFp2hmCIa0oSyZnSysL1hVLRlbL7LaU8WfUNLYoRffMNC8nNUYn7UPoR6FLzvso7U4MRfFL8-DozLJqjfjo4OeoDnOp26N_dAs6YhXptQ0g47aLm-0LzlPL4CigtA8pUicc&amp;oid=1819948287&amp;tid=1022&amp;nid=151365&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1022/151365.htm',n:'大工新闻网 · 暑期焕新校园'},
+  {c:'主校区',s:'夏',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=PnzrYRMRUbozr2M4N-aoRv8nNrfUzU88M4WRL47DU8V2Mz70gihFp2hmCIa0USyanSyDU1h7ozGanRlDUzLYnRG8LRTRUm-bnN-YU8UbnlWFMz7sU8VRnRQFMmNbMlLJqjfjo4OeoDnOp26N_dAs6YhXptQ0g47aLm-0LzlPL4CigtA8pUicc&amp;oid=1819948287&amp;tid=1022&amp;nid=151365&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1022/151365.htm',n:'大工新闻网 · 暑期焕新校园'},
+  {c:'主校区',s:'夏',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5nmMCfU8rRMmCbMQNV7nmNDLmTkoRnqVMRnVLz-4LNCYLRv0gihFp2hmCIa0nSyboSyan1yPM4CaU4NioRUYLRlZMR9bMzAVnRVVLllZUmfFLzCYnm98U8WFM8lPMmUJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/141615.htm',n:'大工新闻网 · 运动会集锦'},
+  {c:'主校区',s:'夏',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5MRrC2LzUsLN-bUQ4-YnlnkLRQfnzCqanzLinR78Ull8L490gihFp2hmCIa0nkyiMYyYL1yYLz-DUzlZU8liUmv8o7rVUzlioRCYUzUDMRnFLRM2LNL4UmfFUNMRnmLJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/142015.htm',n:'大工新闻网 · 大工嘉年华'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5nRrCVLNl8oRn2MQ7-iUNL8UlMRo7-qYLmfVnzV7n7nkLRU0gihFp2hmCIa0LkyPMSyPLSy4M4v8Lzn7n7CYnl-ZUmCbMmGZUmCbUzCaLRTFMz-aMmU8nmWFozNsnmCJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/130005.htm',n:'大工新闻网 · 金秋十月最美大工'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5Lm9CZMRLDMN7ZMQmLPL4N8olQkL8UqYLmGbU8LPU4W7Ll-0gihFp2hmCIa0n1h2oSyDnSyDnmUaolW7oRGinzA7Lm74nz7aM8-aM4nRU4WFnNUbMRGinmMFozCPozCJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/130005.htm',n:'大工新闻网 · 金秋十月最美大工'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5ozWCknmNaLRLPUQmvsnmrfoRMVMmrq2nRnkMz7bMz9PUlL0gihFp2hmCIa0UYy4MSyYnSyDnlMkU8VkL8Q7Um-PLlWRUmQRM49ZL4M2MzWFUz74nNMfLmfFUz7aMRCJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/131125.htm',n:'大工新闻网 · 秋日下的建筑美景'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5nl7CsnNUZUmNPUQzlYMR9YLmNsU87qYMl7sMllZUN7Po7l0gihFp2hmCIa0Mkh2LYyPnSyPnzUsMRT2M7LYoR67UzQfnlnfLNU4L7l4U4nFMm67L7QkMzrFMm9PnRLJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/80042.htm',n:'大工新闻网 · 魅力大工秋'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5LmvCiUN-inRMkLQlr7nRvin7M2nRNqiLRlinzCDLzUYMNC0gihFp2hmCIa0M1h7LYyDn1yYU8CDoRVVM7U8nzVRnlC4L874oznRMzTkUznFMmV2LmVRUm6FM4VkLRlJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/80042.htm',n:'大工新闻网 · 魅力大工秋'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5LRlCsUNl4nRvaoQRLPMNWfLz7snl7qbo7WRn7Q7Lzv8U4G0gihFp2hmCIa0UShfM1yPnkyYUllbL7rRMRC8nzV2MzliMlU8L467MRvPUmrFL4G4LR-ZoRQFUmNsnmCJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/80042.htm',n:'大工新闻网 · 魅力大工秋'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5M7MC2ozARnz9DnQN7ZLmUbUl7aMNVq2nlWfU8QfMmLiMzl0gihFp2hmCIa0MSyPUSyaMky8LRLPozUsMlUPMzCiM4CboRUiL4lDUmrkUNMFM87bolUDMRVFMmlZnmCJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/130005.htm',n:'大工新闻网 · 金秋十月最美大工'},
+  {c:'主校区',s:'秋',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=5U47CZnzLsnmNDUQmC8UzLPL4LPMRvqZU8nkMzUZMlQfMlC0gihFp2hmCIa0LShVM1hVUSysU4viM4vinRG8MmW7LzTVn7rVM7linzMRMlrFM4-4LlUaolWFU8LDLRCJqjfjo4OeoDnOp26N_dAs6YhXptQ0gY84gY84gtA8pUpcc&amp;oid=1819948287&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1020/80042.htm',n:'大工新闻网 · 魅力大工秋'},
+  {c:'主校区',s:'冬',u:'https://www.dlut.edu.cn/virtual_attach_file.vsb?afc=5MlMCfLRv8L4U4LQ4r2MNCZol7ZM8QqVoRTRMzW7LmQkMNU0gihFp2hmCIa0M1yiUYyYMkysL7VVLRUDUmTVLzUbMNMfLlQkUm-8ozAfL8rFLlV2LmfRL7rFn7r2oSb/v2veo4OeQ2Pi6R-aLm-0qIbtpYyxLYyxLYbw62p8c&amp;oid=1805768438&amp;e=.jpg',p:'https://www.dlut.edu.cn/xxgk/xyfg.htm',n:'大工官网 · 校园风光'},
+  {c:'主校区',s:'冬',u:'https://www.dlut.edu.cn/virtual_attach_file.vsb?afc=5U46CkoRv4UNlaUQ8-DMzrRoRMRnllq4L4lDUlUsLNnkU4l0gihFp2hmCIa0okhfMShRnkyPUzQ7olrRM7-aMzlaUzvanzvPUzliL7C4U4MFUmG8Uz7aUmQFLlQfL4UJqjfjo4OeoDnO65UYLR-YgDTJQty0gzL0gzLJqdpnx&amp;oid=1805768438&amp;e=.jpg',p:'https://www.dlut.edu.cn/xxgk/xyfg.htm',n:'大工官网 · 校园风光'},
+  {c:'开发区校区',s:'春',u:'https://kfqxqzhb.dlut.edu.cn/virtual_attach_file.vsb?afc=ZnRQbVMlLboR-PMEN-snlCbM4lZnmUePMznfLRUYLmviLzv0gihFp2hmCIa0MkhfM1h7oSyDoRWfo7WVU4UsUlnkoRfkLzGDn7nVM4QVLzWFozNsUmCYnRWFMNQfoRUJqjfjo4OeoDxtv5XwCt64gDTJQty0LzGZLSyPMRNYgtA8pUycc&amp;oid=2099836806&amp;tid=1081&amp;nid=1492&amp;e=.jpg',p:'https://kfqxqzhb.dlut.edu.cn/info/1081/1492.htm',n:'开发区校区 · 赏樱游园'},
+  {c:'开发区校区',s:'春',u:'https://kfqxqzhb.dlut.edu.cn/virtual_attach_file.vsb?afc=KLRWOkLlCDoRLZUxmC4M49PL4Q2LN-JDU8liLzU4L4UDoRv0gihFp2hmCIa0n1yYn1hRLky8nRnRMRTkLll8nm94LzvsoRLbUznkM7rRoz6FL7QfLRr2nlVFLNUsUzUJqjfjo4OeoDxtv5XwCt64gDTJQty0LzGsLSyPMR7YgtA8pU0cc&amp;oid=2099836806&amp;tid=1071&amp;nid=1412&amp;e=.jpg',p:'https://kfqxqzhb.dlut.edu.cn/info/1071/1412.htm',n:'开发区校区 · 春日盛宴'},
+  {c:'开发区校区',s:'春',u:'https://kfqxqzhb.dlut.edu.cn/virtual_attach_file.vsb?afc=ZUzAbkLNlDU4nknEm94nl7Pn7LDLRCeaU8UDnm-sn7LbLzv0gihFp2hmCIa0L1yinShfLShRLzNsM4L4Umn2LRG4MlU4UmQ2MN78LRMVnmAFnm6kU4VRoznFMN-ZMNLJqjfjo4OeoDxtv5XwCt64gDTJQty0LzGZLSyPMRNYgtA8pUycc&amp;oid=2099836806&amp;tid=1081&amp;nid=1492&amp;e=.jpg',p:'https://kfqxqzhb.dlut.edu.cn/info/1081/1492.htm',n:'开发区校区 · 赏樱游园'},
+  {c:'开发区校区',s:'春',u:'https://kfqxqzhb.dlut.edu.cn/virtual_attach_file.vsb?afc=KL4NOZU878ozvbLx7U4LlCsLzARUN-JaLz9aLNV2U4Nan7L0gihFp2hmCIa0USyZoSyZUSyYL7nkL8nRLRGPUzCZLzNiM8M2Mz9aU4UaLzrFU8LYLRNPUlMFLl-PMmvJqjfjo4OeoDxtv5XwCt64gDTJQty0LzGsLSyPMR7YgtA8pU0cc&amp;oid=2099836806&amp;tid=1071&amp;nid=1412&amp;e=.jpg',p:'https://kfqxqzhb.dlut.edu.cn/info/1071/1412.htm',n:'开发区校区 · 春日盛宴'},
+  {c:'开发区校区',s:'春',u:'https://kfqxqzhb.dlut.edu.cn/virtual_attach_file.vsb?afc=Ko7CObLmLYoR62Lx462U4UPUlW2M4VJVL77iMmC8L4vPLR90gihFp2hmCIa0okyYnkhkokyaUm7PozL8U8WkL7WVLm94nNLaL4CZoz7YM8QFU4TVUzf7U4WFLmAkUzvJqjfjo4OeoDxtv5XwCt64gDTJQty0LzGsLSyPMR7YgtA8pU0cc&amp;oid=2099836806&amp;tid=1071&amp;nid=1412&amp;e=.jpg',p:'https://kfqxqzhb.dlut.edu.cn/info/1071/1412.htm',n:'开发区校区 · 春日盛宴'},
+  {c:'开发区校区',s:'春',u:'https://kfqxqzhb.dlut.edu.cn/virtual_attach_file.vsb?afc=KnNCOsU8lYnmGiUxllaLzNDU4M7LmvJ8Lz7aozCDM4AVoll0gihFp2hmCIa0LkyioSy8MYyYUm7sLNUPU4TfUzQfUNlaL4AkL4vbMRUbLRTFM7VVU4-bLmVFL4W2L7LJqjfjo4OeoDxtv5XwCt64gDTJQty0LzGsLSyPMR7YgtA8pU0cc&amp;oid=2099836806&amp;tid=1071&amp;nid=1412&amp;e=.jpg',p:'https://kfqxqzhb.dlut.edu.cn/info/1071/1412.htm',n:'开发区校区 · 春日盛宴'},
+  {c:'开发区校区',s:'夏',u:'https://news.dlut.edu.cn/virtual_attach_file.vsb?afc=PU4nYRM4U4MRCPM4NUDMz9sU4TRL4Q8RL49Ynmf2UlVkM8C0gihFp2hmCIa0LkhfLYy4MkyDMzL8MlrknNV2LlQ2Lml8LzUPnmN8LmLZnlrFUlVVMm-YolQFMzN8nzvJqjfjo4OeoDnOp26N_dAs6YhXptQ0g47aLm-0LzlPL4CigtA8pUicc&amp;oid=1819948287&amp;tid=1022&amp;nid=151365&amp;e=.jpg',p:'https://news.dlut.edu.cn/info/1022/151365.htm',n:'大工新闻网 · 暑期焕新校园'},
+  {c:'盘锦校区',s:'夏',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5M4CCPUzGPoRN8LQRLaUlWknz9DU47qbL7LYnmlboz74M4N0gihFp2hmCIa0UYhkUYyinSyaMzL4MmnVMRrkMmCboz-aUmUsU4rVLNlPM7VFUNV7MzA2LzQFUmT7Lm7Jqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/53664.htm',n:'盘锦校区 · 山海相逢逐梦启航'},
+  {c:'盘锦校区',s:'夏',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5UmACkUm7sLm9ZLQ4GaLmLYL7UbUNlqPUl-iU8lYozVfnmN0gihFp2hmCIa0UYhkUSy4nky4nR7anRMVLRv8LlCiL4VfoRf7UNr7UmNZLmfFoRUsUzNsM7MFM49snR-Jqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/53664.htm',n:'盘锦校区 · 山海相逢逐梦启航'},
+  {c:'盘锦校区',s:'夏',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5nm9Cbo7l4Ul-aUQz9bU8-bUzT7UmMqfLm7sU8-bL8W7nmG0gihFp2hmCIa0UYybMYyDM1h2U4r2nRGsMRUDoRWfM7W7nm-8nzV2LRL8oRMFnNUsU494o7QFolM2UzlJqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/53664.htm',n:'盘锦校区 · 山海相逢逐梦启航'},
+  {c:'盘锦校区',s:'夏',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5nmQCknz9sU8QRMQRLbM4Q7L8-4ozCqiUllsn7MfMz9YLm90gihFp2hmCIa0oky4MYy4U1hkU4-iM4NZLmrkLzNiU4lDM7L4MR-in7VkMmnFU8L8M8WVnNWFnzv4MmvJqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/53664.htm',n:'盘锦校区 · 山海相逢逐梦启航'},
+  {c:'盘锦校区',s:'秋',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5UNnCRU4CYUzNsLQzM2nNCiMNL4ozCqZoz6VUlQfolL4MNL0gihFp2hmCIa0oShfLkysLkh2nmGZU8CDMNr2nRU8U8CaLNn7MRQVU8CsL8nFnmvaU8VfLmnFUz67nlCJqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/39633.htm',n:'盘锦校区 · 秋季运动会'},
+  {c:'盘锦校区',s:'秋',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5U4UCYozl8nzAkUQzLsL4LbM8U8LmQqRUzNZUNVVo7r7nzG0gihFp2hmCIa0MSyaM1hkM1ysL4UbU4C4nNliMNnfM7-8MNUbLRAVLln2LNVFL47PL7r7Um6FMlV7ozLJqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/39633.htm',n:'盘锦校区 · 秋季运动会'},
+  {c:'盘锦校区',s:'秋',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5UNLCsM4AVUzv4UQzCbLRvPoRLsolLqiLzviL7VRMRVfL8U0gihFp2hmCIa0LYyPn1yiMYy8oR62nmC4oRvYUzN4U4WVL4vbLRWkM4A2n7QFolCPnNLZM4TFMmCPnRCJqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/39633.htm',n:'盘锦校区 · 秋季运动会'},
+  {c:'盘锦校区',s:'秋',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5MzTC7Um7DMmvZnQzC4Lmn2U4G8Mm7qPoz67M4MfMzTVLRl0gihFp2hmCIa0MYy4oky4USybUmnfLRl4U494UNLsUlQVoR9sMlnRMmUDM4fFUNl4MmCsoz6FMzUDUzvJqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/39633.htm',n:'盘锦校区 · 秋季运动会'},
+  {c:'盘锦校区',s:'冬',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5Um-CDU47YLR7YMQ49YU4laLR7sMm7qaoz-ZLRv4o7V2nll0gihFp2hmCIa0USy4M1yPUSyPL7-PnR7PMNVknlWRUzAkMR-YoRWVo7lZnzAFUmfRUNWVU4TFL8n2nm9Jqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/33883.htm',n:'盘锦校区 · 2023年初雪图'},
+  {c:'盘锦校区',s:'冬',u:'https://panjin.dlut.edu.cn/virtual_attach_file.vsb?afc=5MNlCinRNYUmLiUQ4CDnNVfMRQ2L87qiU4-8oR7PL7UDn7U0gihFp2hmCIa0U1ybn1yPMSh7LmlDLm7iU4CsMz6fL7nfnll8nNCPL8rfMz6FozvYM494MzfFM87YMmlJqjfjo4OeosfAptXXpThJQ5v0qIbtpYyxLYyxLYbw62p8c&amp;oid=1905046669&amp;e=.jpg',p:'https://panjin.dlut.edu.cn/info/1326/33883.htm',n:'盘锦校区 · 2023年初雪图'}
+];
+const SCENE_ANN={
+  '主校区|春':'四月凌水河畔，玉兰率先开放，粉白相间映着红砖教学楼；樱花大道落英缤纷，连翘缀金、海棠吐艳，海风携花香漫过楼宇。',
+  '主校区|夏':'夏日的大工绿荫如盖，从西门到主楼的梧桐大道浓密遮天；凌水湖碧波荡漾，水杉林与滨水步道送来清凉。',
+  '主校区|秋':'十月底，贯穿校园的银杏大道化作金色长廊，梧桐疏影摇曳；秋阳穿过枝叶洒在求学路上，是校园最有诗意的时节。',
+  '主校区|冬':'大连的雪不大却足够温柔。雪后主楼庄严肃穆，红砖覆白雪，屈伯川老院长雕像静静立在雪中，雪夜里图书馆的灯依然亮着。',
+  '开发区校区|春':'锦屏山下、学苑桥畔，樱花大道粉白满枝，湖边垂柳依依；趣石园与「翔」广场绿意正浓，是赏春的热门去处。',
+  '开发区校区|夏':'夏日的图强路 321 号，教学楼与现代实验楼环抱绿意，湖面波光与书韵广场的开阔相映，暑期校园环境持续焕新。',
+  '盘锦校区|夏':'辽东湾畔的夏日，红砖学院建筑群被绿荫环抱，远处是一望无际的芦苇荡与稻田；八月迎新季，山海相逢，逐梦启航。',
+  '盘锦校区|秋':'秋日的盘锦校区金风送爽，校园与远处的红海滩相望，汇英广场与彩虹长廊在秋阳下格外明亮。',
+  '盘锦校区|冬':'初雪落下，盘锦校区银装素裹，东校门与三重门在白雪中静立；锦理池的冰场是冬季最受欢迎的去处。'
+};
+const SC_ICO={'春':'🌸','夏':'☀️','秋':'🍂','冬':'❄️'};
+const SC_EXT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
+let scCampus='all',scSeason='all';
+function renderScenes(){
+  const list=SCENES.filter(x=>(scCampus==='all'||x.c===scCampus)&&(scSeason==='all'||x.s===scSeason));
+  const grid=document.getElementById('scGrid');
+  document.getElementById('scCount').textContent='共 '+list.length+' 张官方实景';
+  document.getElementById('scEmpty').style.display=list.length?'none':'block';
+  grid.innerHTML=list.map(function(x,i){
+    const ann=SCENE_ANN[x.c+'|'+x.s]||'';
+    return '<article class="sc-card" data-c="'+x.c+'" data-s="'+x.s+'">'
+      +'<div class="sc-pic"><img loading="lazy" src="'+x.u+'" alt="'+x.c+x.s+'季校园实景">'
+      +'<div class="sc-badges"><span class="sc-badge season">'+SC_ICO[x.s]+' '+x.s+'</span><span class="sc-badge">'+x.c+'</span></div></div>'
+      +'<div class="sc-body">'
+      +'<div class="sc-t">'+x.c+' · '+x.s+'日校园</div>'
+      +'<div class="sc-d">'+ann+'</div>'
+      +'<a class="sc-src" target="_blank" rel="noopener" href="'+x.p+'">'+x.n+' '+SC_EXT+'</a>'
+      +'</div></article>';
+  }).join('');
+}
+function bindScChips(id,setter){
+  document.getElementById(id).addEventListener('click',function(e){
+    const b=e.target.closest('.sc-chip');
+    if(!b)return;
+    this.querySelectorAll('.sc-chip').forEach(function(c){c.classList.remove('active');});
+    b.classList.add('active');
+    setter(b.dataset.f);
+    renderScenes();
+    if(window.DLUTFav&&window.DLUTFav.refresh)window.DLUTFav.refresh();
+  });
+}
+bindScChips('scFilterCampus',function(v){scCampus=v;});
+bindScChips('scFilterSeason',function(v){
+  scSeason=v;
+  document.querySelectorAll('#scSeasonRow .sc-season').forEach(function(el){
+    el.classList.toggle('active',el.dataset.s===v);
+  });
+});
+document.getElementById('scSeasonRow').addEventListener('click',function(e){
+  const el=e.target.closest('.sc-season');
+  if(!el)return;
+  const v=el.dataset.s;
+  const same=(scSeason===v);
+  scSeason=same?'all':v;
+  this.querySelectorAll('.sc-season').forEach(function(x){x.classList.remove('active');});
+  if(!same)el.classList.add('active');
+  document.querySelectorAll('#scFilterSeason .sc-chip').forEach(function(c){
+    c.classList.toggle('active',c.dataset.f===scSeason);
+  });
+  renderScenes();
+  if(window.DLUTFav&&window.DLUTFav.refresh)window.DLUTFav.refresh();
+});
+renderScenes();
 
 // ===== Toast =====
 function showToast(text){
