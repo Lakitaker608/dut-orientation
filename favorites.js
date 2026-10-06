@@ -108,7 +108,9 @@
     /* 志愿服务：校内服务说明卡片 */
     {sel:'.cv-card', self:false, t:['h3'], d:['p','.cv-card-tag'], link:'.cv-link'},
     /* 志愿服务：各校区志愿组织卡片（随校区切换动态重渲染） */
-    {sel:'.org-item', self:false, t:['.org-name-wx'], d:['.org-desc-wx'], link:'.org-go'}
+    {sel:'.org-item', self:false, t:['.org-name-wx'], d:['.org-desc-wx'], link:'.org-go'},
+    /* 迎新页：大工校园景色实景卡片（随校区/季节筛选动态重渲染） */
+    {sel:'.sc-card', self:false, t:['.sc-t'], d:['.sc-d'], link:'.sc-src'}
   ];
 
   function clean(s){return (s||'').replace(/\s+/g,' ').trim();}
