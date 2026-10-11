@@ -169,6 +169,37 @@ svg{display:block}
 .overlay{display:none;position:fixed;inset:0;background:rgba(15,27,45,.4);z-index:35}
 .overlay.show{display:block}
 
+/* ===== 职业及未来规划 ===== */
+.career-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:20px}
+.cb-banner{display:flex;align-items:center;gap:14px;padding:16px 20px;background:linear-gradient(100deg,var(--primary) 0%,#0052B4 55%,var(--accent) 100%);color:#fff}
+.cb-banner-ico{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cb-banner-ico svg{width:22px;height:22px}
+.cb-banner-txt{flex:1;min-width:0}
+.cb-banner-title{font-size:17px;font-weight:700;letter-spacing:.02em}
+.cb-banner-sub{font-size:12px;opacity:.88;margin-top:3px}
+.cb-banner-tag{font-size:11px;font-weight:600;padding:5px 11px;border-radius:20px;background:rgba(255,255,255,.22);white-space:nowrap}
+.cb-body{padding:20px}
+.cb-lead{font-size:13.5px;line-height:1.9;color:var(--text-2);margin-bottom:18px}
+.cb-lead b{color:var(--text-1)}
+.cb-check{margin:0 0 18px;padding:13px 16px;border-radius:11px;background:var(--primary-light);border:1px solid rgba(0,63,136,.18);font-size:12.5px;line-height:1.85;color:var(--primary)}
+.cb-check .ck-t{font-weight:700;margin-right:6px}
+.smart-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.smart-card{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;flex-direction:column;transition:all .18s ease}
+.smart-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(0,63,136,.32);background:#fff}
+.sc-letter{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
+.sc-word{font-size:13px;font-weight:700;color:var(--text-1)}
+.sc-en{font-size:11px;color:var(--text-3);letter-spacing:.04em;margin-top:1px}
+.sc-desc{font-size:12px;line-height:1.75;color:var(--text-2);margin-top:8px;flex:1}
+.sc-eg{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-strong);font-size:11.5px;line-height:1.7;color:var(--text-2)}
+.sc-eg .bad{color:#C62828}
+.sc-eg .good{color:var(--success)}
+.career-figure{margin-top:18px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#fff}
+.career-figure svg{display:block;width:100%;height:auto}
+.cf-cap{font-size:11.5px;color:var(--text-3);padding:10px 14px;background:var(--surface-2);border-top:1px solid var(--border);line-height:1.6}
+.cb-more{border:1px dashed var(--border-strong);border-radius:var(--radius);padding:18px 20px;color:var(--text-3);font-size:12.5px;text-align:center;line-height:1.8;background:rgba(255,255,255,.55)}
+@media(max-width:1100px){.smart-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.smart-grid{grid-template-columns:1fr}.cb-banner{flex-wrap:wrap}.cb-banner-tag{margin-left:auto}}
+
 /* ===== 卫星地图 ===== */
 .sat-section{margin-top:24px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
 .sat-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
@@ -477,6 +508,9 @@ svg{display:block}
     </button>
     <button class="nav-item" data-view="contest">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a1.5 1.5 0 010-3H6m12 3h1.5a1.5 1.5 0 000-3H18M6 6v6a6 6 0 0012 0V6M6 6h12M8 21h8M12 17v4"/></svg>大学生学科竞赛
+    </button>
+    <button class="nav-item" data-view="career">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M4 12h16"/></svg>职业及未来规划
     </button>
     <button class="nav-item" onclick="location.href='volunteer.html'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>志愿服务平台
@@ -852,6 +886,168 @@ svg{display:block}
     <div class="contests" id="contests"></div>
   </section>
 
+  <!-- 职业及未来规划 -->
+  <section class="view" id="view-career">
+    <div class="section-head">
+      <div class="section-title"><span class="bar"></span>职业及未来规划</div>
+      <div class="section-sub">人生目标管理 · 从 SMART 开始，把「想成为什么」落成可执行的一步</div>
+    </div>
+
+    <!-- 分栏目 01：人生目标管理 -->
+    <div class="career-block">
+      <div class="cb-banner">
+        <span class="cb-banner-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/></svg>
+        </span>
+        <div class="cb-banner-txt">
+          <div class="cb-banner-title">人生目标管理</div>
+          <div class="cb-banner-sub">用 SMART 原则，把模糊的愿望写成能落地、能检查、能完成的目标</div>
+        </div>
+        <span class="cb-banner-tag">分栏目 01</span>
+      </div>
+
+      <div class="cb-body">
+        <div class="cb-lead">
+          <b>SMART 原则</b>是目标管理里最经典、也最好用的一套自检框架：一个能真正被执行的目标，需要同时满足
+          <b>具体、可衡量、可达成、相关联、有时限</b>五个条件。它最早由管理学学者乔治·多兰（George T. Doran）在 1981 年提出，
+          最初用于企业目标设定，后来被广泛应用于个人成长、学业规划与职业发展。
+          对本科生尤其有用——大一到大四最容易出现的状况不是"不努力"，而是"努力得很模糊"：想变优秀、想找好工作、想提升能力，
+          但说不清做到什么程度算做到、什么时候算做完。SMART 的作用，就是把这些愿望翻译成可执行的一句话。
+        </div>
+
+        <div class="cb-check">
+          <span class="ck-t">一句话自检：</span>
+          我要在 <b>［T 时间］</b> 前，完成 <b>［S 具体某件事］</b>，用 <b>［M 可量化判据］</b> 衡量它是否完成；
+          这件事对我的 <b>［R 长期方向］</b> 有意义，并且以我现在的条件 <b>［A 做得到］</b>。
+        </div>
+
+        <div class="smart-grid">
+          <div class="smart-card">
+            <div class="sc-letter">S</div>
+            <div class="sc-word">具体</div>
+            <div class="sc-en">Specific</div>
+            <div class="sc-desc">目标要指向一件明确的事，而不是一个笼统方向。说清楚到底做什么、涉及哪些方面、服务谁。</div>
+            <div class="sc-eg"><span class="bad">✗ 我要提升自己</span><br><span class="good">✓ 本学期高等数学（上）期末达到 90 分，并整理完一本错题集</span></div>
+          </div>
+          <div class="smart-card">
+            <div class="sc-letter">M</div>
+            <div class="sc-word">可衡量</div>
+            <div class="sc-en">Measurable</div>
+            <div class="sc-desc">要有能计数的判据，能回答"做到什么程度算完成"，方便中途自检进度而不是凭感觉。</div>
+            <div class="sc-eg"><span class="bad">✗ 多读点书</span><br><span class="good">✓ 每月读完 2 本专业相关书籍，各写 300 字读书笔记</span></div>
+          </div>
+          <div class="smart-card">
+            <div class="sc-letter">A</div>
+            <div class="sc-word">可达成</div>
+            <div class="sc-en">Achievable</div>
+            <div class="sc-desc">结合自身基础、时间与资源，做到"跳一跳够得着"。太容易没有成长，太难只会半途而废。</div>
+            <div class="sc-eg"><span class="bad">✗ 零基础一学期进 ACM 校队</span><br><span class="good">✓ 本学期完成 100 道算法入门题，参加一次校级程序设计竞赛</span></div>
+          </div>
+          <div class="smart-card">
+            <div class="sc-letter">R</div>
+            <div class="sc-word">相关联</div>
+            <div class="sc-en">Relevant</div>
+            <div class="sc-desc">和你的长期方向、所学专业、真实价值取向挂钩，避免为了努力而努力、为了考证而考证。</div>
+            <div class="sc-eg"><span class="bad">✗ 跟风去考一堆证书</span><br><span class="good">✓ 围绕"智能制造"方向，考取 CAD 二级证书并完成一次相关课程设计</span></div>
+          </div>
+          <div class="smart-card">
+            <div class="sc-letter">T</div>
+            <div class="sc-word">有时限</div>
+            <div class="sc-en">Time-bound</div>
+            <div class="sc-desc">给出明确的截止点与阶段检查点，把"无限期的愿望"压缩成排得进日历的具体日程。</div>
+            <div class="sc-eg"><span class="bad">✗ 有空再准备实习</span><br><span class="good">✓ 11 月 30 日前完成简历初稿，12 月 15 日前投递 3 家目标企业</span></div>
+          </div>
+        </div>
+
+        <div class="career-figure">
+          <svg viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SMART 原则阶梯示意图：模糊愿望经 SMART 拆解后逐级上升至明确目标">
+            <defs>
+              <linearGradient id="smartStep" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" stop-color="#003F88"/><stop offset="1" stop-color="#00A3E0"/>
+              </linearGradient>
+              <linearGradient id="smartSky" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#EEF6FD"/><stop offset="1" stop-color="#FAFCFF"/>
+              </linearGradient>
+              <marker id="smartArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 z" fill="#8A98AC"/>
+              </marker>
+            </defs>
+            <rect x="0" y="0" width="880" height="360" fill="url(#smartSky)"/>
+
+            <!-- 顶部：转化链路 -->
+            <rect x="40" y="60" width="150" height="38" rx="19" fill="#E4E8EE"/>
+            <text x="115" y="85" text-anchor="middle" font-size="14" fill="#4A5A70" font-family="PingFang SC,Microsoft YaHei,sans-serif">模糊愿望</text>
+            <line x1="196" y1="79" x2="236" y2="79" stroke="#8A98AC" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#smartArrow)"/>
+            <rect x="242" y="60" width="176" height="38" rx="19" fill="url(#smartStep)"/>
+            <text x="330" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="PingFang SC,Microsoft YaHei,sans-serif">SMART 五维拆解</text>
+            <line x1="424" y1="79" x2="464" y2="79" stroke="#8A98AC" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#smartArrow)"/>
+            <rect x="470" y="60" width="150" height="38" rx="19" fill="#DFF3E4" stroke="#16A34A" stroke-width="1.5"/>
+            <text x="545" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#16A34A" font-family="PingFang SC,Microsoft YaHei,sans-serif">明确目标</text>
+
+            <!-- 云朵：还想不清楚的愿望 -->
+            <g fill="#DDE5EE">
+              <ellipse cx="88" cy="170" rx="46" ry="30"/>
+              <ellipse cx="128" cy="182" rx="32" ry="22"/>
+              <ellipse cx="58" cy="186" rx="28" ry="19"/>
+            </g>
+            <text x="95" y="170" text-anchor="middle" font-size="13" font-weight="700" fill="#6B7A8D" font-family="PingFang SC,Microsoft YaHei,sans-serif">我想变优秀</text>
+            <line x1="150" y1="196" x2="206" y2="248" stroke="#B8C4D4" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#smartArrow)"/>
+
+            <!-- 五级阶梯 -->
+            <rect x="196" y="310" width="516" height="5" rx="2.5" fill="#CBD5E1"/>
+            <g fill="url(#smartStep)">
+              <rect x="215" y="270" width="86" height="40" rx="7"/>
+              <rect x="307" y="230" width="86" height="80" rx="7"/>
+              <rect x="399" y="190" width="86" height="120" rx="7"/>
+              <rect x="491" y="150" width="86" height="160" rx="7"/>
+              <rect x="583" y="110" width="86" height="200" rx="7"/>
+            </g>
+            <g fill="#fff" font-size="19" font-weight="800" text-anchor="middle" font-family="Segoe UI,Helvetica,Arial,sans-serif">
+              <text x="258" y="296">S</text>
+              <text x="350" y="256">M</text>
+              <text x="442" y="216">A</text>
+              <text x="534" y="176">R</text>
+              <text x="626" y="136">T</text>
+            </g>
+            <g fill="#4A5A70" font-size="12" text-anchor="middle" font-family="PingFang SC,Microsoft YaHei,sans-serif">
+              <text x="258" y="334">具体</text>
+              <text x="350" y="334">可衡量</text>
+              <text x="442" y="334">可达成</text>
+              <text x="534" y="334">相关联</text>
+              <text x="626" y="334">有时限</text>
+            </g>
+
+            <!-- 顶峰旗帜 -->
+            <line x1="626" y1="110" x2="626" y2="54" stroke="#003F88" stroke-width="3"/>
+            <path d="M626,56 L692,72 L626,88 Z" fill="#00A3E0"/>
+            <text x="700" y="80" font-size="13" font-weight="700" fill="#003F88" font-family="PingFang SC,Microsoft YaHei,sans-serif">登顶：目标达成</text>
+
+            <!-- 光芒 -->
+            <g transform="translate(790,196)">
+              <circle r="20" fill="#E8A317"/>
+              <g stroke="#E8A317" stroke-width="3" stroke-linecap="round">
+                <line x1="0" y1="-30" x2="0" y2="-38"/>
+                <line x1="0" y1="30" x2="0" y2="38"/>
+                <line x1="-30" y1="0" x2="-38" y2="0"/>
+                <line x1="30" y1="0" x2="38" y2="0"/>
+                <line x1="-21" y1="-21" x2="-27" y2="-27"/>
+                <line x1="21" y1="21" x2="27" y2="27"/>
+                <line x1="-21" y1="21" x2="-27" y2="27"/>
+                <line x1="21" y1="-21" x2="27" y2="-27"/>
+              </g>
+              <text y="56" text-anchor="middle" font-size="12" font-weight="700" fill="#E8A317" font-family="PingFang SC,Microsoft YaHei,sans-serif">看得见进度</text>
+            </g>
+
+            <text x="40" y="352" font-size="11.5" fill="#8A98AC" font-family="PingFang SC,Microsoft YaHei,sans-serif">每一级台阶都是一次自检：缺了任何一维，目标都会从"一定做到"退回"以后再说"。</text>
+          </svg>
+          <div class="cf-cap">图示：模糊愿望（左）经 SMART 五维拆解后，沿具体 → 可衡量 → 可达成 → 相关联 → 有时限逐级上升，最终抵达可检查、可完成的明确目标。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cb-more">更多分栏目（如「职业方向探索」「个人能力盘点」「大学四年时间轴」「求职与升学路径」）将在后续补充</div>
+  </section>
+
 </div>
 
 <div class="foot">大连理工大学 校园生活助手<span class="dot"></span>路线与位置数据由高德地图提供</div>
@@ -860,7 +1056,7 @@ svg{display:block}
 
 <script>
 // ===== 视图切换（左侧导航）=====
-var viewTitles={home:'概览',study:'学习规划',location:'学校地理位置',life:'周边生活与路线规划',contest:'大学生学科竞赛',assistant:'学习规划助手'};
+var viewTitles={home:'概览',study:'学习规划',location:'学校地理位置',life:'周边生活与路线规划',contest:'大学生学科竞赛',career:'职业及未来规划',assistant:'学习规划助手'};
 function switchView(name){
   document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
   document.getElementById('view-'+name).classList.add('active');
@@ -950,7 +1146,8 @@ var CAMPUS_PLACES={
       {name:'学府餐厅(明德路店)',addr:'凌工路2号大连理工大学内',lng:'121.529701',lat:'38.881412',mode:'walk',dist:'215 米',time:'约 3 分钟',detail:'校内餐厅，沿德邻路→尚书路→明德路步行即达',badges:[{t:'校内',c:'badge-near'},{t:'评分 4.2',c:'badge-rate'}]},
       {name:'沁园餐厅(红凌路)',addr:'凌水路2号大连理工大学西山生活区内',lng:'121.527100',lat:'38.879200',mode:'walk',dist:'校内',time:'约 5 分钟',detail:'西山生活区食堂',badges:[{t:'校内',c:'badge-near'}]},
       {name:'大连理工大学博园餐厅',addr:'凌工路2号',lng:'121.528100',lat:'38.882100',mode:'walk',dist:'校内',time:'约 4 分钟',detail:'校内博园餐厅',badges:[{t:'校内',c:'badge-near'}]},
-      {name:'小花卷味道餐厅(理工西门店)',addr:'凌水街道栾金村406号',lng:'121.526800',lat:'38.878500',mode:'walk',dist:'约 350 米',time:'约 5 分钟',detail:'理工西门附近特色餐厅',badges:[]},
+      {name:'小花卷味道餐厅(理工西门店)',addr:'凌水街道栾金村406号',lng:'121.526800',lat:'38.878500',mode:'walk',dist:'约 350 米',time:'约 5 分钟',detail:'理工西门附近特色餐厅',badges:[]}
+,
       {name:'小田园家常菜烧烤(文萃轩小区店)',addr:'凌水线段0K-9K+800米',lng:'121.534159',lat:'38.879126',mode:'walk',dist:'0.82 公里',time:'约 13 分钟',detail:'人均 ¥67，营业 10:00-14:00,16:00-23:00',badges:[{t:'评分 4.3',c:'badge-rate'}]},
       {name:'晚风小筑火锅烤肉自助',addr:'凌水街道红凌路852号',lng:'121.524487',lat:'38.886995',mode:'walk',dist:'1.01 公里',time:'约 15 分钟',detail:'人均 ¥80',badges:[{t:'评分 4.0',c:'badge-rate'}]},
       {name:'我们只做鱼(高新店)',addr:'红凌路峦翠园772-3我们只做鱼高新店',lng:'121.524633',lat:'38.890633',mode:'walk',dist:'1.43 公里',time:'约 21 分钟',detail:'人均 ¥63，营业 10:00-19:30',badges:[{t:'评分 4.3',c:'badge-rate'}]},
@@ -997,7 +1194,8 @@ var CAMPUS_PLACES={
       items:[
         {name:'得来速餐厅(知润山店)',addr:'知润山北门东300米',lng:'121.818088',lat:'39.080387',mode:'walk',dist:'805 米',time:'约 11 分钟',detail:'沿图强路→学府南街步行即达，评分 3.8',badges:[{t:'评分 3.8',c:'badge-rate'}]},
         {name:'裕丰快餐厅(馨佳园店)',addr:'馨佳园',lng:'121.815000',lat:'39.083000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近馨佳园快餐厅',badges:[]},
-        {name:'大连大学食堂',addr:'学府大街大连大学内',lng:'121.820000',lat:'39.082000',mode:'walk',dist:'约 1.2 公里',time:'约 15 分钟',detail:'毗邻大连大学，可步行前往',badges:[]},
+        {name:'大连大学食堂',addr:'学府大街大连大学内',lng:'121.820000',lat:'39.082000',mode:'walk',dist:'约 1.2 公里',time:'约 15 分钟',detail:'毗邻大连大学，可步行前往',badges:[]}
+,
         {name:'小芝同学披萨',addr:'图强街知润山小区112号楼',lng:'121.814343',lat:'39.080139',mode:'walk',dist:'0.82 公里',time:'约 12 分钟',detail:'图强街知润山小区披萨店，可外带',badges:[{t:'评分 3.4',c:'badge-rate'}]},
         {name:'森林狼过桥米线焖肉饭(大学店)',addr:'学府南路远洋时代城二期71-12',lng:'121.820682',lat:'39.081015',mode:'walk',dist:'0.95 公里',time:'约 14 分钟',detail:'人均 ¥22，营业 09:00-21:00',badges:[{t:'评分 3.8',c:'badge-rate'}]},
         {name:'邹立国火锅煎烤食材(远洋时代城店)',addr:'远洋时代城71-14号',lng:'121.821010',lat:'39.081145',mode:'walk',dist:'0.98 公里',time:'约 14 分钟',detail:'人均 ¥60，营业 09:00-20:00',badges:[{t:'评分 4.0',c:'badge-rate'}]},
@@ -1045,7 +1243,8 @@ var CAMPUS_PLACES={
       items:[
         {name:'三年十六班主题餐厅(辽滨店)',addr:'直方街与庆誉路交叉口东200米',lng:'122.123309',lat:'40.700879',mode:'walk',dist:'1.88 公里',time:'约 25 分钟',detail:'沿明德路→德榜路→复州路→直方街步行，评分 4.3，营业 10:00-21:00',badges:[{t:'评分 4.3',c:'badge-rate'}]},
         {name:'罗森便利店(盘锦校区店)',addr:'大工路2号大连理工大学盘锦校区内',lng:'122.124016',lat:'40.690242',mode:'walk',dist:'校内',time:'约 2 分钟',detail:'校内便利店',badges:[{t:'校内',c:'badge-near'}]},
-        {name:'祥惠百货超市(物流大厦店)',addr:'辽东湾新区物流大厦',lng:'122.125000',lat:'40.692000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近百货超市',badges:[]},
+        {name:'祥惠百货超市(物流大厦店)',addr:'辽东湾新区物流大厦',lng:'122.125000',lat:'40.692000',mode:'walk',dist:'约 500 米',time:'约 7 分钟',detail:'校区附近百货超市',badges:[]}
+,
         {name:'大连理工大学第八食堂',addr:'大洼区大工路2号大连理工大学(盘锦校区)B13楼',lng:'122.123275',lat:'40.689225',mode:'walk',dist:'0.12 公里',time:'约 2 分钟',detail:'校内 B13 楼学生食堂，性价比高',badges:[{t:'校内',c:'badge-near'},{t:'评分 4.1',c:'badge-rate'}]},
         {name:'大连理工大学第三食堂',addr:'大工路2号大连理工大学(盘锦校区)B03楼',lng:'122.122613',lat:'40.686471',mode:'walk',dist:'0.43 公里',time:'约 7 分钟',detail:'校内 B03 楼学生食堂，性价比高',badges:[{t:'校内',c:'badge-near'},{t:'评分 3.9',c:'badge-rate'}]},
         {name:'0090汉堡工厂(大连理工大学盘锦校区店)',addr:'大工路2号',lng:'122.122488',lat:'40.686422',mode:'walk',dist:'0.44 公里',time:'约 7 分钟',detail:'人均 ¥14，营业 10:00-21:00',badges:[{t:'评分 3.3',c:'badge-rate'}]},
