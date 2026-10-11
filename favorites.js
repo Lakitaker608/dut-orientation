@@ -110,7 +110,9 @@
     /* 志愿服务：各校区志愿组织卡片（随校区切换动态重渲染） */
     {sel:'.org-item', self:false, t:['.org-name-wx'], d:['.org-desc-wx'], link:'.org-go'},
     /* 迎新页：大工校园景色实景卡片（随校区/季节筛选动态重渲染） */
-    {sel:'.sc-card', self:false, t:['.sc-t'], d:['.sc-d'], link:'.sc-src'}
+    {sel:'.sc-card', self:false, t:['.sc-t'], d:['.sc-d'], link:'.sc-src'},
+    /* 校园生活 · 职业及未来规划：就业信息网入口卡（一块只对应就业网一个链接，不会与其它卡片串号） */
+    {sel:'.job-portal', self:false, t:['.jg-t'], d:['.jg-d'], link:'.jg-go'}
   ];
 
   function clean(s){return (s||'').replace(/\s+/g,' ').trim();}
