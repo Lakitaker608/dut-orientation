@@ -199,6 +199,32 @@ svg{display:block}
 @media(max-width:1100px){.smart-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:720px){.smart-grid{grid-template-columns:1fr}.cb-banner{flex-wrap:wrap}}
 
+/* ===== 大工校招信息（职业及未来规划 · 分栏目） ===== */
+.job-portal{display:flex;align-items:center;gap:16px;padding:16px 18px;margin-bottom:18px;border-radius:12px;background:var(--primary-light);border:1px solid rgba(0,63,136,.2);position:relative}
+.job-portal.fav-host{padding-right:52px}
+.jp-ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.jp-ico svg{width:24px;height:24px}
+.jp-body{flex:1;min-width:0}
+.jg-t{font-size:14.5px;font-weight:700;color:var(--text-1)}
+.jg-d{font-size:12px;line-height:1.75;color:var(--text-2);margin-top:4px}
+.jg-go{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:7px 14px;border-radius:9px;background:var(--primary);color:#fff;font-size:12.5px;font-weight:600;transition:all .18s}
+.jg-go:hover{background:var(--primary-2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,63,136,.28)}
+.jg-go svg{width:14px;height:14px}
+.job-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.job-card{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:all .18s ease}
+.job-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(0,63,136,.3)}
+.jc-pic{position:relative;width:100%;padding-top:62%;overflow:hidden;background:#E9EDF3}
+.jc-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.job-card:hover .jc-pic img{transform:scale(1.05)}
+.jc-body{padding:12px 13px 13px;display:flex;flex-direction:column;flex:1}
+.jc-tag{display:inline-block;align-self:flex-start;font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--primary-light);color:var(--primary);margin-bottom:7px}
+.jc-t{font-size:12.5px;font-weight:600;color:var(--text-1);line-height:1.6;flex:1}
+.jc-src{margin-top:9px;font-size:11.5px;color:var(--primary);display:inline-flex;align-items:center;gap:4px}
+.jc-src:hover{text-decoration:underline}
+.cb-note{margin-top:14px;font-size:11.5px;color:var(--text-3);line-height:1.75}
+@media(max-width:1100px){.job-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.job-grid{grid-template-columns:1fr}.job-portal{flex-wrap:wrap}}
+
 /* ===== 卫星地图 ===== */
 .sat-section{margin-top:24px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
 .sat-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
@@ -1040,6 +1066,88 @@ svg{display:block}
           </svg>
           <div class="cf-cap">图示：模糊愿望（左）经 SMART 五维拆解后，沿具体 → 可衡量 → 可达成 → 相关联 → 有时限逐级上升，最终抵达可检查、可完成的明确目标。</div>
         </div>
+      </div>
+    </div>
+
+    <!-- 分栏目：大工校招信息 -->
+    <div class="career-block">
+      <div class="cb-banner">
+        <span class="cb-banner-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M4 12h16"/></svg>
+        </span>
+        <div class="cb-banner-txt">
+          <div class="cb-banner-title">大工校招信息</div>
+          <div class="cb-banner-sub">就业信息网直达 · 双选会与校企合作现场实拍</div>
+        </div>
+      </div>
+
+      <div class="cb-body">
+        <div class="job-portal">
+          <span class="jp-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M4 12h16"/></svg>
+          </span>
+          <div class="jp-body">
+            <div class="jg-t">大连理工大学就业信息网</div>
+            <div class="jg-d">宣讲会 / 双选会 · 招聘信息 · 实习信息 · 公务员与选调生 · 简历面试指导 · 就业手续办理 —— 校招一手信息都在这里发布。</div>
+            <a class="jg-go" target="_blank" rel="noopener" href="https://job.dlut.edu.cn/index.html">
+              前往就业网
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="job-grid">
+          <div class="job-card">
+            <div class="jc-pic"><img loading="lazy" decoding="async" src="dlut-photos/jobfair-1.jpg" alt="主校区春季双选会现场 · 刘长春体育馆"></div>
+            <div class="jc-body">
+              <span class="jc-tag">校招</span>
+              <div class="jc-t">主校区春季双选会现场 · 刘长春体育馆</div>
+              <a class="jc-src" target="_blank" rel="noopener" href="https://news.dlut.edu.cn/info/1221/136855.htm">2026 届毕业生春季双选会 ↗</a>
+            </div>
+          </div>
+          <div class="job-card">
+            <div class="jc-pic"><img loading="lazy" decoding="async" src="dlut-photos/jobfair-2.jpg" alt="毕业生与企业招聘代表面对面交流"></div>
+            <div class="jc-body">
+              <span class="jc-tag">校招</span>
+              <div class="jc-t">毕业生与企业招聘代表面对面交流</div>
+              <a class="jc-src" target="_blank" rel="noopener" href="https://news.dlut.edu.cn/info/1221/136855.htm">2026 届毕业生春季双选会 ↗</a>
+            </div>
+          </div>
+          <div class="job-card">
+            <div class="jc-pic"><img loading="lazy" decoding="async" src="dlut-photos/jobfair-3.jpg" alt="按行业设置的特色招聘专区"></div>
+            <div class="jc-body">
+              <span class="jc-tag">校招</span>
+              <div class="jc-t">按行业设置的特色招聘专区</div>
+              <a class="jc-src" target="_blank" rel="noopener" href="https://news.dlut.edu.cn/info/1221/136855.htm">2026 届毕业生春季双选会 ↗</a>
+            </div>
+          </div>
+          <div class="job-card">
+            <div class="jc-pic"><img loading="lazy" decoding="async" src="dlut-photos/jobfair-4.jpg" alt="盘锦校区春季双选会现场"></div>
+            <div class="jc-body">
+              <span class="jc-tag">校招</span>
+              <div class="jc-t">盘锦校区春季双选会现场</div>
+              <a class="jc-src" target="_blank" rel="noopener" href="https://pjcareer.dlut.edu.cn/info/1011/40562.htm">盘锦校区 2026 届毕业生春季双选会 ↗</a>
+            </div>
+          </div>
+          <div class="job-card">
+            <div class="jc-pic"><img loading="lazy" decoding="async" src="dlut-photos/coop-1.jpg" alt="重点用人单位研讨会 · 校企对接现场"></div>
+            <div class="jc-body">
+              <span class="jc-tag">合作</span>
+              <div class="jc-t">重点用人单位研讨会 · 校企对接现场</div>
+              <a class="jc-src" target="_blank" rel="noopener" href="https://news.dlut.edu.cn/info/1221/97514.htm">学校重点用人单位研讨会 ↗</a>
+            </div>
+          </div>
+          <div class="job-card">
+            <div class="jc-pic"><img loading="lazy" decoding="async" src="dlut-photos/coop-2.jpg" alt="就业实习实践基地合作签约"></div>
+            <div class="jc-body">
+              <span class="jc-tag">合作</span>
+              <div class="jc-t">就业实习实践基地合作签约</div>
+              <a class="jc-src" target="_blank" rel="noopener" href="https://news.dlut.edu.cn/info/1221/97514.htm">学校重点用人单位研讨会 ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="cb-note">图片来源：大连理工大学新闻网、盘锦校区就业信息网；为便于加载已压缩至 1280px 宽。版权归大连理工大学及相关摄影作者所有。</div>
       </div>
     </div>
 
