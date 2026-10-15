@@ -225,6 +225,132 @@ svg{display:block}
 @media(max-width:1100px){.job-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.job-grid{grid-template-columns:1fr}.job-portal{flex-wrap:wrap}}
 
+/* ===== MBTI 性格探索小游戏（职业及未来规划 · 分栏目）===== */
+.mb-entry{display:flex;align-items:center;gap:18px;padding:18px 20px;border-radius:14px;background:linear-gradient(120deg,#F4F8FE 0%,#E8F0FB 55%,#FFF7EC 100%);border:1px solid rgba(0,63,136,.2);position:relative;overflow:hidden}
+.mb-entry::after{content:"";position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,163,224,.16),transparent 70%);pointer-events:none}
+.mb-e-ico{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 6px 16px rgba(0,63,136,.24);position:relative;z-index:1}
+.mb-e-ico svg{width:27px;height:27px}
+.mb-e-body{flex:1;min-width:0;position:relative;z-index:1}
+.mb-e-t{font-size:15px;font-weight:700;color:var(--text-1);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mb-e-tag{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(0,63,136,.12);color:var(--primary)}
+.mb-e-d{font-size:12.5px;line-height:1.8;color:var(--text-2);margin-top:6px}
+.mb-e-meta{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
+.mb-e-meta i{font-style:normal;font-size:11.5px;color:var(--text-3);display:inline-flex;align-items:center;gap:5px}
+.mb-e-meta svg{width:13px;height:13px;color:var(--accent)}
+.mb-e-act{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;position:relative;z-index:1}
+.mb-e-btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:11px;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;font-size:13.5px;font-weight:600;transition:all .18s;box-shadow:0 6px 16px rgba(0,63,136,.24)}
+.mb-e-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,63,136,.34)}
+.mb-e-btn svg{width:15px;height:15px}
+.mb-e-hint{font-size:11px;color:var(--text-3)}
+.mb-saved{display:none;align-items:center;gap:12px;margin-top:14px;padding:12px 15px;border-radius:12px;background:#F1FBF5;border:1px solid rgba(22,163,74,.26);font-size:12.5px;color:#146C35;line-height:1.7}
+.mb-saved.show{display:flex}
+.mb-sv-badge{font-weight:800;font-size:15px;letter-spacing:.05em;color:#0E7A3C;background:#fff;border:1px solid rgba(22,163,74,.3);border-radius:9px;padding:5px 11px;flex-shrink:0}
+.mb-sv-txt{flex:1;min-width:0}
+.mb-sv-txt b{font-weight:700}
+.mb-sv-date{display:block;color:#5C9B76;font-size:11px;margin-top:2px}
+.mb-sv-btn{padding:7px 14px;border-radius:9px;border:1px solid rgba(22,163,74,.35);background:#fff;color:#146C35;font-size:12px;font-weight:600;flex-shrink:0;transition:all .15s}
+.mb-sv-btn:hover{background:#16A34A;color:#fff;border-color:#16A34A}
+@media(max-width:720px){.mb-entry{flex-wrap:wrap}.mb-e-act{align-items:flex-start;width:100%}.mb-saved{flex-wrap:wrap}}
+
+/* 游戏弹窗 */
+.mg-mask{position:fixed;inset:0;background:rgba(9,17,30,.62);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:60;display:none;align-items:center;justify-content:center;padding:26px 20px}
+.mg-mask.show{display:flex}
+.mg-panel{width:100%;max-width:780px;max-height:88vh;background:var(--surface);border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.32);display:flex;flex-direction:column;overflow:hidden;animation:mgIn .3s cubic-bezier(.2,.8,.3,1)}
+@keyframes mgIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.mg-head{display:flex;align-items:center;gap:14px;padding:16px 20px;background:linear-gradient(100deg,var(--primary) 0%,var(--primary-2) 55%,var(--accent) 100%);color:#fff;flex-shrink:0}
+.mg-h-ico{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mg-h-ico svg{width:21px;height:21px}
+.mg-h-txt{flex:1;min-width:0}
+.mg-h-t{font-size:15.5px;font-weight:700;letter-spacing:.02em}
+.mg-h-s{font-size:11.5px;opacity:.86;margin-top:2px}
+.mg-close{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff;background:rgba(255,255,255,.14);flex-shrink:0;transition:all .15s}
+.mg-close:hover{background:rgba(255,255,255,.32)}
+.mg-close svg{width:17px;height:17px}
+.mg-prog{height:4px;background:var(--surface-2);flex-shrink:0}
+.mg-prog-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .35s ease}
+.mg-body{padding:24px 26px 26px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+
+/* 引导页 */
+.mg-intro{text-align:center;padding:4px 0}
+.mg-i-badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:5px 12px;border-radius:20px;background:var(--primary-light);color:var(--primary);margin-bottom:16px}
+.mg-i-badge svg{width:13px;height:13px}
+.mg-i-title{font-size:22px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+.mg-i-desc{font-size:13px;line-height:1.9;color:var(--text-2);max-width:530px;margin:0 auto}
+.mg-i-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 20px}
+.mg-i-card{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:13px 10px}
+.mg-i-card .k{font-size:11px;color:var(--text-3);margin-bottom:6px}
+.mg-i-card .v{font-size:12.5px;font-weight:700;color:var(--text-1);line-height:1.5}
+.mg-i-start{display:inline-flex;align-items:center;gap:8px;padding:13px 34px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:14.5px;font-weight:700;box-shadow:0 8px 22px rgba(0,63,136,.28);transition:all .18s}
+.mg-i-start:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,63,136,.36)}
+.mg-i-start svg{width:16px;height:16px}
+.mg-i-tip{margin-top:14px;font-size:11.5px;color:var(--text-3);line-height:1.7}
+@media(max-width:720px){.mg-i-cards{grid-template-columns:repeat(2,1fr)}}
+
+/* 答题页 */
+.mg-q{animation:mgFade .32s ease}
+@keyframes mgFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.mg-q-no{font-size:11.5px;color:var(--text-3);font-weight:600;letter-spacing:.05em;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mg-q-no .dim{color:var(--accent)}
+.mg-q-text{font-size:17px;font-weight:700;line-height:1.65;margin-bottom:20px}
+.mg-opts{display:flex;flex-direction:column;gap:12px}
+.mg-opt{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;transition:all .16s ease;text-align:left;width:100%}
+.mg-opt:hover{border-color:var(--primary);background:var(--primary-light)}
+.mg-opt.pick{border-color:var(--primary);background:var(--primary);box-shadow:0 8px 20px rgba(0,63,136,.25)}
+.mg-opt.pickB{border-color:var(--accent);background:var(--accent);box-shadow:0 8px 20px rgba(0,163,224,.25)}
+.mg-opt-k{width:28px;height:28px;border-radius:9px;background:var(--surface-2);color:var(--text-2);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .16s}
+.mg-opt:hover .mg-opt-k{background:var(--primary);color:#fff}
+.mg-opt.pick .mg-opt-k,.mg-opt.pickB .mg-opt-k{background:rgba(255,255,255,.24);color:#fff}
+.mg-opt-t{font-size:14px;line-height:1.6;color:var(--text-1);font-weight:500}
+.mg-opt.pick .mg-opt-t,.mg-opt.pickB .mg-opt-t{color:#fff;font-weight:600}
+.mg-q-foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px dashed var(--border-strong);gap:12px}
+.mg-back{font-size:12px;color:var(--text-3);display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:8px;transition:all .15s}
+.mg-back:hover{color:var(--primary);background:var(--surface-2)}
+.mg-back svg{width:14px;height:14px}
+.mg-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.mg-dots i{width:6px;height:6px;border-radius:50%;background:var(--border-strong);display:block;transition:all .2s}
+.mg-dots i.on{background:var(--primary)}
+.mg-dots i.cur{background:var(--accent);transform:scale(1.6)}
+
+/* 结果页 */
+.mg-res{animation:mgFade .42s ease}
+.mg-r-top{text-align:center;margin-bottom:20px}
+.mg-r-code{font-size:46px;font-weight:800;letter-spacing:.06em;line-height:1.1;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mg-r-name{font-size:19px;font-weight:700;margin-top:6px}
+.mg-r-en{font-size:11px;color:var(--text-3);letter-spacing:.1em;margin-top:3px}
+.mg-r-one{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:7px 16px;border-radius:20px}
+.mg-r-desc{font-size:13px;line-height:1.95;color:var(--text-2);margin:16px 0 4px;padding:15px 18px;background:var(--surface-2);border-radius:12px;border-left:3px solid var(--primary)}
+.mg-sec-t{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;margin:24px 0 12px}
+.mg-sec-t .sq{width:3px;height:14px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px}
+.mg-dims{display:flex;flex-direction:column;gap:12px}
+.mg-dim{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.mg-dim-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;font-size:12.5px;gap:10px}
+.mg-dim-k{font-size:11px;color:var(--text-3);font-weight:500}
+.mg-dim-h .l,.mg-dim-h .r{font-weight:600;color:var(--text-3)}
+.mg-dim-h .l.win,.mg-dim-h .r.win{color:var(--primary);font-weight:800}
+.mg-bar{display:flex;gap:3px;height:10px}
+.mg-bar .h{flex:1;background:#EDF1F6;border-radius:6px;overflow:hidden;display:flex}
+.mg-bar .h.l{justify-content:flex-end}
+.mg-bar .h.r{justify-content:flex-start}
+.mg-bar .f{height:100%;border-radius:6px;background:#DAE1EB;width:0;transition:width .9s cubic-bezier(.2,.8,.3,1)}
+.mg-bar .f.win{background:linear-gradient(90deg,var(--primary),var(--accent))}
+.mg-dim-d{font-size:11.5px;line-height:1.75;color:var(--text-3);margin-top:9px}
+.mg-list{display:flex;flex-direction:column;gap:9px}
+.mg-li{display:flex;gap:9px;font-size:12.5px;line-height:1.8;color:var(--text-2)}
+.mg-li .ic{flex-shrink:0;width:16px;height:16px;margin-top:4px}
+.mg-li b{color:var(--text-1);font-weight:600}
+.mg-tags{display:flex;flex-wrap:wrap;gap:8px}
+.mg-tag{font-size:12px;padding:7px 13px;border-radius:9px;background:var(--primary-light);color:var(--primary);font-weight:500;border:1px solid rgba(0,63,136,.14)}
+.mg-tag.alt{background:#FFF6E8;color:#B77B06;border-color:rgba(232,163,23,.25)}
+.mg-acts{display:flex;gap:10px;margin-top:24px;padding-top:18px;border-top:1px solid var(--border)}
+.mg-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px;border-radius:11px;font-size:13.5px;font-weight:600;transition:all .16s}
+.mg-btn svg{width:15px;height:15px}
+.mg-btn.p{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 6px 16px rgba(0,63,136,.22)}
+.mg-btn.p:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,63,136,.32)}
+.mg-btn.s{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.mg-btn.s:hover{border-color:var(--primary);color:var(--primary)}
+.mg-note{margin-top:14px;font-size:11px;color:var(--text-3);line-height:1.8;text-align:center}
+@media(max-width:720px){.mg-body{padding:20px 18px 22px}.mg-q-text{font-size:16px}.mg-acts{flex-direction:column}}
+
 /* ===== 卫星地图 ===== */
 .sat-section{margin-top:24px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
 .sat-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:10px}
@@ -1069,6 +1195,51 @@ svg{display:block}
       </div>
     </div>
 
+    <!-- 分栏目：性格特征评估小游戏 -->
+    <div class="career-block">
+      <div class="cb-banner">
+        <span class="cb-banner-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M17 11l2 2 4-4"/><path d="M19 4v5h-5"/></svg>
+        </span>
+        <div class="cb-banner-txt">
+          <div class="cb-banner-title">性格特征评估 · MBTI 小游戏</div>
+          <div class="cb-banner-sub">24 道情境选择题，测出你的四字母性格类型与职业发展倾向</div>
+        </div>
+      </div>
+
+      <div class="cb-body">
+        <div class="mb-entry">
+          <span class="mb-e-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/><circle cx="12" cy="12" r="3.2"/></svg>
+          </span>
+          <div class="mb-e-body">
+            <div class="mb-e-t">你是哪一种性格类型？<span class="mb-e-tag">MBTI 四维度</span></div>
+            <div class="mb-e-d">从<b>精力来源（E/I）、信息获取（S/N）、决策方式（T/F）、生活态度（J/P）</b>四个维度出发，用 24 道校园与求职情境题，帮你把"我大概是个什么样的人"说得更清楚一点，并给出匹配的职业方向参考。</div>
+            <div class="mb-e-meta">
+              <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>约 3 分钟</i>
+              <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>24 道情境题</i>
+              <i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>16 种结果类型</i>
+            </div>
+          </div>
+          <div class="mb-e-act">
+            <button class="mb-e-btn" id="mbStartBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>
+              <span id="mbStartTxt">开始测评</span>
+            </button>
+            <span class="mb-e-hint">凭第一直觉选，别纠结</span>
+          </div>
+        </div>
+
+        <div class="mb-saved" id="mbSaved">
+          <span class="mb-sv-badge" id="mbSvCode">—</span>
+          <span class="mb-sv-txt"><b id="mbSvName">—</b><span class="mb-sv-date" id="mbSvDate"></span></span>
+          <button class="mb-sv-btn" id="mbSvBtn" type="button">查看结果</button>
+        </div>
+
+        <div class="cb-note">说明：本测评以 MBTI 四维度框架为参考设计，用于自我探索与职业方向启发，结果仅反映答题时的状态，不构成任何专业心理测评或就业建议。</div>
+      </div>
+    </div>
+
     <!-- 分栏目：大工校招信息 -->
     <div class="career-block">
       <div class="cb-banner">
@@ -1158,6 +1329,26 @@ svg{display:block}
 
 <div class="foot">大连理工大学 校园生活助手<span class="dot"></span>路线与位置数据由高德地图提供</div>
 
+</div>
+
+<!-- ===== MBTI 性格探索小游戏 弹窗 ===== -->
+<div class="mg-mask" id="mgMask" role="dialog" aria-modal="true" aria-label="MBTI 性格探索">
+  <div class="mg-panel">
+    <div class="mg-head">
+      <span class="mg-h-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/></svg>
+      </span>
+      <div class="mg-h-txt">
+        <div class="mg-h-t">MBTI 性格探索</div>
+        <div class="mg-h-s" id="mgStepTxt">共 24 题 · 约 3 分钟</div>
+      </div>
+      <button class="mg-close" id="mgClose" type="button" title="关闭" aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="mg-prog"><div class="mg-prog-bar" id="mgProgBar"></div></div>
+    <div class="mg-body" id="mgBody"></div>
+  </div>
 </div>
 
 <script>
@@ -2328,6 +2519,406 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
   window.addEventListener('dlut:favchange',render);
   window.addEventListener('storage',function(e){if(!e.key||e.key===KEY)render();});
   render();
+})();
+</script>
+<script>
+/* ============================================================
+   MBTI 性格探索小游戏（职业及未来规划 · 性格特征评估）
+   - 24 道情境选择题，覆盖 E/I、S/N、T/F、J/P 四个维度
+   - 结果以 MBTI 四字母 + 四维倾向条 + 职业方向建议呈现
+   - ES5 语法，无外部依赖
+   ============================================================ */
+(function(){
+  'use strict';
+
+  /* ---------- 图标 ---------- */
+  var S_PLAY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z"/></svg>';
+  var S_BACK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>';
+  var S_OK='<svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4" class="ic"><path d="M20 6L9 17l-5-5"/></svg>';
+  var S_WARN='<svg viewBox="0 0 24 24" fill="none" stroke="#E8A317" stroke-width="2.2" class="ic"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>';
+  var S_BULB='<svg viewBox="0 0 24 24" fill="none" stroke="#00A3E0" stroke-width="2.2" class="ic"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V18h8v-3.3A7 7 0 0012 2z"/></svg>';
+  var S_AGAIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>';
+  var S_EXIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>';
+  var S_SPARK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/></svg>';
+
+  /* ---------- 四个维度 ---------- */
+  var DIMS={
+    EI:{name:'精力来源',a:'E',b:'I',an:'外向 E',bn:'内向 I',
+      adesc:'你的能量更多来自外部世界：与人讨论、参与活动、边做边想。行动起来会让你更有思路。',
+      bdesc:'你的能量更多来自内部世界：独处、沉淀、先想清楚再表达。安静的环境让你状态更好。'},
+    SN:{name:'信息获取',a:'S',b:'N',an:'实感 S',bn:'直觉 N',
+      adesc:'你关注具体事实、细节与既有经验，相信看得见、测得着的东西，做事稳妥扎实。',
+      bdesc:'你关注模式、联系与可能性，擅长从具体里抽出框架，习惯向前多看半步。'},
+    TF:{name:'决策方式',a:'T',b:'F',an:'思考 T',bn:'情感 F',
+      adesc:'你以逻辑、因果和客观标准做判断，就事论事，优先把事情本身做对。',
+      bdesc:'你以价值、感受和对他人的影响做判断，优先让关系与氛围保持妥当。'},
+    JP:{name:'生活态度',a:'J',b:'P',an:'判断 J',bn:'知觉 P',
+      adesc:'你偏好计划、秩序与确定的结论，喜欢提前安排并一路推进到闭环。',
+      bdesc:'你保留开放的选项与弹性，边走边调整，在变化里往往能发现新机会。'}
+  };
+  var DIM_ORDER=['EI','SN','TF','JP'];
+
+  /* ---------- 题库：每维 6 题，共 24 题 ---------- */
+  var Q=[
+    // E / I
+    {d:'EI',q:'班里组织周末团建，你更倾向于',a:'到场，和大家一起热闹',b:'只答应小范围的几个熟人'},
+    {d:'EI',q:'连着一周满课之后，你恢复精力的方式是',a:'约同学吃饭、聊天、走走',b:'回宿舍独处，看书或打一会儿游戏'},
+    {d:'EI',q:'小组讨论时，你通常是',a:'边说边想，先把想法抛出来',b:'想清楚了再开口'},
+    {d:'EI',q:'认识一位新同学，你一般',a:'很快就能聊开',b:'需要一段时间才慢慢熟起来'},
+    {d:'EI',q:'大作业卡住了，你的第一反应是',a:'立刻找人讨论一下',b:'自己先查资料啃一遍'},
+    {d:'EI',q:'在实验室或教研室，你更喜欢',a:'有人一起干活，气氛热一点',b:'安静、少打扰的独立空间'},
+    // S / N
+    {d:'SN',q:'学一门新课，你更关注',a:'公式怎么推、实验怎么做',b:'这套理论能解释什么、和其他课怎么连起来'},
+    {d:'SN',q:'拿到课程设计的题目，你先想到的是',a:'按成熟方案一步步实现出来',b:'有没有更巧、更有意思的新做法'},
+    {d:'SN',q:'面对一个结论，你更愿意相信',a:'实测数据与此前的先例',b:'整体趋势与它可能带来的变化'},
+    {d:'SN',q:'老师讲到尚无定论的前沿方向，你会',a:'想先看到具体成果再判断',b:'兴奋于它未来的想象空间'},
+    {d:'SN',q:'记笔记时你习惯',a:'逐条记下细节、步骤和注意点',b:'画框架图、只写关键词'},
+    {d:'SN',q:'评价一段实习经历，你更看重',a:'实际做成了什么、学到了哪些硬技能',b:'它为我打开了哪些新的可能性'},
+    // T / F
+    {d:'TF',q:'小组分工起了矛盾，你首先想的是',a:'按规则和效率把事情掰扯清楚',b:'先照顾大家的情绪，别伤了关系'},
+    {d:'TF',q:'同学找你倾诉挫折，你通常',a:'帮他分析问题到底出在哪',b:'先共情、先安慰，再谈别的'},
+    {d:'TF',q:'面对老师的评价，你更在意',a:'说得是否在理、是否客观',b:'自己是否被理解和尊重'},
+    {d:'TF',q:'做选择时，你更依赖',a:'逻辑推演与利弊权衡',b:'内心价值以及对他人的影响'},
+    {d:'TF',q:'队友的方案有明显漏洞，你会',a:'直接指出来，哪怕话说得直',b:'委婉提醒，尽量照顾对方面子'},
+    {d:'TF',q:'比较两个工作机会，你更看重',a:'平台、成长性、薪资这些硬指标',b:'团队氛围与价值认同'},
+    // J / P
+    {d:'JP',q:'期末周之前，你通常',a:'提前列好复习计划表，按天推进',b:'临近了再集中突击'},
+    {d:'JP',q:'出门旅行，你更喜欢',a:'攻略精确到每个时间点',b:'只定大方向，其余随机应变'},
+    {d:'JP',q:'你的桌面和电脑文件夹',a:'分类清楚、摆放整齐',b:'堆着，但我大概找得到'},
+    {d:'JP',q:'面对课程的截止日期，你通常',a:'提前完成，留时间检查',b:'压线完成，压力能激发状态'},
+    {d:'JP',q:'计划突然被打乱，你会',a:'有点烦躁，想马上恢复秩序',b:'无所谓，正好换个思路试试'},
+    {d:'JP',q:'选课、做决定时，你倾向',a:'想清楚就尽快定下来',b:'多留几个选项，再看看'}
+  ];
+
+  /* ---------- 16 种类型 ---------- */
+  var TYPES={
+    INTJ:{n:'建筑师',en:'Architect',one:'长期主义的战略设计者',
+      d:'你是那种"先在脑子里把整盘棋推演完，再落第一颗子"的人。擅长把复杂问题拆成系统，对低效和含糊的容忍度很低；一旦认定方向，就会自己把路修出来。',
+      s:['系统思考与结构化拆解能力强','能独立推进长期目标，不依赖外部督促','对质量和标准有内在的高要求'],
+      w:['容易低估沟通与协同的成本','标准过高时显得不易亲近','思路推进太快，别人跟不上节奏'],
+      c:['系统架构 / 算法研究','技术战略规划 / 研发管理','金融量化 / 数据科学','前沿技术预研岗'],
+      a:['把课程设计当成"一个完整系统"来做，而不是交一份作业','争取一次从立项到交付完整负责的项目','刻意练习把复杂方案讲给不懂的人听']},
+    INTP:{n:'逻辑学家',en:'Logician',one:'追根究底的原理爱好者',
+      d:'你享受把一件事彻底想明白的过程，对"为什么"的兴趣远大于"怎么做"。遇到含糊的说法会本能地想验证，喜欢在脑中构建模型并反复推翻重建。',
+      s:['抽象建模与逻辑推演能力强','好奇心驱动，学习新领域上手快','不易被权威和既有结论带跑'],
+      w:['想得多、落地慢，容易停在推导阶段','对重复性、事务性工作耐心不足','表达偏绕，别人不易抓住重点'],
+      c:['算法 / 基础理论研究','数据科学 / 机器学习','系统内核与底层开发','技术咨询与架构评审'],
+      a:['给自己设"想清楚就写出来"的硬期限，逼迫输出','参加数学建模、ACM 这类重推理的竞赛','找一个执行力强的队友互补推进项目']},
+    ENTJ:{n:'指挥官',en:'Commander',one:'推动事情发生的组织者',
+      d:'你天然会去想"这件事该谁做、什么时候做完"，并且愿意站出来承担。目标感强，擅长把资源和人组织起来往一个方向推，面对阻力也不太会退。',
+      s:['目标拆解与资源组织能力强','决策果断，敢承担结果','在混乱局面里能迅速建立秩序'],
+      w:['节奏太快，容易忽略他人的接受度','习惯性接管，别人成长空间被压缩','对低效的容忍度偏低，易显强势'],
+      c:['项目管理 / 产品负责人','技术团队管理 / 研发主管','战略咨询 / 投资分析','创业与公司运营岗'],
+      a:['主动担任一次组长，完整带队交付一个项目','练习"先听完全部意见再拍板"','参加商业模拟、创业类竞赛练手']},
+    ENTP:{n:'辩论家',en:'Debater',one:'点子不断的破局者',
+      d:'你看到规则第一反应是"它一定有不成立的地方"。思维跳跃、反应快，喜欢挑战假设，擅长在僵局里找出没人想到的解法，但兴趣转移也快。',
+      s:['发散思维与临场应变出色','善于发现漏洞并提出替代方案','沟通有感染力，能快速打开局面'],
+      w:['开头多、收尾少，容易半途换方向','爱辩论，可能无意中让人不舒服','对细碎的执行细节缺乏耐心'],
+      c:['产品创新 / 新业务孵化','战略与商业分析','创业方向探索','技术售前与解决方案'],
+      a:['每个学期只挑 1～2 个点子做到落地，其余忍住','找一个偏执行的搭档帮你收尾','参加创新创业类竞赛，把点子变成作品']},
+    INFJ:{n:'提倡者',en:'Advocate',one:'有愿景的理想实践者',
+      d:'你心里通常有一幅"事情应该是什么样"的图景，并且愿意为它持续投入。善于察觉他人没说出口的需求，思考有深度，做事有内在的原则感。',
+      s:['洞察力强，能看到问题背后的动因','有长期愿景，愿意为此坚持','对他人需求敏感，沟通有分寸'],
+      w:['标准内化，容易自我消耗','不擅长拒绝，容易被他人的事拖住','想法偏抽象，落地时缺少抓手'],
+      c:['教育 / 教育培训与课程设计','用户研究 / 产品策略','人力资源与组织发展','公益、咨询与社会创新'],
+      a:['把愿景拆成本学期能完成的三件小事','练习说"不"，给自己的时间设边界','做一次深度访谈类调研，把洞察变成报告']},
+    INFP:{n:'调停者',en:'Mediator',one:'价值驱动的理想主义者',
+      d:'你做选择时最在意的是"这件事对我有没有意义"。共情能力强，内心世界丰富，愿意为了认同的价值投入，但在强竞争、纯指标的环境里容易疲惫。',
+      s:['共情与倾听能力强，能安抚团队氛围','价值感清晰，不轻易随波逐流','文字与创意表达往往有独特质感'],
+      w:['遇到冲突倾向回避','容易因外界评价而内耗','在高压和强指标环境下消耗大'],
+      c:['内容创作 / 品牌与文案','用户体验与设计研究','心理咨询、教育与公益','人力资源 / 企业文化'],
+      a:['用一段话写下"我到底想要什么样的生活"，定期回看','主动做一次公开表达，练被评价的耐受度','找一个和你价值相近但更果断的伙伴同行']},
+    ENFJ:{n:'主人公',en:'Protagonist',one:'成就他人的引领者',
+      d:'你很容易成为团队里凝聚气氛的那个人，能看见别人的长处并真诚地推动他发挥。表达有感染力，愿意为集体目标付出，同时也希望被需要。',
+      s:['沟通与号召力强，能带动团队','善于识人用人、协调关系','责任感强，承诺的事会兜底'],
+      w:['容易把别人的问题背到自己身上','过度追求和谐，难给出尖锐反馈','忽略自己的休息与真实需求'],
+      c:['教育培训 / 讲师与课程运营','人力资源管理 / 组织发展','市场营销与品牌公关','项目管理与客户成功'],
+      a:['担任学生组织或社团的一次负责人','练习给出具体、直接的改进反馈','每周留一段完全属于自己的时间']},
+    ENFP:{n:'竞选者',en:'Campaigner',one:'热情四溢的可能性探索者',
+      d:'你对新鲜的人和事天然兴奋，能在很短时间里和陌生人建立连接。想法多、能量高，擅长发现机会、连接资源，但持续性需要靠外部结构来补。',
+      s:['连接力强，能迅速打开人脉与机会','创意与热情能感染周围的人','适应变化快，抗压弹性好'],
+      w:['兴趣分散，难以长期聚焦一件事','讨厌琐碎流程和重复劳动','计划往往乐观过头，时间估计不足'],
+      c:['市场与品牌 / 新媒体运营','产品经理 / 用户增长','创业与商务拓展','教育培训与活动策划'],
+      a:['用公开的承诺（打卡、组队）给自己上外部约束','每学期只锁定一条主线，其余当作兴趣','参加需要长期备赛的竞赛，练耐心']},
+    ISTJ:{n:'物流师',en:'Logistician',one:'可靠稳健的执行基石',
+      d:'你重视承诺、流程和事实，交代给你的事基本不会出意外。习惯按既有的成熟方法把事情做扎实，对含糊的指令和临时变动会本能地不放心。',
+      s:['责任心强，交付稳定可靠','注重细节与事实，出错率低','流程感好，能把复杂事务理顺'],
+      w:['对突发变化适应偏慢','倾向于"以前就这么做"，创新意愿弱','不太主动表达需求和想法'],
+      c:['质量管理 / 工艺与制造','财务、审计与合规','供应链与运营管理','测试、运维与工程技术岗'],
+      a:['在团队里主动认领"质量把关"角色，把它做成优势','每学期刻意学一套新方法，打破路径依赖','练习把自己的想法讲出来，而不只是执行']},
+    ISFJ:{n:'守卫者',en:'Defender',one:'默默兜底的守护者',
+      d:'你习惯记住别人的需求并把细节照顾到位，是团队里最不容易被注意到、但一旦缺席就会被发现的人。踏实、耐心，对认同的人和事会长期投入。',
+      s:['细致可靠，能长期稳定输出','体贴他人，团队氛围的润滑剂','执行力强，交付有始有终'],
+      w:['不擅拒绝，容易承担过多','回避冲突，负面情绪积压','变化来得突然时容易不安'],
+      c:['行政运营 / 项目支持','医疗、教育与社会服务','客户服务与客户成功','财务、人事等事务性专业岗'],
+      a:['练习用"我现在手上有 X，你看排在哪个后面"来拒绝','把做过的事记录下来，它是简历里最真实的部分','主动争取一次当众汇报的机会']},
+    ESTJ:{n:'总经理',en:'Executive',one:'讲秩序的实干推动者',
+      d:'你相信事情要有人负责、有节点、有结果。擅长把目标拆成可执行的步骤并推动他人完成，对混乱和拖延容忍度很低，是天然的执行中枢。',
+      s:['组织与推动力强，能带团队落地','决策讲事实、讲效率','责任感强，敢于担当和追责'],
+      w:['风格偏硬，容易让人有压迫感','对他人情绪与节奏体察不足','遇到需要长期模糊探索的事会不耐烦'],
+      c:['生产运营 / 供应链管理','项目管理与工程实施','销售管理与商务拓展','行政管理与公共事务'],
+      a:['带队做一次有明确交付物的项目，并复盘流程','练习先肯定再提要求','参与需要跨专业协作的竞赛，练协调']},
+    ESFJ:{n:'执政官',en:'Consul',one:'维系和谐的氛围担当',
+      d:'你在意他人的感受与团队的融洽，愿意花精力组织活动、照顾关系。务实、热心、有条理，做事情时会优先考虑"大家会不会舒服"。',
+      s:['人际敏感度高，擅长协调关系','组织活动与落实事务的能力强','乐于助人，团队归属感强'],
+      w:['过分在意评价，容易受他人情绪影响','为了和谐可能回避必要冲突','不太习惯与主流不一致的选择'],
+      c:['人力资源 / 行政与员工关系','教育培训与教务管理','客户成功与商务服务','市场活动与社群运营'],
+      a:['练习表达与他人不同的意见，哪怕只是小分歧','把组织过的活动量化成成果写进简历','找一个能给你直接反馈的朋友']},
+    ISTP:{n:'鉴赏家',en:'Virtuoso',one:'冷静务实的动手派',
+      d:'你遇到问题的第一反应是拆开看看、动手试试。冷静、讲实际，对工具和机制有天然兴趣，擅长在压力下快速定位故障并解决它。',
+      s:['动手与排障能力强，临场稳定','逻辑清晰，能抓到问题根因','不情绪化，危机中反而更冷静'],
+      w:['不喜欢长篇沟通与流程性事务','兴趣驱动，对"必须做"的事拖延','很难主动展示自己的成果'],
+      c:['嵌入式 / 硬件与自动化','测试开发、运维与 SRE','机械设计与现场工程','数据分析与技术支持'],
+      a:['多参加需要动手的竞赛（智能车、电子设计、机械创新）','把做过的东西写成技术笔记，积累作品集','练习把排障过程讲成一套方法论']},
+    ISFP:{n:'探险家',en:'Adventurer',one:'活在当下的审美实践者',
+      d:'你对细节和质感有敏锐的感受力，偏好用行动而不是语言来表达自己。温和、不争，喜欢按自己的节奏做事，在有美感和具体成果的事情上特别投入。',
+      s:['审美与细节感知力强','动手实践能力好，做事专注','温和易处，团队摩擦小'],
+      w:['不擅长长期规划和自我推销','面对冲突和压力倾向回避','对抽象理论和宏观议题兴趣有限'],
+      c:['视觉 / 交互与工业设计','摄影、影视与内容创作','手工艺、产品与用户体验','技术美术与原型制作'],
+      a:['把作品按时间线整理成作品集，这是你最好的名片','给自己设一个很短的阶段性小目标练规划','参加设计类、创作类竞赛，让作品被看见']},
+    ESTP:{n:'企业家',en:'Entrepreneur',one:'敢冲敢试的行动派',
+      d:'你习惯先干起来再说，在真实反馈里调整比在纸面上推演更有效。反应快、胆子大、抗压好，在变化和竞争里反而更有状态。',
+      s:['行动力与临场应变极强','敢于承担风险、抓住机会','沟通直接，谈判与说服有优势'],
+      w:['容易低估长期投入的价值','细节和收尾工作容易敷衍','耐心不足，重复训练坐不住'],
+      c:['销售与商务拓展','创业与业务开拓','市场运营与渠道管理','现场技术支持与应急救援类岗位'],
+      a:['把一次冲动做的事完整收尾，练"做完"的肌肉','找一个偏谨慎的伙伴帮你做风险检查','参加需要长期备赛的竞赛，练耐力']},
+    ESFP:{n:'表演者',en:'Entertainer',one:'自带气氛的现场担当',
+      d:'你享受当下、享受与人相处，天生能把气氛带起来。对新体验开放、对他人情绪敏感，在需要互动与表达的场合里状态最好。',
+      s:['感染力与表达力强，能活跃团队','适应力强，临场反应快','真诚热情，容易获得他人信任'],
+      w:['长期规划与延迟满足偏弱','容易受当下情绪影响决策','对枯燥、重复性事务耐受力低'],
+      c:['市场活动 / 主持与演艺','教育培训与社群运营','销售、客户服务与公关','文旅、体育与体验类行业'],
+      a:['把参与过的活动量化成数据写进简历','用日历把长期任务切成每天的小块','找一个偏理性的伙伴帮你看长远']}
+  };
+
+  /* ---------- 状态 ---------- */
+  var KEY='dut_mbti_result';
+  var mask=document.getElementById('mgMask');
+  var body=document.getElementById('mgBody');
+  var prog=document.getElementById('mgProgBar');
+  var step=document.getElementById('mgStepTxt');
+  if(!mask||!body)return;
+
+  var order=[],ans=[],cur=-1,locked=false;
+
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function shuffle(arr){
+    var a=arr.slice();
+    for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+    return a;
+  }
+  function pct(n,total){return total?Math.round(n/total*100):0;}
+
+  function open(){
+    mask.classList.add('show');
+    document.body.style.overflow='hidden';
+    if(cur<0)renderIntro();
+  }
+  function close(){
+    mask.classList.remove('show');
+    document.body.style.overflow='';
+  }
+
+  /* ---------- 引导页 ---------- */
+  function renderIntro(){
+    cur=-1;prog.style.width='0%';
+    step.textContent='共 24 题 · 约 3 分钟';
+    var cards=DIM_ORDER.map(function(k){
+      var d=DIMS[k];
+      return '<div class="mg-i-card"><div class="k">'+d.name+'</div><div class="v">'+d.an+'<br>'+d.bn+'</div></div>';
+    }).join('');
+    body.innerHTML=
+      '<div class="mg-intro">'+
+        '<div class="mg-i-badge">'+S_SPARK+'职业及未来规划 · 性格特征评估</div>'+
+        '<div class="mg-i-title">你是哪一种性格类型？</div>'+
+        '<div class="mg-i-desc">24 道校园与求职情境题，没有标准答案，也没有好坏之分。凭第一直觉选，别纠结——'+
+        '做完会得到你的四字母类型，以及匹配的职业方向与在校建议。</div>'+
+        '<div class="mg-i-cards">'+cards+'</div>'+
+        '<button class="mg-i-start" id="mgGo" type="button">'+S_PLAY+'开始测评</button>'+
+        '<div class="mg-i-tip">答题过程中可随时返回上一题修改，关闭后本次进度不保留。</div>'+
+      '</div>';
+    document.getElementById('mgGo').onclick=function(){
+      order=shuffle(Q.map(function(_,i){return i;}));
+      ans=[];cur=0;renderQuestion();
+    };
+  }
+
+  /* ---------- 答题页 ---------- */
+  function renderQuestion(){
+    locked=false;
+    var qi=order[cur],q=Q[qi],d=DIMS[q.d];
+    prog.style.width=pct(cur,Q.length)+'%';
+    step.textContent='第 '+(cur+1)+' / '+Q.length+' 题';
+    var dots='';
+    for(var i=0;i<Q.length;i++){
+      dots+='<i class="'+(i<cur?'on':(i===cur?'cur':''))+'"></i>';
+    }
+    body.innerHTML=
+      '<div class="mg-q">'+
+        '<div class="mg-q-no"><span>第 '+(cur+1)+' 题 / 共 '+Q.length+' 题</span><span class="dim">'+d.name+'</span></div>'+
+        '<div class="mg-q-text">'+esc(q.q+'，你会？')+'</div>'+
+        '<div class="mg-opts">'+
+          '<button class="mg-opt" type="button" data-p="'+d.a+'"><span class="mg-opt-k">A</span><span class="mg-opt-t">'+esc(q.a)+'</span></button>'+
+          '<button class="mg-opt" type="button" data-p="'+d.b+'"><span class="mg-opt-k">B</span><span class="mg-opt-t">'+esc(q.b)+'</span></button>'+
+        '</div>'+
+        '<div class="mg-q-foot">'+
+          (cur>0?'<button class="mg-back" id="mgBack" type="button">'+S_BACK+'上一题</button>':'<span></span>')+
+          '<div class="mg-dots">'+dots+'</div>'+
+        '</div>'+
+      '</div>';
+    var opts=body.querySelectorAll('.mg-opt');
+    for(var k=0;k<opts.length;k++){
+      (function(el){
+        el.onclick=function(){
+          if(locked)return;locked=true;
+          var p=el.getAttribute('data-p');
+          ans[cur]={d:Q[order[cur]].d,pick:p};
+          el.classList.add(p===DIMS[ans[cur].d].a?'pick':'pickB');
+          setTimeout(function(){
+            if(cur<Q.length-1){cur++;renderQuestion();}else{renderResult();}
+          },300);
+        };
+      })(opts[k]);
+    }
+    var back=document.getElementById('mgBack');
+    if(back)back.onclick=function(){if(cur>0){cur--;renderQuestion();}};
+  }
+
+  /* ---------- 计分 ---------- */
+  function calc(){
+    var c={EI:{a:0,b:0},SN:{a:0,b:0},TF:{a:0,b:0},JP:{a:0,b:0}};
+    for(var i=0;i<ans.length;i++){
+      if(!ans[i])continue;
+      var d=ans[i].d;
+      if(ans[i].pick===DIMS[d].a)c[d].a++;else c[d].b++;
+    }
+    var code='',detail=[];
+    for(var j=0;j<DIM_ORDER.length;j++){
+      var k=DIM_ORDER[j],x=c[k];
+      var win,tie=false;
+      if(x.a>x.b)win=DIMS[k].a;
+      else if(x.b>x.a)win=DIMS[k].b;
+      else{win=DIMS[k].b;tie=true;}
+      code+=win;
+      detail.push({k:k,a:x.a,b:x.b,win:win,tie:tie,pa:pct(x.a,x.a+x.b),pb:pct(x.b,x.a+x.b)});
+    }
+    return {code:code,detail:detail};
+  }
+
+  /* ---------- 结果页 ---------- */
+  function renderResult(){
+    var r=calc(),t=TYPES[r.code]||TYPES.INTJ;
+    prog.style.width='100%';
+    step.textContent='测评完成 · '+r.code;
+    var dimHtml=r.detail.map(function(x){
+      var d=DIMS[x.k];
+      var aWin=x.win===d.a;
+      return '<div class="mg-dim">'+
+        '<div class="mg-dim-h">'+
+          '<span class="l'+(aWin?' win':'')+'">'+d.an+' '+x.pa+'%</span>'+
+          '<span class="mg-dim-k">'+d.name+(x.tie?' · 两组接近持平':'')+'</span>'+
+          '<span class="r'+(!aWin?' win':'')+'">'+x.pb+'% '+d.bn+'</span>'+
+        '</div>'+
+        '<div class="mg-bar">'+
+          '<div class="h l"><i class="f'+(aWin?' win':'')+'" style="width:'+x.pa+'%"></i></div>'+
+          '<div class="h r"><i class="f'+(!aWin?' win':'')+'" style="width:'+x.pb+'%"></i></div>'+
+        '</div>'+
+        '<div class="mg-dim-d">'+(aWin?d.adesc:d.bdesc)+'</div>'+
+      '</div>';
+    }).join('');
+    function lis(arr,ico){return arr.map(function(s){return '<div class="mg-li">'+ico+'<span>'+esc(s)+'</span></div>';}).join('');}
+
+    body.innerHTML=
+      '<div class="mg-res">'+
+        '<div class="mg-r-top">'+
+          '<div class="mg-r-code">'+r.code+'</div>'+
+          '<div class="mg-r-name">'+t.n+'　'+t.one+'</div>'+
+          '<div class="mg-r-en">'+t.en+'</div>'+
+          '<div class="mg-r-one">你的四字母类型</div>'+
+        '</div>'+
+        '<div class="mg-r-desc">'+esc(t.d)+'</div>'+
+
+        '<div class="mg-sec-t"><span class="sq"></span>四维倾向拆解</div>'+
+        '<div class="mg-dims">'+dimHtml+'</div>'+
+
+        '<div class="mg-sec-t"><span class="sq"></span>你的优势</div>'+
+        '<div class="mg-list">'+lis(t.s,S_OK)+'</div>'+
+
+        '<div class="mg-sec-t"><span class="sq"></span>需要留意的盲点</div>'+
+        '<div class="mg-list">'+lis(t.w,S_WARN)+'</div>'+
+
+        '<div class="mg-sec-t"><span class="sq"></span>匹配的职业方向</div>'+
+        '<div class="mg-tags">'+t.c.map(function(x){return '<span class="mg-tag">'+esc(x)+'</span>';}).join('')+'</div>'+
+
+        '<div class="mg-sec-t"><span class="sq"></span>在校期间可以做的三件事</div>'+
+        '<div class="mg-list">'+lis(t.a,S_BULB)+'</div>'+
+
+        '<div class="mg-acts">'+
+          '<button class="mg-btn p" id="mgAgain" type="button">'+S_AGAIN+'再测一次</button>'+
+          '<button class="mg-btn s" id="mgDone" type="button">'+S_EXIT+'完成并关闭</button>'+
+        '</div>'+
+        '<div class="mg-note">结果已保存在本机，下次打开「职业及未来规划」仍可查看。<br>本测评仅供自我探索与职业方向启发，不代表专业心理评估结论。</div>'+
+      '</div>';
+    body.scrollTop=0;
+    document.getElementById('mgAgain').onclick=function(){renderIntro();};
+    document.getElementById('mgDone').onclick=function(){close();};
+    save(r.code,t);
+  }
+
+  /* ---------- 本地保存 + 入口卡片 ---------- */
+  function save(code,t){
+    try{
+      localStorage.setItem(KEY,JSON.stringify({code:code,name:t.n+'　'+t.one,ts:Date.now()}));
+    }catch(e){}
+    renderSaved();
+  }
+  function load(){
+    try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}
+  }
+  function fmtDate(ts){
+    var d=new Date(ts);
+    function p(n){return n<10?'0'+n:''+n;}
+    return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
+  }
+  function renderSaved(){
+    var box=document.getElementById('mbSaved');
+    var d=load();
+    if(!box||!d||!TYPES[d.code])return;
+    box.classList.add('show');
+    document.getElementById('mbSvCode').textContent=d.code;
+    document.getElementById('mbSvName').textContent=d.name;
+    document.getElementById('mbSvDate').textContent='上次测评：'+(d.ts?fmtDate(d.ts):'—');
+    document.getElementById('mbStartTxt').textContent='重新测评';
+  }
+
+  /* ---------- 事件绑定 ---------- */
+  var startBtn=document.getElementById('mbStartBtn');
+  if(startBtn)startBtn.onclick=function(){
+    var d=load();
+    if(d&&TYPES[d.code]&&cur<0){
+      // 已有历史结果：直接展示上一次的结果页
+      order=Q.map(function(_,i){return i;});
+      ans=[];
+      for(var i=0;i<order.length;i++){
+        var qq=Q[order[i]],dim=DIMS[qq.d];
+        ans[i]={d:qq.d,pick:(d.code.charAt(DIM_ORDER.indexOf(qq.d))===dim.a?dim.a:dim.b)};
+      }
+      cur=Q.length-1;open();renderResult();
+      return;
+    }
+    open();
+  };
+  var svBtn=document.getElementById('mbSvBtn');
+  if(svBtn)svBtn.onclick=function(){if(startBtn)startBtn.click();};
+
+  document.getElementById('mgClose').onclick=close;
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&mask.classList.contains('show'))close();
+  });
+  mask.addEventListener('click',function(e){
+    if(e.target===mask&&(cur<0||cur>=Q.length-1&&ans.length>=Q.length))close();
+  });
+
+  renderSaved();
 })();
 </script>
 <script src="favorites.js"></script>
