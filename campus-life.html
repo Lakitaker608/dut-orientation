@@ -251,6 +251,9 @@ svg{display:block}
 .mb-sv-btn{padding:7px 14px;border-radius:9px;border:1px solid rgba(22,163,74,.35);background:#fff;color:#146C35;font-size:12px;font-weight:600;flex-shrink:0;transition:all .15s}
 .mb-sv-btn:hover{background:#16A34A;color:#fff;border-color:#16A34A}
 @media(max-width:720px){.mb-entry{flex-wrap:wrap}.mb-e-act{align-items:flex-start;width:100%}.mb-saved{flex-wrap:wrap}}
+/* 深链直达时的高亮提示（如个人中心「去做性格测评」跳转过来） */
+@keyframes blkFlash{0%{box-shadow:var(--shadow-md),0 0 0 0 rgba(0,163,224,.45)}35%{box-shadow:var(--shadow-md),0 0 0 5px rgba(0,163,224,.26)}100%{box-shadow:var(--shadow-md),0 0 0 0 rgba(0,163,224,0)}}
+.career-block.flash{animation:blkFlash 1.6s ease}
 
 /* 游戏弹窗 */
 .mg-mask{position:fixed;inset:0;background:rgba(9,17,30,.62);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:60;display:none;align-items:center;justify-content:center;padding:26px 20px}
@@ -341,6 +344,18 @@ svg{display:block}
 .mg-tags{display:flex;flex-wrap:wrap;gap:8px}
 .mg-tag{font-size:12px;padding:7px 13px;border-radius:9px;background:var(--primary-light);color:var(--primary);font-weight:500;border:1px solid rgba(0,63,136,.14)}
 .mg-tag.alt{background:#FFF6E8;color:#B77B06;border-color:rgba(232,163,23,.25)}
+/* 职业方向下的企业卡片 */
+.mg-sec-t.sub{margin-top:16px;font-size:12.5px;color:var(--text-2)}
+.mg-sec-t .sq.alt{background:linear-gradient(180deg,var(--accent),#7BE495)}
+.mg-firms{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mg-firm{display:block;position:relative;padding:12px 32px 12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface);text-decoration:none;transition:all .16s ease}
+.mg-firm:hover{border-color:var(--primary);background:var(--primary-light);transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,63,136,.14)}
+.mg-firm-n{display:block;font-size:13.5px;font-weight:700;color:var(--text-1);line-height:1.4}
+.mg-firm-u{display:block;font-size:11px;color:var(--text-3);margin-top:3px;word-break:break-all;line-height:1.4}
+.mg-firm-ico{position:absolute;top:11px;right:11px;width:14px;height:14px;color:var(--primary);opacity:.5;transition:opacity .16s}
+.mg-firm-ico svg{width:14px;height:14px;display:block}
+.mg-firm:hover .mg-firm-ico{opacity:1}
+.mg-firm-note{margin-top:11px;font-size:11px;color:var(--text-3);line-height:1.8}
 .mg-acts{display:flex;gap:10px;margin-top:24px;padding-top:18px;border-top:1px solid var(--border)}
 .mg-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px;border-radius:11px;font-size:13.5px;font-weight:600;transition:all .16s}
 .mg-btn svg{width:15px;height:15px}
@@ -349,7 +364,7 @@ svg{display:block}
 .mg-btn.s{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
 .mg-btn.s:hover{border-color:var(--primary);color:var(--primary)}
 .mg-note{margin-top:14px;font-size:11px;color:var(--text-3);line-height:1.8;text-align:center}
-@media(max-width:720px){.mg-body{padding:20px 18px 22px}.mg-q-text{font-size:16px}.mg-acts{flex-direction:column}}
+@media(max-width:720px){.mg-body{padding:20px 18px 22px}.mg-q-text{font-size:16px}.mg-acts{flex-direction:column}.mg-firms{grid-template-columns:1fr}}
 
 /* ===== 卫星地图 ===== */
 .sat-section{margin-top:24px;background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
@@ -1196,7 +1211,7 @@ svg{display:block}
     </div>
 
     <!-- 分栏目：性格特征评估小游戏 -->
-    <div class="career-block">
+    <div class="career-block" id="mbtiBlock">
       <div class="cb-banner">
         <span class="cb-banner-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M17 11l2 2 4-4"/><path d="M19 4v5h-5"/></svg>
@@ -2521,12 +2536,14 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
   render();
 })();
 </script>
+<script src="mbti-firms.js"></script>
 <script>
 /* ============================================================
    MBTI 性格探索小游戏（职业及未来规划 · 性格特征评估）
    - 24 道情境选择题，覆盖 E/I、S/N、T/F、J/P 四个维度
    - 结果以 MBTI 四字母 + 四维倾向条 + 职业方向建议呈现
    - ES5 语法，无外部依赖
+   - 依赖：mbti-firms.js（职业方向示例企业，与个人中心共享）
    ============================================================ */
 (function(){
   'use strict';
@@ -2540,6 +2557,7 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
   var S_AGAIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>';
   var S_EXIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>';
   var S_SPARK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/></svg>';
+  var S_EXT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
 
   /* ---------- 四个维度 ---------- */
   var DIMS={
@@ -2690,6 +2708,15 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
       a:['把参与过的活动量化成数据写进简历','用日历把长期任务切成每天的小块','找一个偏理性的伙伴帮你看长远']}
   };
 
+  /* ---------- 各类型可关注的企业：来自共享数据源 mbti-firms.js ----------
+     与 profile.html（个人中心 · 我的性格特征）共用同一份，避免两处数据漂移。 */
+  function firmsOf(code){
+    try{
+      if(window.DLUTFirms&&window.DLUTFirms.of)return window.DLUTFirms.of(code)||[];
+    }catch(e){}
+    return [];
+  }
+
   /* ---------- 状态 ---------- */
   var KEY='dut_mbti_result';
   var mask=document.getElementById('mgMask');
@@ -2707,6 +2734,14 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
     return a;
   }
   function pct(n,total){return total?Math.round(n/total*100):0;}
+  function hostOf(u){
+    try{
+      var a=document.createElement('a');a.href=u;
+      return (a.hostname||'').replace(/^www\./,'');
+    }catch(e){
+      return String(u).replace(/^https?:\/\//,'').split('/')[0].replace(/^www\./,'');
+    }
+  }
 
   function open(){
     mask.classList.add('show');
@@ -2827,6 +2862,14 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
     }).join('');
     function lis(arr,ico){return arr.map(function(s){return '<div class="mg-li">'+ico+'<span>'+esc(s)+'</span></div>';}).join('');}
 
+    var firms=firmsOf(r.code).map(function(f){
+      return '<a class="mg-firm" href="'+esc(f.u)+'" target="_blank" rel="noopener" title="前往 '+esc(f.n)+' 官网">'+
+        '<span class="mg-firm-ico">'+S_EXT+'</span>'+
+        '<span class="mg-firm-n">'+esc(f.n)+'</span>'+
+        '<span class="mg-firm-u">'+esc(hostOf(f.u))+'</span>'+
+      '</a>';
+    }).join('');
+
     body.innerHTML=
       '<div class="mg-res">'+
         '<div class="mg-r-top">'+
@@ -2835,6 +2878,17 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
           '<div class="mg-r-en">'+t.en+'</div>'+
           '<div class="mg-r-one">你的四字母类型</div>'+
         '</div>'+
+
+        /* 职业方向置顶：结果一进来就能看到去向 */
+        '<div class="mg-sec-t"><span class="sq"></span>匹配的职业方向</div>'+
+        '<div class="mg-tags">'+t.c.map(function(x){return '<span class="mg-tag">'+esc(x)+'</span>';}).join('')+'</div>'+
+        (firms
+          ? '<div class="mg-sec-t sub"><span class="sq alt"></span>这些方向里可以关注的企业</div>'+
+            '<div class="mg-firms">'+firms+'</div>'+
+            '<div class="mg-firm-note">点击卡片前往企业官网，在其「校园招聘 / 加入我们」页面可查看校招岗位与投递时间。<br>'+
+            '企业列举仅用于说明职业方向，不构成就业推荐或岗位承诺。</div>'
+          : '')+
+
         '<div class="mg-r-desc">'+esc(t.d)+'</div>'+
 
         '<div class="mg-sec-t"><span class="sq"></span>四维倾向拆解</div>'+
@@ -2845,9 +2899,6 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
 
         '<div class="mg-sec-t"><span class="sq"></span>需要留意的盲点</div>'+
         '<div class="mg-list">'+lis(t.w,S_WARN)+'</div>'+
-
-        '<div class="mg-sec-t"><span class="sq"></span>匹配的职业方向</div>'+
-        '<div class="mg-tags">'+t.c.map(function(x){return '<span class="mg-tag">'+esc(x)+'</span>';}).join('')+'</div>'+
 
         '<div class="mg-sec-t"><span class="sq"></span>在校期间可以做的三件事</div>'+
         '<div class="mg-list">'+lis(t.a,S_BULB)+'</div>'+
@@ -2867,7 +2918,19 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
   /* ---------- 本地保存 + 入口卡片 ---------- */
   function save(code,t){
     try{
-      localStorage.setItem(KEY,JSON.stringify({code:code,name:t.n+'　'+t.one,ts:Date.now()}));
+      /* 保存完整结果：profile.html（个人中心 · 我的性格特征）会读取并还原展示 */
+      var r=calc();
+      var detail=r.detail.map(function(x){
+        var d=DIMS[x.k];
+        return {k:x.k,name:d.name,an:d.an,bn:d.bn,a:d.a,b:d.b,
+                desc:(x.win===d.a?d.adesc:d.bdesc),
+                pa:x.pa,pb:x.pb,win:x.win,tie:!!x.tie};
+      });
+      localStorage.setItem(KEY,JSON.stringify({
+        ver:2,code:code,name:t.n+'　'+t.one,ts:Date.now(),
+        typeName:t.n,one:t.one,en:t.en,desc:t.d,
+        s:t.s||[],w:t.w||[],c:t.c||[],a:t.a||[],f:firmsOf(code),detail:detail
+      }));
     }catch(e){}
     renderSaved();
   }
@@ -2922,5 +2985,49 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
 })();
 </script>
 <script src="favorites.js"></script>
+<script>
+/* ============================================================
+   分区深链：campus-life.html?skip=1#career 直达「职业及未来规划」
+   个人中心（profile.html）的「去做性格测评 / 重新测评」按钮会带 #career 跳转过来，
+   这里负责切到对应视图并滚动定位到 MBTI 测评卡片，同时给一次高亮提示。
+   hash 取值与左侧导航的 data-view 保持一致（home/study/location/life/contest/career）。
+   ============================================================ */
+(function(){
+  'use strict';
+  function viewOf(h){
+    h=String(h||'').replace(/^#/,'');
+    if(!h)return '';
+    return document.getElementById('view-'+h)?h:'';
+  }
+  function scrollToMbti(){
+    var t=document.getElementById('mbtiBlock');
+    if(!t)return;
+    var y=t.getBoundingClientRect().top+(window.pageYOffset||document.documentElement.scrollTop||0)-86;
+    if(y<0)y=0;
+    try{window.scrollTo({top:y,behavior:'smooth'});}
+    catch(e){window.scrollTo(0,y);}
+    t.classList.remove('flash');
+    void t.offsetWidth; /* 强制重排，保证连续点击时动画能重放 */
+    t.classList.add('flash');
+    setTimeout(function(){t.classList.remove('flash');},1900);
+  }
+  function applyHash(isChange){
+    var v=viewOf(location.hash);
+    if(!v)return false;
+    if(typeof switchView==='function')switchView(v);
+    if(v==='career'){
+      /* switchView 内部有一次平滑滚动回顶部，等它结束再定位到测评卡片 */
+      setTimeout(scrollToMbti,isChange?420:560);
+    }
+    return true;
+  }
+  function boot(){
+    if(!applyHash(false))return;
+    window.addEventListener('hashchange',function(){applyHash(true);});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
+  else boot();
+})();
+</script>
 </body>
 </html>
