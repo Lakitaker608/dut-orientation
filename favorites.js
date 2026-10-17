@@ -97,6 +97,8 @@
     {sel:'.link-tile', self:true, t:['.lt-name'], d:['.lt-desc']},
     /* 迎新页：学院风采 / 交通路线卡片 */
     {sel:'.card', self:false, t:['h3'], d:['p'], link:'.card-site,.card-link'},
+    /* 迎新页：「更多学院」折叠区里的学院官网入口（默认隐藏，展开后可见，DOM 始终存在故可被扫到） */
+    {sel:'.more-item', self:false, t:['.mi-name'], d:[], link:'.mi-btn'},
     /* 校园生活：校区位置卡片 */
     {sel:'.campus-card', self:false, t:['.c-name'], d:['.c-addr'], link:'.c-link'},
     /* 校园生活：周边场所卡片（标题里混有评分角标，需剔除） */
