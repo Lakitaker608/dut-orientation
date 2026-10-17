@@ -2,8 +2,12 @@
 <!--
   profile.html - 个人中心（独立页面）
   功能：展示 entrance.html 保存的姓名（姓氏头像）、可编辑/清除姓名；
-        「我的收藏」汇总 campus-life.html / dut-orientation.html 中收藏的全部卡片
-  存储：localStorage['dut_student_name'] 姓名    localStorage['dut_favorites'] 收藏
+        主体分为两个分页面，点击顶部导航切换：
+          1) 我的性格特征 —— 读取 campus-life.html「MBTI 性格探索」的测评结果并还原展示
+          2) 我的收藏     —— 汇总 campus-life.html / dut-orientation.html 中收藏的全部卡片
+  存储：localStorage['dut_student_name']  姓名
+        localStorage['dut_favorites']     收藏
+        localStorage['dut_mbti_result']   MBTI 测评结果（由 campus-life.html 写入，ver:2 含完整拆解）
   技术：纯 HTML + 内联 CSS/JS，ES5 语法
   依赖：favorites.js（收藏读写引擎）
 -->
@@ -11,7 +15,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>个人中心 · 我的收藏 · 大连理工大学</title>
+<title>个人中心 · 性格特征与收藏 · 大连理工大学</title>
 <script>(function(){var p=new URLSearchParams(location.search);if(!p.get('skip')){location.replace('entrance.html');}})();</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -71,6 +75,76 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
 .pf-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-light)}
 .pf-tip{font-size:11.5px;color:var(--text-3)}
 
+/* ===== 分页面切换 ===== */
+.subnav{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:6px;box-shadow:var(--shadow-md)}
+.sn-item{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;padding:13px 16px;border:none;border-radius:11px;background:none;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--text-2);cursor:pointer;transition:all .18s;white-space:nowrap}
+.sn-item svg{width:17px;height:17px;flex-shrink:0}
+.sn-item:hover{color:var(--primary);background:var(--surface-2)}
+.sn-item.on{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 6px 16px rgba(0,63,136,.24)}
+.sn-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--surface-2);color:var(--text-3);line-height:1.6}
+.sn-item.on .sn-badge{background:rgba(255,255,255,.22);color:#fff}
+.page{display:none}
+.page.on{display:block;animation:pgIn .26s ease}
+@keyframes pgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== 我的性格特征（MBTI）===== */
+.sec-title svg.accent{color:var(--accent)}
+.pf-name-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+.pf-name-row .pf-name{min-width:0}
+.pf-mb{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--primary);background:var(--primary-light);border:1px solid rgba(0,63,136,.14);border-radius:20px;padding:3px 10px;white-space:nowrap;flex-shrink:0}
+.mt-hero{display:flex;gap:22px;align-items:center;padding:22px 24px;border-radius:16px;background:linear-gradient(120deg,#F4F8FE 0%,#E8F0FB 55%,#FFF7EC 100%);border:1px solid rgba(0,63,136,.2);flex-wrap:wrap;position:relative;overflow:hidden}
+.mt-hero::after{content:"";position:absolute;right:-46px;top:-46px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(0,163,224,.16),transparent 70%);pointer-events:none}
+.mt-code{width:104px;height:104px;border-radius:24px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 26px rgba(0,63,136,.28);position:relative;z-index:1}
+.mt-code .c{font-size:33px;font-weight:800;letter-spacing:.04em;line-height:1}
+.mt-code .k{font-size:10.5px;opacity:.86;margin-top:6px;letter-spacing:.08em}
+.mt-hero-main{flex:1;min-width:220px;position:relative;z-index:1}
+.mt-name{font-size:21px;font-weight:700;line-height:1.35}
+.mt-en{font-size:11.5px;color:var(--text-3);letter-spacing:.08em;margin-top:5px}
+.mt-one{display:inline-block;margin-top:11px;font-size:12.5px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:6px 14px;border-radius:20px}
+.mt-date{font-size:11.5px;color:var(--text-3);margin-top:11px}
+.mt-acts{display:flex;flex-direction:column;gap:8px;flex-shrink:0;position:relative;z-index:1}
+.mt-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;font-size:12.5px;font-weight:500;padding:9px 15px;border-radius:10px;border:none;cursor:pointer;transition:all .15s;white-space:nowrap;text-decoration:none;background:var(--surface-2);color:var(--text-2)}
+.mt-btn svg{width:14px;height:14px}
+.mt-btn.p{background:var(--primary);color:#fff}
+.mt-btn.p:hover{background:var(--primary-2)}
+.mt-btn.s{background:#fff;color:var(--text-2);border:1px solid var(--border-strong)}
+.mt-btn.s:hover{border-color:var(--danger);color:var(--danger);background:#FDECEC}
+.mt-desc{font-size:13px;line-height:1.95;color:var(--text-2);margin:18px 0 4px;padding:15px 18px;background:var(--surface-2);border-radius:12px;border-left:3px solid var(--primary)}
+.mt-sec-t{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;margin:22px 0 12px}
+.mt-sec-t .sq{width:3px;height:14px;background:linear-gradient(180deg,var(--primary),var(--accent));border-radius:2px}
+.mt-dims{display:flex;flex-direction:column;gap:12px}
+.mt-dim{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+.mt-dim-h{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;font-size:12.5px;gap:10px}
+.mt-dim-k{font-size:11px;color:var(--text-3);font-weight:500}
+.mt-dim-h .l,.mt-dim-h .r{font-weight:600;color:var(--text-3)}
+.mt-dim-h .l.win,.mt-dim-h .r.win{color:var(--primary);font-weight:800}
+.mt-bar{display:flex;gap:3px;height:10px}
+.mt-bar .h{flex:1;background:#EDF1F6;border-radius:6px;overflow:hidden;display:flex}
+.mt-bar .h.l{justify-content:flex-end}
+.mt-bar .h.r{justify-content:flex-start}
+.mt-bar .f{height:100%;border-radius:6px;background:#DAE1EB;width:0;transition:width .9s cubic-bezier(.2,.8,.3,1)}
+.mt-bar .f.win{background:linear-gradient(90deg,var(--primary),var(--accent))}
+.mt-dim-d{font-size:11.5px;line-height:1.75;color:var(--text-3);margin-top:9px}
+.mt-list{display:flex;flex-direction:column;gap:9px}
+.mt-li{display:flex;gap:9px;font-size:12.5px;line-height:1.8;color:var(--text-2)}
+.mt-li .ic{flex-shrink:0;width:16px;height:16px;margin-top:4px}
+.mt-tags{display:flex;flex-wrap:wrap;gap:8px}
+.mt-tag{font-size:12px;padding:7px 13px;border-radius:9px;background:var(--primary-light);color:var(--primary);font-weight:500;border:1px solid rgba(0,63,136,.14)}
+/* 职业方向下的企业卡片（与 campus-life 结果页保持一致） */
+.mt-sec-t.sub{margin-top:16px;font-size:12.5px;color:var(--text-2)}
+.mt-sec-t .sq.alt{background:linear-gradient(180deg,var(--accent),#7BE495)}
+.mt-firms{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mt-firm{display:block;position:relative;padding:12px 32px 12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface);text-decoration:none;transition:all .16s ease}
+.mt-firm:hover{border-color:var(--primary);background:var(--primary-light);transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,63,136,.14)}
+.mt-firm-n{display:block;font-size:13.5px;font-weight:700;color:var(--text-1);line-height:1.4}
+.mt-firm-u{display:block;font-size:11px;color:var(--text-3);margin-top:3px;word-break:break-all;line-height:1.4}
+.mt-firm-ico{position:absolute;top:11px;right:11px;width:14px;height:14px;color:var(--primary);opacity:.5;transition:opacity .16s}
+.mt-firm-ico svg{width:14px;height:14px;display:block}
+.mt-firm:hover .mt-firm-ico{opacity:1}
+.mt-firm-note{margin-top:11px;font-size:11px;color:var(--text-3);line-height:1.8}
+.mt-old{margin-top:16px;padding:12px 15px;border-radius:11px;background:#FFF7E8;border:1px solid rgba(232,163,23,.3);font-size:12.5px;color:#8A6100;line-height:1.75}
+.mt-note{margin-top:18px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3);line-height:1.8;text-align:center}
+
 /* ===== 我的收藏 ===== */
 .sec{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:22px 24px 24px}
 .sec-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
@@ -124,6 +198,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   .sec{padding:18px 16px 20px}
   .search{min-width:100%}
   .fi-acts{flex-direction:column}
+  .sn-item{font-size:13.5px;padding:11px 10px;gap:7px}
+  .mt-hero{padding:18px;gap:16px}
+  .mt-code{width:88px;height:88px;border-radius:20px}
+  .mt-code .c{font-size:28px}
+  .mt-acts{flex-direction:row;width:100%}
+  .mt-acts .mt-btn{flex:1}
+  .mt-firms{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -149,7 +230,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   <section class="pf-card">
     <div class="pf-avatar empty" id="pfAvatar"></div>
     <div class="pf-info">
-      <div class="pf-name" id="pfName">未设置姓名</div>
+      <div class="pf-name-row">
+        <div class="pf-name" id="pfName">未设置姓名</div>
+        <span class="pf-mb" id="pfMbti" hidden></span>
+      </div>
       <div class="pf-sub" id="pfSub">在下方填写姓名后，校园生活助手与新生入学助手的右上角会同步显示头像。</div>
       <div class="pf-edit" id="pfEdit">
         <input class="pf-input" id="pfInput" type="text" maxlength="16" placeholder="请输入姓名（最多 16 字）" autocomplete="off">
@@ -171,8 +255,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
     </div>
   </section>
 
-  <!-- 我的收藏 -->
-  <section class="sec">
+  <!-- 分页面切换导航 -->
+  <nav class="subnav" id="subNav" role="tablist">
+    <button class="sn-item on" type="button" role="tab" data-page="mbti">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/><circle cx="12" cy="12" r="3.2"/></svg>
+      我的性格特征<span class="sn-badge" id="snMbti">未测评</span>
+    </button>
+    <button class="sn-item" type="button" role="tab" data-page="fav">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>
+      我的收藏<span class="sn-badge" id="snFav">0</span>
+    </button>
+  </nav>
+
+  <!-- 分页面 1：我的性格特征（MBTI 测评结果） -->
+  <section class="sec page" id="pageMbti" role="tabpanel">
+    <div class="sec-head">
+      <div class="sec-title">
+        <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M17 11l2 2 4-4"/><path d="M19 4v5h-5"/></svg>
+        我的性格特征<span class="cnt" id="mtCnt">未测评</span>
+      </div>
+    </div>
+    <div id="mtBody"></div>
+  </section>
+
+  <!-- 分页面 2：我的收藏 -->
+  <section class="sec page" id="pageFav" role="tabpanel">
     <div class="sec-head">
       <div class="sec-title">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>
@@ -191,8 +298,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
 </div>
 
 <script src="favorites.js"></script>
+<script src="mbti-firms.js"></script>
 <script>
-/* ===== 个人中心：姓名 + 我的收藏 ===== */
+/* ===== 个人中心：姓名 + 我的性格特征 + 我的收藏 ===== */
 (function(){
   'use strict';
   var NAME_KEY='dut_student_name';
@@ -203,6 +311,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   var ICO_DEL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>';
   var ICO_STAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>';
   var ICO_EMPTY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>';
+  var ICO_MB_OK='<svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.4" class="ic"><path d="M20 6L9 17l-5-5"/></svg>';
+  var ICO_MB_WARN='<svg viewBox="0 0 24 24" fill="none" stroke="#E8A317" stroke-width="2.2" class="ic"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>';
+  var ICO_MB_BULB='<svg viewBox="0 0 24 24" fill="none" stroke="#00A3E0" stroke-width="2.2" class="ic"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V18h8v-3.3A7 7 0 0012 2z"/></svg>';
+  var ICO_MB_AGAIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>';
+  var ICO_MB_DEL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>';
+  var ICO_MB_EMPTY='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/><path d="M9.6 6.3A7 7 0 0117.2 8.6"/><path d="M14.4 17.7A7 7 0 016.8 15.4"/></svg>';
+  var ICO_MB_EXT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
 
   function $(id){return document.getElementById(id);}
   function clean(s){return (s||'').replace(/\s+/g,' ').trim();}
@@ -242,10 +357,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
     av.innerHTML=name?esc(ini):ICO_USER;
     if(n>0)av.setAttribute('data-n',n>99?'99+':''+n);else av.removeAttribute('data-n');
     nm.textContent=name?name+' 同学':'未设置姓名';
+    var md=mbtiLoad();
     sub.innerHTML=name
-      ? '已在校园生活助手、新生入学助手右上角同步显示「'+esc(ini)+'」头像 · 共收藏 '+n+' 条内容'
+      ? '共收藏 '+n+' 条内容'+(md&&md.code?' · 性格类型 '+md.code:'')
       : '在下方填写姓名后，校园生活助手与新生入学助手的右上角会同步显示头像。';
     btnEditTxt.textContent=name?'修改姓名':'设置姓名';
+    updateMbtiTag();
   }
 
   function showEdit(on){
@@ -268,6 +385,199 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
     try{localStorage.removeItem(NAME_KEY);}catch(e){}
     renderProfile();showEdit(false);toast('已清除姓名');
   };
+
+  /* ---------- 我的性格特征（MBTI 测评结果）---------- */
+  var MT_KEY='dut_mbti_result';
+
+  function mbtiLoad(){
+    try{return JSON.parse(localStorage.getItem(MT_KEY)||'null');}catch(e){return null;}
+  }
+  function mbtiDate(ts){
+    if(!ts)return '';
+    var d=new Date(ts);
+    if(isNaN(d.getTime()))return '';
+    function p(x){return x<10?'0'+x:''+x;}
+    return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
+  }
+  function mbtiLis(arr,ico){
+    if(!arr||!arr.length)return '';
+    return arr.map(function(s){return '<div class="mt-li">'+ico+'<span>'+esc(s)+'</span></div>';}).join('');
+  }
+  function hostOf(u){
+    try{
+      var a=document.createElement('a');a.href=u;
+      return (a.hostname||'').replace(/^www\./,'');
+    }catch(e){
+      return String(u).replace(/^https?:\/\//,'').split('/')[0].replace(/^www\./,'');
+    }
+  }
+  function mbtiFirms(arr){
+    if(!arr||!arr.length)return '';
+    return '<div class="mt-firms">'+arr.map(function(f){
+      return '<a class="mt-firm" href="'+esc(f.u)+'" target="_blank" rel="noopener" title="前往 '+esc(f.n)+' 官网">'+
+        '<span class="mt-firm-ico">'+ICO_MB_EXT+'</span>'+
+        '<span class="mt-firm-n">'+esc(f.n)+'</span>'+
+        '<span class="mt-firm-u">'+esc(hostOf(f.u))+'</span>'+
+      '</a>';
+    }).join('')+'</div>';
+  }
+  /* 按类型码取示例企业：与 campus-life 共用 mbti-firms.js */
+  function firmsOfCode(code){
+    try{
+      if(window.DLUTFirms&&window.DLUTFirms.of)return window.DLUTFirms.of(code)||[];
+    }catch(e){}
+    return [];
+  }
+  /* 旧记录缺 f 字段时回填一次，避免每次渲染都重查（失败也不影响展示） */
+  function upgradeFirms(code,firms){
+    try{
+      var rec=mbtiLoad();
+      if(!rec||rec.code!==code||(rec.f&&rec.f.length))return;
+      rec.f=firms;
+      localStorage.setItem(MT_KEY,JSON.stringify(rec));
+    }catch(e){}
+  }
+  /* 个人信息卡片上的类型徽标 */
+  function updateMbtiTag(){
+    var d=mbtiLoad(),mbTag=$('pfMbti');
+    if(!mbTag)return;
+    if(d&&d.code){mbTag.textContent='MBTI · '+d.code;mbTag.hidden=false;}
+    else{mbTag.textContent='';mbTag.hidden=true;}
+  }
+
+  function renderMbti(){
+    var d=mbtiLoad(),box=$('mtBody'),badge=$('snMbti'),cnt=$('mtCnt');
+    var ok=!!(d&&d.code);
+
+    if(badge)badge.textContent=ok?d.code:'未测评';
+    if(cnt)cnt.textContent=ok?d.code:'未测评';
+    updateMbtiTag();
+    if(!box)return;
+
+    if(!ok){
+      box.innerHTML=
+        '<div class="empty">'+ICO_MB_EMPTY+
+        '<h4>还没有性格特征测评结果</h4>'+
+        '<p>在「校园生活助手 · 职业及未来规划」完成 MBTI 性格探索（24 道情境题，约 3 分钟），<br>'+
+        '结果会自动同步到这里，随时回看你的四维倾向、优势盲点与职业方向。</p>'+
+        '<div class="go">'+
+          '<a class="tb-link" href="campus-life.html?skip=1#career">去做性格测评</a>'+
+          '<a class="tb-link" href="dut-orientation.html?skip=1">去新生入学助手</a>'+
+        '</div></div>';
+      return;
+    }
+
+    var full=!!(d.ver>=2&&d.detail&&d.detail.length===4);
+    var html=
+      '<div class="mt-hero">'+
+        '<div class="mt-code"><span class="c">'+esc(d.code)+'</span><span class="k">MBTI</span></div>'+
+        '<div class="mt-hero-main">'+
+          '<div class="mt-name">'+esc(d.typeName||'')+'　'+esc(d.one||'')+'</div>'+
+          (d.en?'<div class="mt-en">'+esc(d.en)+'</div>':'')+
+          '<div class="mt-one">'+(full?'四维倾向已拆解 · 来自 24 道情境题':'你的四字母类型')+'</div>'+
+          '<div class="mt-date">测评时间：'+esc(mbtiDate(d.ts)||'—')+'</div>'+
+        '</div>'+
+        '<div class="mt-acts">'+
+          '<a class="mt-btn p" href="campus-life.html?skip=1#career">'+ICO_MB_AGAIN+'重新测评</a>'+
+          '<button class="mt-btn s" type="button" id="mtClear">'+ICO_MB_DEL+'清除结果</button>'+
+        '</div>'+
+      '</div>';
+
+    /* 职业方向置顶：与 campus-life 结果页保持一致 */
+    if(d.c&&d.c.length){
+      html+='<div class="mt-sec-t"><span class="sq"></span>匹配的职业方向</div>'+
+            '<div class="mt-tags">'+d.c.map(function(x){return '<span class="mt-tag">'+esc(x)+'</span>';}).join('')+'</div>';
+    }
+    /* 企业列表：记录自带优先，缺失时（例如加入该字段前测的评）按类型码回查共享表 */
+    var firmList=(d.f&&d.f.length)?d.f:firmsOfCode(d.code);
+    if(!(d.f&&d.f.length)&&firmList.length)upgradeFirms(d.code,firmList);
+    if(firmList.length){
+      html+='<div class="mt-sec-t sub"><span class="sq alt"></span>这些方向里可以关注的企业</div>'+
+            mbtiFirms(firmList)+
+            '<div class="mt-firm-note">点击卡片前往企业官网，在其「校园招聘 / 加入我们」页面可查看校招岗位与投递时间。<br>'+
+            '企业列举仅用于说明职业方向，不构成就业推荐或岗位承诺。</div>';
+    }
+
+    if(d.desc)html+='<div class="mt-desc">'+esc(d.desc)+'</div>';
+
+    if(full){
+      var dimHtml=d.detail.map(function(x){
+        var aWin=x.win===x.a;
+        return '<div class="mt-dim">'+
+          '<div class="mt-dim-h">'+
+            '<span class="l'+(aWin?' win':'')+'">'+esc(x.an)+' '+x.pa+'%</span>'+
+            '<span class="mt-dim-k">'+esc(x.name)+(x.tie?' · 两组接近持平':'')+'</span>'+
+            '<span class="r'+(!aWin?' win':'')+'">'+x.pb+'% '+esc(x.bn)+'</span>'+
+          '</div>'+
+          '<div class="mt-bar">'+
+            '<div class="h l"><i class="f'+(aWin?' win':'')+'" data-w="'+x.pa+'%" style="width:0"></i></div>'+
+            '<div class="h r"><i class="f'+(!aWin?' win':'')+'" data-w="'+x.pb+'%" style="width:0"></i></div>'+
+          '</div>'+
+          '<div class="mt-dim-d">'+esc(x.desc)+'</div>'+
+        '</div>';
+      }).join('');
+      html+='<div class="mt-sec-t"><span class="sq"></span>四维倾向拆解</div><div class="mt-dims">'+dimHtml+'</div>';
+      if(d.s&&d.s.length)html+='<div class="mt-sec-t"><span class="sq"></span>你的优势</div><div class="mt-list">'+mbtiLis(d.s,ICO_MB_OK)+'</div>';
+      if(d.w&&d.w.length)html+='<div class="mt-sec-t"><span class="sq"></span>需要留意的盲点</div><div class="mt-list">'+mbtiLis(d.w,ICO_MB_WARN)+'</div>';
+      if(d.a&&d.a.length)html+='<div class="mt-sec-t"><span class="sq"></span>在校期间可以做的三件事</div><div class="mt-list">'+mbtiLis(d.a,ICO_MB_BULB)+'</div>';
+    }else{
+      html+='<div class="mt-old">当前保存的是旧版精简结果（仅含类型代码）。'+
+            '点击「重新测评」再测一次，即可在这里查看完整的四维倾向拆解、优势盲点与职业方向建议。</div>';
+    }
+
+    html+='<div class="mt-note">结果来自「校园生活助手 · 职业及未来规划 · 性格特征评估」，保存在本机浏览器。<br>'+
+          '本测评以 MBTI 四维度框架为参考设计，仅供自我探索与职业方向启发，不代表专业心理评估结论。</div>';
+
+    box.innerHTML=html;
+
+    var clr=$('mtClear');
+    if(clr)clr.onclick=function(){
+      if(!window.confirm('确定清除已保存的性格测评结果「'+d.code+'」吗？'))return;
+      try{localStorage.removeItem(MT_KEY);}catch(e){}
+      toast('已清除测评结果');
+      renderProfile();renderMbti();
+    };
+
+    /* 倾向条入场动画 */
+    var bars=box.querySelectorAll('.mt-bar .f'),i;
+    setTimeout(function(){
+      for(i=0;i<bars.length;i++){bars[i].style.width=bars[i].getAttribute('data-w')||'0';}
+    },60);
+  }
+
+  /* ---------- 分页面切换（我的性格特征 / 我的收藏）---------- */
+  var PAGES={mbti:$('pageMbti'),fav:$('pageFav')};
+  function switchPage(p){
+    if(!PAGES[p])p='mbti';
+    var nav=$('subNav');
+    if(nav){
+      var items=nav.querySelectorAll('.sn-item');
+      for(var i=0;i<items.length;i++){
+        var on=items[i].getAttribute('data-page')===p;
+        items[i].className='sn-item'+(on?' on':'');
+        items[i].setAttribute('aria-selected',on?'true':'false');
+      }
+    }
+    for(var k in PAGES){if(PAGES[k])PAGES[k].className='sec page'+(k===p?' on':'');}
+    try{sessionStorage.setItem('dut_profile_page',p);}catch(e){}
+  }
+  if($('subNav')){
+    $('subNav').addEventListener('click',function(e){
+      var t=e.target;
+      while(t&&t!==this&&!(t.classList&&t.classList.contains('sn-item')))t=t.parentNode;
+      if(!t||t===this)return;
+      var p=t.getAttribute('data-page')||'mbti';
+      switchPage(p);
+      try{history.replaceState(null,'','#'+p);}catch(err){}
+    });
+  }
+  function initPage(){
+    var h=(location.hash||'').replace('#','');
+    if(h!=='mbti'&&h!=='fav'){
+      try{h=sessionStorage.getItem('dut_profile_page')||'mbti';}catch(e){h='mbti';}
+    }
+    switchPage(h);
+  }
 
   /* ---------- 收藏 ---------- */
   function favCount(){try{return (window.DLUTFav&&window.DLUTFav.count)?window.DLUTFav.count():0;}catch(e){return 0;}}
@@ -321,6 +631,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
     all.sort(function(a,b){return (b.ts||0)-(a.ts||0);});
 
     $('favCnt').textContent=all.length;
+    if($('snFav'))$('snFav').textContent=all.length;
 
     /* 统计卡片 */
     var pages={},pc=0;
@@ -433,10 +744,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   window.addEventListener('storage',function(e){
     if(!e.key||e.key===NAME_KEY)renderProfile();
     if(!e.key||e.key===(window.DLUTFav?window.DLUTFav.key:'dut_favorites'))renderList();
+    if(!e.key||e.key===MT_KEY)renderMbti();
   });
 
   renderProfile();
   renderList();
+  renderMbti();
+  initPage();
 })();
 </script>
 </body>
