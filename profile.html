@@ -268,7 +268,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   </nav>
 
   <!-- 分页面 1：我的性格特征（MBTI 测评结果） -->
-  <section class="sec page" id="pageMbti" role="tabpanel">
+  <section class="sec page" id="pageMbti" role="tabpanel" data-account-zone="我的性格特征">
     <div class="sec-head">
       <div class="sec-title">
         <svg class="accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M17 11l2 2 4-4"/><path d="M19 4v5h-5"/></svg>
@@ -279,7 +279,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   </section>
 
   <!-- 分页面 2：我的收藏 -->
-  <section class="sec page" id="pageFav" role="tabpanel">
+  <section class="sec page" id="pageFav" role="tabpanel" data-account-zone="我的收藏">
     <div class="sec-head">
       <div class="sec-title">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.6l2.6 5.28 5.82.85-4.21 4.1 1 5.79L12 16.9l-5.21 2.72 1-5.79-4.21-4.1 5.82-.85z"/></svg>
@@ -297,10 +297,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
 
 </div>
 
+<script src="account.js"></script>
 <script src="favorites.js"></script>
 <script src="mbti-firms.js"></script>
 <script>
-/* ===== 个人中心：姓名 + 我的性格特征 + 我的收藏 ===== */
+/* ===== 个人中心：姓名 + 我的性格特征 + 我的收藏 =====
+   这里的姓名输入框与入口页等价：保存＝绑定/切换账号，清除＝锁定。
+   存档与读档交给 account.js。 */
 (function(){
   'use strict';
   var NAME_KEY='dut_student_name';
@@ -374,16 +377,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   $('pfSave').onclick=function(){
     var v=clean(input.value);
     if(!v){toast('请输入姓名');input.focus();return;}
-    if(setName(v)){renderProfile();showEdit(false);toast('已保存：'+v);}
+    if(setName(v)){
+      /* 保存＝绑定 / 切换本地账号（显式操作，立即生效） */
+      if(window.DLUTAccount)window.DLUTAccount.login(v);
+      renderProfile();renderList();renderMbti();showEdit(false);
+      toast('已绑定账号：'+v);
+    }
     else toast('保存失败，请检查浏览器存储权限');
   };
   input.onkeydown=function(e){if(e.key==='Enter'){$('pfSave').click();}else if(e.key==='Escape'){showEdit(false);}};
   $('pfBtnClear').onclick=function(){
     var name=getName();
     if(!name){toast('尚未设置姓名');return;}
-    if(!window.confirm('确定清除已保存的姓名「'+name+'」吗？\n（收藏内容不会受影响）'))return;
+    if(!window.confirm('确定清除已保存的姓名「'+name+'」吗？\n\n该姓名下的收藏与测评结果会存档保留，\n重新输入同一姓名即可恢复；\n清除后本机个人数据将处于锁定状态。'))return;
     try{localStorage.removeItem(NAME_KEY);}catch(e){}
-    renderProfile();showEdit(false);toast('已清除姓名');
+    if(window.DLUTAccount)window.DLUTAccount.logout();
+    renderProfile();renderList();renderMbti();showEdit(false);toast('已清除姓名，个人数据已锁定');
   };
 
   /* ---------- 我的性格特征（MBTI 测评结果）---------- */
@@ -741,6 +750,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
   });
 
   window.addEventListener('dlut:favchange',function(){renderProfile();renderList();});
+  window.addEventListener('dlut:accountchange',function(){renderProfile();renderList();renderMbti();});
   window.addEventListener('storage',function(e){
     if(!e.key||e.key===NAME_KEY)renderProfile();
     if(!e.key||e.key===(window.DLUTFav?window.DLUTFav.key:'dut_favorites'))renderList();
