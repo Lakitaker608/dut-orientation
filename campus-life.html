@@ -837,7 +837,7 @@ svg{display:block}
     </div>
 
     <!-- 书院选择 -->
-    <div class="study-block">
+    <div class="study-block" data-account-zone="书院选择">
       <div class="study-block-head">
         <div class="sb-title">
           <span class="sb-ico sb-ico-college"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></span>
@@ -871,7 +871,7 @@ svg{display:block}
     </div>
 
     <!-- 专业选择 -->
-    <div class="study-block">
+    <div class="study-block" data-account-zone="专业选择">
       <div class="study-block-head">
         <div class="sb-title">
           <span class="sb-ico sb-ico-major"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
@@ -1211,7 +1211,7 @@ svg{display:block}
     </div>
 
     <!-- 分栏目：性格特征评估小游戏 -->
-    <div class="career-block" id="mbtiBlock">
+    <div class="career-block" id="mbtiBlock" data-account-zone="性格特征（MBTI）">
       <div class="cb-banner">
         <span class="cb-banner-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M17 11l2 2 4-4"/><path d="M19 4v5h-5"/></svg>
@@ -1796,7 +1796,9 @@ function renderCollege(){
     '</div>';
 }
 document.getElementById('collegeSelect').addEventListener('change',function(){
-  localStorage.setItem('study_college',this.value);
+  /* 账号绑定：未验证姓名时不写入个人选择 */
+  if(window.DLUTAccount&&!window.DLUTAccount.active()){window.DLUTAccount.guard();}
+  else localStorage.setItem('study_college',this.value);
   sessionStorage.removeItem('chat_history');
   renderCollege();
 });
@@ -1946,7 +1948,9 @@ function renderMajor(){
     (m.tags.length?('<div class="cc-row" style="margin-top:14px">'+m.tags.map(function(t){return '<span class="cc-tag" style="background:var(--primary-light);color:var(--primary);border:1px solid var(--border)">'+t+'</span>';}).join('')+'</div>'):'');
 }
 document.getElementById('majorSelect').addEventListener('change',function(){
-  localStorage.setItem('study_major',this.value);
+  /* 账号绑定：未验证姓名时不写入个人选择 */
+  if(window.DLUTAccount&&!window.DLUTAccount.active()){window.DLUTAccount.guard();}
+  else localStorage.setItem('study_major',this.value);
   sessionStorage.removeItem('chat_history');
   renderMajor();
 });
@@ -2917,6 +2921,8 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
 
   /* ---------- 本地保存 + 入口卡片 ---------- */
   function save(code,t){
+    /* 账号绑定：未验证姓名时不写入个人测评结果 */
+    if(window.DLUTAccount&&!window.DLUTAccount.active()){window.DLUTAccount.guard();return;}
     try{
       /* 保存完整结果：profile.html（个人中心 · 我的性格特征）会读取并还原展示 */
       var r=calc();
@@ -2945,7 +2951,14 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
   function renderSaved(){
     var box=document.getElementById('mbSaved');
     var d=load();
-    if(!box||!d||!TYPES[d.code])return;
+    if(!box)return;
+    /* 换账号后可能没有结果，此时要把上一次的卡片收起来 */
+    if(!d||!TYPES[d.code]){
+      box.classList.remove('show');
+      var st=document.getElementById('mbStartTxt');
+      if(st)st.textContent='开始测评';
+      return;
+    }
     box.classList.add('show');
     document.getElementById('mbSvCode').textContent=d.code;
     document.getElementById('mbSvName').textContent=d.name;
@@ -2982,8 +2995,37 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
   });
 
   renderSaved();
+
+  /* 账号绑定：换账号后按新数据重绘结果卡 */
+  window.addEventListener('dlut:accountchange',function(){renderSaved();});
 })();
 </script>
+<script>
+/* ===== 账号绑定：换账号后，学业规划的两个下拉要按新存档回填 =====
+   必须注册在 account.js 之前，才能收到它启动时发出的第一次广播 */
+(function(){
+  'use strict';
+  function restore(id,key){
+    var el=document.getElementById(id);
+    if(!el)return false;
+    var v=null;
+    try{v=localStorage.getItem(key);}catch(e){v=null;}
+    if(v&&document.querySelector('#'+id+' option[value="'+v+'"]'))el.value=v;
+    else el.selectedIndex=0;
+    return true;
+  }
+  window.addEventListener('dlut:accountchange',function(){
+    try{
+      restore('collegeSelect','study_college');
+      restore('majorSelect','study_major');
+      if(typeof renderCollege==='function')renderCollege();
+      var mb=document.getElementById('majorCard');
+      if(mb&&typeof renderMajor==='function')renderMajor();
+    }catch(e){}
+  });
+})();
+</script>
+<script src="account.js"></script>
 <script src="favorites.js"></script>
 <script>
 /* ============================================================
