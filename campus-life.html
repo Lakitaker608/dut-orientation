@@ -46,13 +46,28 @@ svg{display:block}
 
 /* ===== Hero ===== */
 .hero{background:linear-gradient(135deg,#003F88 0%,#0052B4 45%,#0078D4 100%);border-radius:var(--radius-lg);padding:36px;color:#fff;position:relative;overflow:hidden;margin-bottom:28px}
-.hero::before{content:"";position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%}
-.hero-inner{position:relative;z-index:1}
+.hero::before{content:"";position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%;z-index:1}
+/* 与 dut-orientation.html 一致：底图虚化 + 半透明蓝罩，渐变本身留作兜底 */
+.hero-bg{position:absolute;inset:0;background:url('campus_bg.jpg') center center/cover no-repeat;filter:blur(10px) saturate(1.1);transform:scale(1.12);z-index:0;pointer-events:none}
+.hero-veil{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,63,136,.62) 0%,rgba(0,82,180,.52) 45%,rgba(0,120,212,.44) 100%);z-index:0;pointer-events:none}
+.hero-inner{position:relative;z-index:2}
 .hero h1{font-size:24px;font-weight:700;margin-bottom:8px}
 .hero p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.6;max-width:560px}
 .hero-meta{display:flex;gap:18px;margin-top:18px;flex-wrap:wrap}
 .hero-meta .m{display:flex;align-items:center;gap:6px;font-size:12.5px;color:rgba(255,255,255,.9)}
 .hero-meta .m svg{width:15px;height:15px;opacity:.85}
+
+/* ===== 通用：虚化实景底纹（与 dut-orientation.html 同一套做法） =====
+   底图 + 模糊 + 放大裁边 + 半透明，压在内容下面只做质感，不抢文字。
+   用法： class="xxx tex" style="--tex:url('dlut-photos/xx.jpg')"
+   --tex-o 控制底图可见强度：文字密集的面板 .10~.16，留白多的块可到 .30 */
+.tex{position:relative;overflow:hidden}
+.tex::before{content:"";position:absolute;inset:0;background:var(--tex,none) center center/cover no-repeat;filter:blur(18px) saturate(1.05);transform:scale(1.18);opacity:var(--tex-o,.15);z-index:0;pointer-events:none}
+.tex>*{position:relative;z-index:1}
+/* 元素自身的 ::before 已被占用（如卡片左侧色条）时，改用 ::after 铺底纹 */
+.tex-a{position:relative;overflow:hidden}
+.tex-a::after{content:"";position:absolute;inset:0;background:var(--tex,none) center center/cover no-repeat;filter:blur(18px) saturate(1.05);transform:scale(1.18);opacity:var(--tex-o,.15);z-index:0;pointer-events:none}
+.tex-a>*{position:relative;z-index:1}
 
 /* ===== Section ===== */
 .section{margin-bottom:32px}
@@ -122,7 +137,7 @@ svg{display:block}
 .contests{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .contest{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:20px;transition:all .2s;position:relative;overflow:hidden}
 .contest:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
-.contest::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+.contest::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent));z-index:2}
 .contest-tag{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--primary-light);color:var(--primary);margin-bottom:10px;letter-spacing:.02em}
 .contest-name{font-size:16px;font-weight:600;margin-bottom:8px;line-height:1.4}
 .contest-desc{font-size:12.5px;color:var(--text-2);line-height:1.6;margin-bottom:14px}
@@ -453,7 +468,7 @@ svg{display:block}
 .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
 .quick-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:22px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .quick-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-3px)}
-.quick-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent))}
+.quick-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent));z-index:2}
 .quick-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
 .quick-ico svg{width:22px;height:22px}
 .quick-card h3{font-size:16px;font-weight:600;margin-bottom:6px}
@@ -643,6 +658,8 @@ svg{display:block}
 .fav-btn:focus{outline:none;box-shadow:0 0 0 3px rgba(232,163,23,.25)}
 .fav-btn.on{background:var(--warning);border-color:var(--warning);color:#fff}
 .fav-btn.on svg{fill:currentColor}
+/* 底纹容器的 .tex>* 会把子元素设为 relative，星标必须保持绝对定位 */
+.tex>.fav-btn,.tex-a>.fav-btn{position:absolute;z-index:5}
 .link-tile.fav-host{padding-right:48px}
 
 @media(max-width:640px){.pc-meta{display:none}.pc-btn{padding:4px}}
@@ -726,6 +743,8 @@ svg{display:block}
   <!-- 概览 -->
   <section class="view active" id="view-home">
     <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-veil"></div>
       <div class="hero-inner">
         <h1>欢迎来到大连理工大学</h1>
         <p>入学后生活指南：学校地理位置、周边餐饮娱乐与交通出行路线规划，以及各大大学生学科竞赛信息与办赛位置，助你快速融入校园生活。</p>
@@ -736,25 +755,25 @@ svg{display:block}
     </div>
     </section>
     <div class="quick-grid">
-      <div class="quick-card" onclick="goStudyNav()">
+      <div class="quick-card tex-a" style="--tex:url('campus_bg.jpg');--tex-o:.13" onclick="goStudyNav()">
         <div class="quick-ico" style="background:#E8F0FB;color:var(--primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
         <h3>学习规划</h3>
         <p>书院选择与专业选择：四大拔尖创新书院、各学部本科专业一览。</p>
         <span class="qa">规划学习方向 →</span>
       </div>
-      <div class="quick-card" onclick="switchView('location')">
+      <div class="quick-card tex-a" style="--tex:url('dlut-photos/tech-1.jpg');--tex-o:.13" onclick="switchView('location')">
         <div class="quick-ico" style="background:var(--primary-light);color:var(--primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
         <h3>学校地理位置</h3>
         <p>一校两地三区：凌水主校区、开发区校区、盘锦校区的精确坐标与高德地图定位。</p>
         <span class="qa">查看校区位置 →</span>
       </div>
-      <div class="quick-card" onclick="switchView('life')">
+      <div class="quick-card tex-a" style="--tex:url('dlut-photos/welcome-1.jpg');--tex-o:.13" onclick="switchView('life')">
         <div class="quick-ico" style="background:#E0F5FC;color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div>
         <h3>周边生活与路线规划</h3>
         <p>各校区周边餐饮、购物娱乐、交通出行场所，步行/公交路线规划与高德导航。</p>
         <span class="qa">查看周边路线 →</span>
       </div>
-      <div class="quick-card" onclick="switchView('contest')">
+      <div class="quick-card tex-a" style="--tex:url('dlut-photos/carnival-1.jpg');--tex-o:.13" onclick="switchView('contest')">
         <div class="quick-ico" style="background:#FFF4E5;color:#E8A317"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a1.5 1.5 0 010-3H6m12 3h1.5a1.5 1.5 0 000-3H18M6 6v6a6 6 0 0012 0V6M6 6h12M8 21h8M12 17v4"/></svg></div>
         <h3>大学生学科竞赛</h3>
         <p>挑战杯、数学建模、ACM-ICPC 等七大竞赛信息、办赛位置与官网直达。</p>
@@ -837,7 +856,7 @@ svg{display:block}
     </div>
 
     <!-- 书院选择 -->
-    <div class="study-block" data-account-zone="书院选择">
+    <div class="study-block tex" style="--tex:url('dlut-photos/tech-1.jpg');--tex-o:.12" data-account-zone="书院选择">
       <div class="study-block-head">
         <div class="sb-title">
           <span class="sb-ico sb-ico-college"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></span>
@@ -871,7 +890,7 @@ svg{display:block}
     </div>
 
     <!-- 专业选择 -->
-    <div class="study-block" data-account-zone="专业选择">
+    <div class="study-block tex" style="--tex:url('dlut-photos/tech-2.jpg');--tex-o:.12" data-account-zone="专业选择">
       <div class="study-block-head">
         <div class="sb-title">
           <span class="sb-ico sb-ico-major"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
@@ -957,7 +976,7 @@ svg{display:block}
     <div class="campus-grid" id="campusGrid"></div>
 
     <!-- 校区实时天气 -->
-    <div class="sat-section">
+    <div class="sat-section tex" style="--tex:url('dlut-photos/autumn-campus.jpg');--tex-o:.10">
       <div class="sat-head">
         <div class="sat-title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19a4.5 4.5 0 100-9 4.5 4.5 0 000 9z"/><path d="M3 15a4 4 0 014-4h1.5a3.5 3.5 0 113.5 3.5"/><path d="M7 19a3 3 0 010-6"/></svg>
@@ -1043,7 +1062,7 @@ svg{display:block}
       <div class="section-title"><span class="bar"></span>大学生学科竞赛</div>
       <div class="section-sub">办赛位置 · 官网直达 · 高德地图标注</div>
     </div>
-    <div class="contest-intro">
+    <div class="contest-intro tex-a" style="--tex:url('dlut-photos/carnival-2.jpg');--tex-o:.28">
       <div class="contest-intro-inner">
         <h2>本科阶段参加学术竞赛的意义与价值</h2>
         <p>学科竞赛是本科生将课堂理论转化为实践能力的重要平台。参加"挑战杯"、数学建模、ACM-ICPC 等高水平竞赛，能够锻炼创新思维、团队协作与问题解决能力，深化对专业知识的理解与应用；获奖经历更是保研推免、评奖评优、求职简历的有力加分项，也是结识志同道合伙伴、接触前沿课题与行业导师的宝贵契机。以赛促学、以赛促研，在竞赛中成长，是本科阶段值得投入的重要选择。</p>
@@ -1060,7 +1079,7 @@ svg{display:block}
     </div>
 
     <!-- 分栏目：人生目标管理 -->
-    <div class="career-block">
+    <div class="career-block tex" style="--tex:url('dlut-photos/welcome-1.jpg');--tex-o:.10">
       <div class="cb-banner">
         <span class="cb-banner-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.3 1.3-6.6L2.5 9.1l6.6-.8z"/></svg>
@@ -1211,7 +1230,7 @@ svg{display:block}
     </div>
 
     <!-- 分栏目：性格特征评估小游戏 -->
-    <div class="career-block" id="mbtiBlock" data-account-zone="性格特征（MBTI）">
+    <div class="career-block tex" style="--tex:url('dlut-photos/tech-2.jpg');--tex-o:.10" id="mbtiBlock" data-account-zone="性格特征（MBTI）">
       <div class="cb-banner">
         <span class="cb-banner-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><path d="M17 11l2 2 4-4"/><path d="M19 4v5h-5"/></svg>
@@ -1256,7 +1275,7 @@ svg{display:block}
     </div>
 
     <!-- 分栏目：大工校招信息 -->
-    <div class="career-block">
+    <div class="career-block tex" style="--tex:url('dlut-photos/jobfair-1.jpg');--tex-o:.12">
       <div class="cb-banner">
         <span class="cb-banner-ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M4 12h16"/></svg>
@@ -1268,7 +1287,7 @@ svg{display:block}
       </div>
 
       <div class="cb-body">
-        <div class="job-portal">
+        <div class="job-portal tex" style="--tex:url('dlut-photos/jobfair-2.jpg');--tex-o:.16">
           <span class="jp-ico">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M4 12h16"/></svg>
           </span>
@@ -1337,7 +1356,7 @@ svg{display:block}
       </div>
     </div>
 
-    <div class="cb-more">更多分栏目（如「职业方向探索」「个人能力盘点」「大学四年时间轴」「求职与升学路径」）将在后续补充</div>
+    <div class="cb-more tex" style="--tex:url('dlut-photos/jobfair-4.jpg');--tex-o:.20">更多分栏目（如「职业方向探索」「个人能力盘点」「大学四年时间轴」「求职与升学路径」）将在后续补充</div>
   </section>
 
 </div>
@@ -1440,8 +1459,10 @@ var CAMPUSES=[
   {name:'开发区校区',dot:'#16A34A',addr:'辽宁省大连市金普新区图强路321号',coord:'121.813890, 39.085050',lng:'121.813890',lat:'39.085050'},
   {name:'盘锦校区',dot:'#E8A317',addr:'辽宁省盘锦市辽东湾新区大工路2号',coord:'122.124016, 40.690242',lng:'122.124016',lat:'40.690242'}
 ];
-document.getElementById('campusGrid').innerHTML=CAMPUSES.map(function(c){
-  return '<div class="campus-card">'+
+/* 卡片底纹：按顺序轮换实景图，避免同一列重复同一张 */
+var CARD_TEX=['campus_bg.jpg','dlut-photos/autumn-campus.jpg','dlut-photos/tech-2.jpg','dlut-photos/welcome-1.jpg','dlut-photos/tech-1.jpg','dlut-photos/welcome-2.jpg'];
+document.getElementById('campusGrid').innerHTML=CAMPUSES.map(function(c,ci){
+  return '<div class="campus-card tex" style="--tex:url(\''+CARD_TEX[ci%CARD_TEX.length]+'\');--tex-o:.13">'+
     '<div class="c-name"><span class="c-dot" style="background:'+c.dot+'"></span>'+c.name+'</div>'+
     '<div class="c-addr">'+c.addr+'</div>'+
     '<div class="c-coord">经纬度 '+c.coord+'</div>'+
@@ -1612,10 +1633,10 @@ function renderTabs(){
 function renderPlaces(){
   var P=curPlaces();
   var p=P[curTab];
-  document.getElementById('places').innerHTML=p.items.map(function(it){
+  document.getElementById('places').innerHTML=p.items.map(function(it,pi){
     var modeLabel=it.mode==='walk'?'步行':'公交';
     var badgesHtml=(it.badges||[]).map(function(b){return '<span class="place-badge '+b.c+'">'+b.t+'</span>';}).join('');
-    return '<div class="place">'+
+    return '<div class="place tex" style="--tex:url(\''+CARD_TEX[pi%CARD_TEX.length]+'\');--tex-o:.13">'+
       '<div class="place-head">'+
         '<div class="place-ico" style="background:'+(curTab==='food'?'#FFF4E5;color:#E8A317':curTab==='fun'?'#E8F0FB;color:#003F88':'#E0F5FC;color:#00A3E0')+'">'+p.ico+'</div>'+
         '<div class="place-info">'+
@@ -2490,8 +2511,9 @@ var CONTESTS=[
   {tag:'成图技术',name:'全国大学生先进成图技术与产品信息建模创新大赛',desc:'教育部主办，每年一届，涵盖机械、建筑、水利、道桥等工程图样赛道，考察二维制图与三维建模综合能力。',
    loc:'华中科技大学',locAddr:'湖北省武汉市洪山区',lng:'114.418457',lat:'30.512688',official:'http://www.hust.edu.cn/'}
 ];
-document.getElementById('contests').innerHTML=CONTESTS.map(function(c){
-  return '<div class="contest">'+
+document.getElementById('contests').innerHTML=CONTESTS.map(function(c,ci){
+  /* .contest 的 ::before 已被左侧色条占用，这里用 ::after 版（tex-a）铺底纹 */
+  return '<div class="contest tex-a" style="--tex:url(\''+CARD_TEX[ci%CARD_TEX.length]+'\');--tex-o:.13">'+
     '<span class="contest-tag">'+ICO.trophy+' '+c.tag+'</span>'+
     '<div class="contest-name">'+c.name+'</div>'+
     '<div class="contest-desc">'+c.desc+'</div>'+
