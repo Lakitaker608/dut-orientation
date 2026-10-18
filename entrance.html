@@ -108,6 +108,16 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
 .nm-foot .pin{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);vertical-align:middle;margin-right:6px}
 .nm-foot .line{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin-bottom:14px}
 
+/* ===== 账号绑定状态 ===== */
+.nm-bind{border-radius:12px;padding:10px 12px;font-size:11.5px;line-height:1.7;letter-spacing:.01em;margin-top:12px;border:1px solid var(--border);background:#F7F9FC;color:var(--text-2)}
+.nm-bind.on{border-color:#CDE3D8;background:#F2FBF6;color:#0E7A53}
+.nm-bind.warn{border-color:#F2D9A8;background:#FFF8EC;color:#96631B}
+.nm-bind b{font-weight:600}
+.nm-bind .bl{margin-top:7px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.nm-bind .bc{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:999px;background:#E8F0FB;color:var(--primary);font-size:11px;font-weight:600;cursor:pointer;border:1px solid transparent;font-family:inherit;transition:all .18s}
+.nm-bind .bc:hover{background:#D8E6F8;border-color:#BFD3EE}
+.nm-bind .bc.cur{background:var(--primary);color:#fff}
+
 /* ===== 响应式 ===== */
 @media (max-width:900px){
   .stage{align-items:flex-start}
@@ -195,16 +205,21 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
         <button class="nm-btn nm-btn-ghost" id="nmClear" type="button">清除</button>
       </div>
 
+      <div class="nm-bind" id="nmBind"></div>
+
       <div class="nm-foot">
         <div class="line"></div>
-        <span class="pin"></span>信息通过浏览器本地存储<br><span class="pin"></span>关闭标签页或重启后依然保留
+        <span class="pin"></span>信息通过浏览器本地存储<br><span class="pin"></span>关闭标签页或重启后依然保留<br><span class="pin"></span>姓名即账号钥匙，换姓名＝换一套独立数据
       </div>
     </aside>
 
   </div>
 </div>
+<script src="account.js"></script>
 <script>
-/* ===== 本人姓名：localStorage 本地永久存储 ===== */
+/* ===== 本人姓名：localStorage 本地永久存储 =====
+   姓名同时是「本地账号」的钥匙：保存＝绑定 / 切换账号，清除＝锁定。
+   账号的存档与读档由 account.js 负责，这里只负责触发。 */
 (function(){
   'use strict';
   var KEY='dut_student_name',MAX=16;
@@ -212,6 +227,7 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
       avatar=document.getElementById('nmAvatar'),
       count=document.getElementById('nmCount'),
       status=document.getElementById('nmStatus'),
+      bindBox=document.getElementById('nmBind'),
       greet=document.getElementById('greetLine');
   var AVATAR_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
   var timer=null,debounce=null;
@@ -244,7 +260,43 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
     if(!silent)document.title=name?name+' · 大连理工大学新生入口':'大连理工大学 · 新生入口';
   }
 
-  /* 保存（写入 localStorage，永久保留） */
+  /* ---- 账号绑定状态条 ---- */
+  function esc(s){
+    return (s||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function A(){return window.DLUTAccount;}
+  function renderBind(){
+    if(!bindBox||!A())return;
+    var acc=A(),n=acc.name(),act=acc.active(),list=acc.names(),html='';
+    if(act){
+      html='<b>✓ 已绑定并验证：'+esc(n)+'</b><br>本机收藏、报到清单进度、MBTI 结果等个人数据已与该姓名绑定。换一个姓名＝换一套独立数据。';
+    }else if(n){
+      html='<b>姓名「'+esc(n)+'」尚未生效</b><br>点击「保存」或按回车完成验证后，各页面才会显示属于该姓名的个人数据。';
+    }else{
+      html='尚未绑定账号。输入姓名并保存后，本机个人数据即归该姓名所有。';
+    }
+    if(list.length){
+      html+='<div class="bl"><span>本机已绑定 '+list.length+' 个：</span>'+
+        list.map(function(x){
+          return '<button type="button" class="bc'+(x===n?' cur':'')+'" data-n="'+esc(x)+'">'+esc(x)+'</button>';
+        }).join('')+'</div>';
+    }
+    bindBox.innerHTML=html;
+    bindBox.className='nm-bind'+(act?' on':(n?' warn':''));
+  }
+  bindBox&&bindBox.addEventListener('click',function(e){
+    var t=e.target;
+    if(!t||!t.getAttribute)return;
+    var n=t.getAttribute('data-n');
+    if(!n)return;
+    input.value=n;
+    save(true);
+  });
+  window.addEventListener('dlut:accountchange',renderBind);
+
+  /* 保存（写入 localStorage，永久保留）；显式保存＝绑定/切换账号 */
   function save(explicit){
     var v=input.value.replace(/\s+/g,' ').trim().slice(0,MAX);
     if(!v){
@@ -256,7 +308,13 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
       input.value=v;
       try{input.setSelectionRange(pos,pos);}catch(e){}
     }
-    if(set(v)){render(v);if(explicit)tip('已保存至本地','ok');}
+    if(set(v)){
+      render(v);
+      /* 输入过程中只写名字，不切账号；点保存 / 回车立即切换，失焦则等名字稳定后切换 */
+      if(A())A().requestLogin(v,!!explicit);
+      renderBind();
+      if(explicit)tip('已绑定账号：'+v,'ok');
+    }
     else if(explicit)tip('当前浏览器不支持本地存储','err');
     return true;
   }
@@ -266,6 +324,7 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
     var saved=get();
     input.value=saved;
     render(saved,true);
+    renderBind();
   })();
 
   /* 输入时即时写入，未点保存也不会丢失 */
@@ -282,7 +341,11 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
   document.getElementById('nmSave').addEventListener('click',function(){save(true);});
   document.getElementById('nmClear').addEventListener('click',function(){
     if(!input.value&&!get()){tip('尚未设置姓名','err');return;}
-    del();input.value='';render('');tip('已清除本地姓名','ok');
+    del();input.value='';render('');
+    /* 姓名清掉＝锁定账号：个人数据存档并从工作区移除，各页面不再显示 */
+    if(A())A().logout();
+    renderBind();
+    tip('已清除姓名，个人数据已锁定','ok');
   });
 })();
 </script>
