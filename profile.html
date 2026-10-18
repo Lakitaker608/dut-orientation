@@ -483,8 +483,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
         '<div class="mt-hero-main">'+
           '<div class="mt-name">'+esc(d.typeName||'')+'　'+esc(d.one||'')+'</div>'+
           (d.en?'<div class="mt-en">'+esc(d.en)+'</div>':'')+
-          '<div class="mt-one">'+(full?'四维倾向已拆解 · 来自 24 道情境题':'你的四字母类型')+'</div>'+
-          '<div class="mt-date">测评时间：'+esc(mbtiDate(d.ts)||'—')+'</div>'+
+          '<div class="mt-one">'+(d.manual?'手动填写的类型 · 未经过情境题测评':(full?'四维倾向已拆解 · 来自 24 道情境题':'你的四字母类型'))+'</div>'+
+          '<div class="mt-date">'+(d.manual?'填写时间':'测评时间')+'：'+esc(mbtiDate(d.ts)||'—')+'</div>'+
         '</div>'+
         '<div class="mt-acts">'+
           '<a class="mt-btn p" href="campus-life.html?skip=1#career">'+ICO_MB_AGAIN+'重新测评</a>'+
@@ -509,7 +509,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-1);letter-spa
 
     if(d.desc)html+='<div class="mt-desc">'+esc(d.desc)+'</div>';
 
-    if(full){
+    if(d.manual){
+      /* 手动填写：类型解读全部来自共享类型表，但没有倾向强度百分比（那需要真的答题） */
+      var mDim=(d.detail||[]).map(function(x){
+        var aWin=x.win===x.a;
+        return '<div class="mt-dim">'+
+          '<div class="mt-dim-h">'+
+            '<span class="l'+(aWin?' win':'')+'">'+esc(x.an)+'</span>'+
+            '<span class="mt-dim-k">'+esc(x.name)+'</span>'+
+            '<span class="r'+(!aWin?' win':'')+'">'+esc(x.bn)+'</span>'+
+          '</div>'+
+          '<div class="mt-dim-d">'+esc(x.desc)+'</div>'+
+        '</div>';
+      }).join('');
+      html+='<div class="mt-sec-t"><span class="sq"></span>四维倾向解读</div><div class="mt-dims">'+mDim+'</div>';
+      if(d.s&&d.s.length)html+='<div class="mt-sec-t"><span class="sq"></span>你的优势</div><div class="mt-list">'+mbtiLis(d.s,ICO_MB_OK)+'</div>';
+      if(d.w&&d.w.length)html+='<div class="mt-sec-t"><span class="sq"></span>需要留意的盲点</div><div class="mt-list">'+mbtiLis(d.w,ICO_MB_WARN)+'</div>';
+      if(d.a&&d.a.length)html+='<div class="mt-sec-t"><span class="sq"></span>在校期间可以做的三件事</div><div class="mt-list">'+mbtiLis(d.a,ICO_MB_BULB)+'</div>';
+      html+='<div class="mt-old">这份结果是你手动填写的类型，因此没有倾向强度百分比。'+
+            '想看到每一维的具体占比，可以做一次 24 道情境题的测评。</div>';
+    }else if(full){
       var dimHtml=d.detail.map(function(x){
         var aWin=x.win===x.a;
         return '<div class="mt-dim">'+
