@@ -73,10 +73,14 @@ img{max-width:100%;display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ===== Hero ===== */
+/* 背景图改为虚化校园实景（campus_bg.jpg），上面压一层大工蓝渐变色罩，
+   保证白色标题/正文对比度足够。写法与 campus-life.html 的 .loc-bg 保持一致。 */
 .hero{background:linear-gradient(135deg,#003F88 0%,#0052B4 45%,#0078D4 100%);border-radius:var(--radius-lg);padding:40px;color:#fff;position:relative;overflow:hidden;margin-bottom:28px}
-.hero::before{content:"";position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%}
-.hero::after{content:"";position:absolute;bottom:-80px;left:30%;width:220px;height:220px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);border-radius:50%}
-.hero-inner{position:relative;z-index:1}
+.hero-bg{position:absolute;inset:0;background:url('campus_bg.jpg') center center/cover no-repeat;filter:blur(10px) saturate(1.1);transform:scale(1.12);z-index:0;pointer-events:none}
+.hero-veil{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,63,136,.62) 0%,rgba(0,82,180,.52) 45%,rgba(0,120,212,.44) 100%);z-index:0;pointer-events:none}
+.hero::before{content:"";position:absolute;top:-60px;right:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,163,224,.35),transparent 70%);border-radius:50%;z-index:1}
+.hero::after{content:"";position:absolute;bottom:-80px;left:30%;width:220px;height:220px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);border-radius:50%;z-index:1}
+.hero-inner{position:relative;z-index:2}
 .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;margin-bottom:16px;backdrop-filter:blur(8px)}
 .hero-tag .dot{width:6px;height:6px;background:#7BE495;border-radius:50%;box-shadow:0 0 8px #7BE495}
 .hero h1{font-size:30px;font-weight:700;line-height:1.25;margin-bottom:10px;letter-spacing:-.02em}
@@ -89,6 +93,14 @@ img{max-width:100%;display:block}
 .btn-ghost:hover{background:rgba(255,255,255,.2)}
 .btn svg{width:16px;height:16px}
 
+/* ===== 通用：虚化实景底纹 =====
+   与 Hero / campus-life 的 .loc-bg 同一套做法：底图 + 模糊 + 放大裁边 + 半透明色罩。
+   用法： class="card tex" style="--tex:url('dlut-photos/xx.jpg')"
+   --tex-o 控制底图可见强度：文字密集的面板用 .10~.18，留白多的块可到 .30 */
+.tex{position:relative;overflow:hidden}
+.tex::before{content:"";position:absolute;inset:0;background:var(--tex,none) center center/cover no-repeat;filter:blur(18px) saturate(1.05);transform:scale(1.18);opacity:var(--tex-o,.15);z-index:0;pointer-events:none}
+.tex > *{position:relative;z-index:1}
+
 /* ===== Stats ===== */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
 .stat{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);padding:20px;transition:all .2s}
@@ -96,6 +108,20 @@ img{max-width:100%;display:block}
 .stat-num{font-size:26px;font-weight:700;color:var(--primary);letter-spacing:-.02em}
 .stat-num .unit{font-size:14px;font-weight:500;color:var(--text-3);margin-left:2px}
 .stat-label{font-size:13px;color:var(--text-2);margin-top:6px}
+
+/* ===== People (院士 / 校友) ===== */
+.alum-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;transition:all .2s}
+.alum-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.alum-photo{position:relative;aspect-ratio:3/4;background:var(--primary-light);overflow:hidden}
+.alum-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;background:var(--primary-light)}
+.alum-badge{position:absolute;left:10px;top:10px;background:rgba(0,63,136,.92);color:#fff;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;letter-spacing:.02em}
+.alum-badge.eng{background:rgba(0,120,180,.92)}
+.alum-badge.alu{background:rgba(15,27,45,.82)}
+.alum-body{padding:14px 16px 16px}
+.alum-name{font-size:16px;font-weight:600;letter-spacing:.02em}
+.alum-meta{font-size:12px;color:var(--text-3);margin-top:3px}
+.alum-desc{font-size:13px;color:var(--text-2);line-height:1.65;margin-top:8px}
+.alum-note{font-size:12px;color:var(--text-3);margin-top:16px;line-height:1.75}
 
 /* ===== Cards grid ===== */
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
@@ -138,10 +164,15 @@ img{max-width:100%;display:block}
 /* ===== Campus ===== */
 .campus-card{background:var(--surface);border:1px solid rgba(0,63,136,.2);border-radius:var(--radius);overflow:hidden;transition:all .2s}
 .campus-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
-.campus-banner{height:120px;position:relative;display:flex;align-items:flex-end;padding:18px;color:#fff}
-.campus-banner.c1{background:linear-gradient(135deg,#003F88,#0078D4)}
-.campus-banner.c2{background:linear-gradient(135deg,#0B6E4F,#16A34A)}
-.campus-banner.c3{background:linear-gradient(135deg,#7C2D12,#E8A317)}
+.campus-banner{height:120px;position:relative;display:flex;align-items:flex-end;padding:18px;color:#fff;overflow:hidden}
+/* 底图为各校区实景，上面压一层与原渐变同色系的半透明色罩，保证白字可读；
+   下面的 background 作为图片加载失败时的兜底，保持原配色不变 */
+.campus-banner::before,.campus-banner::after{content:"";position:absolute;inset:0;z-index:0}
+.campus-banner::before{background:var(--cbg) center center/cover no-repeat;filter:blur(12px) saturate(1.1);transform:scale(1.12)}
+.campus-banner::after{background:linear-gradient(135deg,var(--cv1),var(--cv2))}
+.campus-banner.c1{background:linear-gradient(135deg,#003F88,#0078D4);--cbg:url('campus_bg.jpg');--cv1:rgba(0,63,136,.60);--cv2:rgba(0,120,212,.44)}
+.campus-banner.c2{background:linear-gradient(135deg,#0B6E4F,#16A34A);--cbg:url('dlut-photos/tech-1.jpg');--cv1:rgba(11,110,79,.62);--cv2:rgba(22,163,74,.46)}
+.campus-banner.c3{background:linear-gradient(135deg,#7C2D12,#E8A317);--cbg:url('dlut-photos/autumn-campus.jpg');--cv1:rgba(124,45,18,.62);--cv2:rgba(232,163,23,.46)}
 .campus-banner h3{font-size:18px;font-weight:600;position:relative;z-index:1}
 .campus-body{padding:20px}
 .campus-body .addr{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start}
@@ -300,6 +331,10 @@ img{max-width:100%;display:block}
 .links-cat-title:first-child{margin-top:0}
 
 /* ===== Academy ===== */
+/* 学院风采卡片数量较多，统一铺一层极淡的校园实景底纹，不逐张区分，保持整体一致 */
+#view-academy .card{position:relative;overflow:hidden}
+#view-academy .card::before{content:"";position:absolute;inset:0;background:url('dlut-photos/tech-1.jpg') center center/cover no-repeat;filter:blur(18px) saturate(1.05);transform:scale(1.18);opacity:.13;z-index:0;pointer-events:none}
+#view-academy .card > *{position:relative;z-index:1}
 .academy-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500;background:var(--surface-2);color:var(--text-2);transition:all .15s;cursor:pointer}
 .academy-tag:hover{background:var(--primary-light);color:var(--primary)}
 .academy-tag .a-dot{width:6px;height:6px;border-radius:50%}
@@ -469,8 +504,15 @@ img{max-width:100%;display:block}
 .fav-btn.on{background:var(--warning);border-color:var(--warning);color:#fff}
 .fav-btn.on svg{fill:currentColor}
 .link-tile.fav-host{padding-right:48px}
+/* 更多学院折叠项：行高较矮、右侧已有"官网"按钮，星标改为垂直居中的小号并预留位置 */
+.more-item.fav-host{padding-right:44px}
+.more-item .fav-btn{top:50%;right:8px;width:26px;height:26px;transform:translateY(-50%)}
+.more-item .fav-btn svg{width:14px;height:14px}
+.more-item .fav-btn:hover{transform:translateY(-50%) scale(1.12)}
+.more-item .fav-btn.on{transform:translateY(-50%)}
 
 @media(max-width:640px){.pc-meta{display:none}.pc-btn{padding:4px}}
+@media(max-width:640px){.more-grid{grid-template-columns:1fr}.more-item.fav-host{padding-right:42px}}
 </style>
 </head>
 <body>
@@ -573,6 +615,8 @@ img{max-width:100%;display:block}
       <!-- ===== Home View ===== -->
       <section class="view active" id="view-home">
         <div class="hero">
+          <div class="hero-bg"></div>
+          <div class="hero-veil"></div>
           <div class="hero-inner">
             <div class="hero-tag"><span class="dot"></span>2026级新生 · 入学通道已开放</div>
             <h1>欢迎来到大连理工大学<br>开启你的大工时光</h1>
@@ -600,7 +644,7 @@ img{max-width:100%;display:block}
         <div class="section-head">
           <div class="section-title"><span class="bar"></span>入学关键时间节点</div>
         </div>
-        <div class="timeline">
+        <div class="timeline tex" style="--tex:url('dlut-photos/welcome-1.jpg')">
           <div class="tl-list" id="timelineList"></div>
         </div>
 
@@ -608,7 +652,7 @@ img{max-width:100%;display:block}
           <div class="section-title"><span class="bar"></span>快速入口</div>
         </div>
         <div class="grid grid-3">
-          <div class="card" onclick="switchView('guide')" style="cursor:pointer">
+          <div class="card tex" style="cursor:pointer;--tex:url('campus_bg.jpg')" onclick="switchView('guide')">
             <div class="card-icon" style="background:#E8F0FB;color:#003F88">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
             </div>
@@ -616,7 +660,7 @@ img{max-width:100%;display:block}
             <p>地理位置、内部设施、入学必备、交通路线等报到全流程指引。</p>
             <div class="card-link">查看详情 →</div>
           </div>
-          <div class="card" onclick="switchView('checklist')" style="cursor:pointer">
+          <div class="card tex" style="cursor:pointer;--tex:url('dlut-photos/welcome-2.jpg')" onclick="switchView('checklist')">
             <div class="card-icon" style="background:#E6F4EA;color:#16A34A">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
             </div>
@@ -624,7 +668,7 @@ img{max-width:100%;display:block}
             <p>逐项核对入学所需材料与手续，确保报到当日万无一失。</p>
             <div class="card-link">开始核对 →</div>
           </div>
-          <div class="card" onclick="switchView('chat')" style="cursor:pointer">
+          <div class="card tex" style="cursor:pointer;--tex:url('dlut-photos/tech-2.jpg')" onclick="switchView('chat')">
             <div class="card-icon" style="background:#FFF4E5;color:#E8A317">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
             </div>
@@ -639,7 +683,7 @@ img{max-width:100%;display:block}
           <div class="sc-count" id="scCount"></div>
         </div>
 
-        <div class="sc-intro">
+        <div class="sc-intro tex" style="--tex:url('dlut-photos/autumn-campus.jpg')">
           <span class="sc-intro-ico">🏞️</span>
           <div>
             <div class="sc-intro-t">一校两地三区，四季各有风景</div>
@@ -718,22 +762,22 @@ img{max-width:100%;display:block}
         </div>
 
         <div class="grid grid-3" style="margin-bottom:28px">
-          <div class="card" onclick="switchView('campus')" style="cursor:pointer">
+          <div class="card tex" style="cursor:pointer;--tex:url('campus_bg.jpg')" onclick="switchView('campus')">
             <div class="card-icon" style="background:#E8F0FB;color:#003F88">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
             </div>
             <h3>地理位置</h3>
             <p>一校两地三区办学格局：大连凌水主校区、开发区校区、盘锦校区。</p>
           </div>
-          <div class="card">
+          <div class="card tex" style="--tex:url('dlut-photos/tech-2.jpg')">
             <div class="card-icon" style="background:#E6F4EA;color:#16A34A">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
             </div>
             <h3>内部设施</h3>
             <p>教学楼、图书馆、实验室、体育场馆、食堂、宿舍等校园设施分布。</p>
           </div>
-          <div class="card" onclick="switchView('checklist')" style="cursor:pointer">
-            <div class="card-icon" style="background:#FFF4E5;color:#E8A317">
+          <div class="card tex" style="cursor:pointer;--tex:url('dlut-photos/welcome-1.jpg')" onclick="switchView('checklist')">
+            <div class="card-icon" style="background:#FFF4EA;color:#E8A317">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2l3 6 9 3-9 3-3 6-3-6-9-3 9-3z"/></svg>
             </div>
             <h3>入学必备</h3>
@@ -744,7 +788,7 @@ img{max-width:100%;display:block}
         <div class="section-head">
           <div class="section-title"><span class="bar"></span>大连气候早知道</div>
         </div>
-        <div class="climate">
+        <div class="climate tex" style="--tex:url('dlut-photos/autumn-campus.jpg')">
           <p style="font-size:14px;color:var(--text-2);line-height:1.7">大连地处辽东半岛南端，属<strong>暖温带半湿润季风性海洋气候</strong>，四季分明、气候温和。冬无严寒，夏无酷暑，是国内排名第4的宜居城市，全年空气质量优良天数300+。</p>
           <div class="climate-grid">
             <div class="season"><div class="season-icon">🌸</div><div class="season-name">春季</div><div class="season-temp">10-18℃ · 多风</div></div>
@@ -789,7 +833,7 @@ img{max-width:100%;display:block}
         <div class="section-head">
           <div class="section-title"><span class="bar"></span>入学必备材料</div>
         </div>
-        <div class="checklist" style="margin-bottom:28px">
+        <div class="checklist tex" style="margin-bottom:28px;--tex:url('dlut-photos/welcome-2.jpg')">
           <div class="grid grid-2" style="gap:12px 32px">
             <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">录取通知书（原件）</div><span class="cl-cat">必备</span></div>
             <div class="cl-item"><div class="cl-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div><div class="cl-text">本人身份证及正反面复印件</div><span class="cl-cat">必备</span></div>
@@ -896,6 +940,117 @@ img{max-width:100%;display:block}
           <div class="stat"><div class="stat-num">57<span class="unit">个</span></div><div class="stat-label">一流本科专业</div></div>
           <div class="stat"><div class="stat-num">4<span class="unit">个</span></div><div class="stat-label">全国重点实验室</div></div>
         </div>
+
+        <!-- ===== 两院院士 ===== -->
+        <div class="section-head" style="margin-top:34px">
+          <div class="section-title"><span class="bar"></span>两院院士 · 部分代表</div>
+        </div>
+        <div class="grid grid-4">
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/qian-lingxi.jpg" alt="钱令希" loading="lazy"><span class="alum-badge">中国科学院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">钱令希</div>
+              <div class="alum-meta">1916—2009 · 1955 年当选</div>
+              <div class="alum-desc">工程力学家，中国计算力学开拓者，曾任大连工学院院长。主持大连新港、核潜艇耐压壳等国家重大工程攻关。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/qiu-dahong.jpg" alt="邱大洪" loading="lazy"><span class="alum-badge">中国科学院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">邱大洪</div>
+              <div class="alum-meta">1930 年生 · 1991 年当选</div>
+              <div class="alum-desc">海岸与近海工程专家，海岸和近海工程国家重点实验室奠基人，我国港口工程学科主要创建者之一。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/zhong-wanxie.jpg" alt="钟万勰" loading="lazy"><span class="alum-badge">中国科学院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">钟万勰</div>
+              <div class="alum-meta">1934 年生 · 1993 年当选</div>
+              <div class="alum-desc">工程力学与计算力学专家，创立辛弹性力学新体系，主持研制 JIGFEX 等我国首批自主 CAE 软件。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/wang-liding.jpg" alt="王立鼎" loading="lazy"><span class="alum-badge">中国科学院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">王立鼎</div>
+              <div class="alum-meta">1934 年生 · 1995 年当选</div>
+              <div class="alum-desc">精密机械与微纳制造专家，长期从事超精密加工、精密齿轮及微纳器件研究。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/cheng-gengdong.jpg" alt="程耿东" loading="lazy"><span class="alum-badge">中国科学院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">程耿东</div>
+              <div class="alum-meta">1941 年生 · 1995 年当选</div>
+              <div class="alum-desc">计算力学专家，结构优化领域国际知名学者，曾任大连理工大学校长。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/ou-jinping.jpg" alt="欧进萍" loading="lazy"><span class="alum-badge eng">中国工程院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">欧进萍</div>
+              <div class="alum-meta">1959 年生 · 2003 年当选</div>
+              <div class="alum-desc">结构工程与防灾减灾工程专家，曾任大连理工大学校长，推动结构振动控制与智能监测技术发展。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/guo-dongming.jpg" alt="郭东明" loading="lazy"><span class="alum-badge eng">中国工程院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">郭东明</div>
+              <div class="alum-meta">1959 年生 · 2011 年当选</div>
+              <div class="alum-desc">机械制造与精密加工专家，1982 届本科校友，曾任大连理工大学校长，国家技术发明奖多次获得者。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/jian-xigao.jpg" alt="蹇锡高" loading="lazy"><span class="alum-badge eng">中国工程院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">蹇锡高</div>
+              <div class="alum-meta">1946 年生 · 2013 年当选</div>
+              <div class="alum-desc">高分子材料专家，研制出系列耐高温、可溶解特种工程塑料并成功实现产业化。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 杰出校友 ===== -->
+        <div class="section-head" style="margin-top:34px">
+          <div class="section-title"><span class="bar"></span>杰出校友 · 名师</div>
+        </div>
+        <div class="grid grid-4">
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/wei-jianxing.jpg" alt="尉健行" loading="lazy"><span class="alum-badge alu">1949 级校友</span></div>
+            <div class="alum-body">
+              <div class="alum-name">尉健行</div>
+              <div class="alum-meta">大连工学院机械系机械制造专业</div>
+              <div class="alum-desc">1949 年入读大连工学院机械系，为学校首届毕业生之一，曾任中共中央政治局常委、中央纪律检查委员会书记。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/shen-changyu.jpg" alt="申长雨" loading="lazy"><span class="alum-badge">中国科学院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">申长雨</div>
+              <div class="alum-meta">1987 届硕士 · 2009 年当选</div>
+              <div class="alum-desc">在校取得机械制造硕士与力学博士学位，曾任大连理工大学校长，现任国家知识产权局局长。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/yu-hongru.jpg" alt="俞鸿儒" loading="lazy"><span class="alum-badge">中国科学院院士</span></div>
+            <div class="alum-body">
+              <div class="alum-name">俞鸿儒</div>
+              <div class="alum-meta">1953 届本科校友</div>
+              <div class="alum-desc">气体动力学家，长期从事激波风洞与高超声速试验技术研究，是我国激波风洞技术的主要奠基人。</div>
+            </div>
+          </div>
+          <div class="alum-card">
+            <div class="alum-photo"><img src="dlut-photos/people/liu-changchun.jpg" alt="刘长春" loading="lazy"><span class="alum-badge alu">大工名师</span></div>
+            <div class="alum-body">
+              <div class="alum-name">刘长春</div>
+              <div class="alum-meta">1909—1983 · 中国奥运第一人</div>
+              <div class="alum-desc">1932 年代表中国首次出征洛杉矶奥运会，后长期在大连工学院任教；学校建有刘长春体育馆以志纪念。</div>
+            </div>
+          </div>
+        </div>
+        <div class="alum-note">以上仅列出部分代表人物，排名不分先后；院士当选信息以中国科学院、中国工程院官方公布为准。<br>照片来源：中国科学院学部、中国工程院官方院士信息页，以及 Wikimedia Commons 上的自由授权图片（俞鸿儒、刘长春为公有领域；钱令希 CC BY-SA 4.0；申长雨 CC BY 2.0，摄影 WIPO；尉健行 KOGL Type 1）。如涉及肖像权事宜请联系学校有关部门撤换。</div>
       </section>
 
       <!-- ===== Checklist View ===== -->
@@ -903,7 +1058,7 @@ img{max-width:100%;display:block}
         <div class="section-head">
           <div class="section-title"><span class="bar"></span>报到清单</div>
         </div>
-        <div class="checklist">
+        <div class="checklist tex" style="--tex:url('dlut-photos/welcome-2.jpg')" data-account-zone="报到清单进度">
           <div class="cl-progress">
             <div class="cl-progress-bar"><div class="cl-progress-fill" id="clFill" style="width:0%"></div></div>
             <div class="cl-progress-text" id="clText">已完成 0 / 12 项</div>
@@ -953,7 +1108,7 @@ img{max-width:100%;display:block}
             </div>
           </div>
           <div class="chat-side">
-            <div class="chat-side-card">
+            <div class="chat-side-card tex" style="--tex:url('dlut-photos/carnival-2.jpg');--tex-o:.13">
               <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>热门话题</h4>
               <div class="topic-list">
                 <div class="topic-item" onclick="askQuick('军训安排')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>军训安排</div>
@@ -963,7 +1118,7 @@ img{max-width:100%;display:block}
                 <div class="topic-item" onclick="askQuick('绿色通道')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>绿色通道</div>
               </div>
             </div>
-            <div class="chat-side-card">
+            <div class="chat-side-card tex" style="--tex:url('dlut-photos/welcome-1.jpg');--tex-o:.13">
               <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>咨询电话</div>
               <div style="font-size:13px;color:var(--text-2);line-height:1.8">
                 学生处：0411-84708320<br>
@@ -998,7 +1153,7 @@ img{max-width:100%;display:block}
         <div class="grid grid-3">
           <div class="card"><h3>控制科学与工程学院</h3><p>以自动化、控制科学为核心，欢迎2026级新同学。</p><a class="card-site" target="_blank" href="http://scse.dlut.edu.cn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
           <div class="card"><h3>能源与动力学院</h3><p>能源动力领域人才培养与科研重镇。</p><a class="card-site" target="_blank" href="http://power.dlut.edu.cn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
-          <div class="card"><h3>集成电路学院</h3><p>聚焦集成电路设计与集成系统前沿。</p><a class="card-site" target="_blank" href="http://ice.dlut.edu.cn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
+          <div class="card"><h3>集成电路学院</h3><p>聚焦集成电路设计与集成系统前沿。</p><a class="card-site" target="_blank" href="http://ic.dlut.edu.cn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
           <div class="card"><h3>经济管理学院</h3><p>经济管理类复合型人才培养基地。</p><a class="card-site" target="_blank" href="http://sem.dlut.edu.cn/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
           <div class="card"><h3>白俄罗斯国立大学联合学院</h3><p>国际化中外合作办学机构。</p><a class="card-site" target="_blank" href="http://dbji.dlut.edu.cn/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>访问官网</a></div>
           <div class="card more-trigger" id="moreTrigger"><h3>更多学院<span class="more-arrow">▾</span></h3><p>化工、机械、材料、电信、计算机、建工、数学、物理等，点击展开全部学院官网入口。</p></div>
@@ -1246,6 +1401,8 @@ function renderChecklist(){
   updateProgress();
 }
 function toggleCheck(i){
+  /* 账号绑定：未验证姓名时不记录个人进度 */
+  if(window.DLUTAccount&&!window.DLUTAccount.active()){window.DLUTAccount.guard();return;}
   const item=document.querySelector('.cl-item[data-idx="'+i+'"]');
   item.classList.toggle('checked');
   const checked=Array.from(document.querySelectorAll('.cl-item.checked')).map(el=>+el.dataset.idx);
@@ -1275,7 +1432,11 @@ const linksData=[
   {name:'校友会',desc:'大连理工大学校友会',url:'http://alumni.dlut.edu.cn/',color:'#7C3AED',bg:'#F3EEFF',icon:'<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>'},
   {name:'招生网',desc:'本科招生信息',url:'http://zs.dlut.edu.cn/',color:'#0EA5E9',bg:'#E0F5FC',icon:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'}
 ];
+/* 链接卡片底纹：按顺序轮换几张校园实景，避免整列重复同一张图 */
+var LINK_TEX=['campus_bg.jpg','dlut-photos/welcome-1.jpg','dlut-photos/tech-1.jpg','dlut-photos/autumn-campus.jpg','dlut-photos/tech-2.jpg','dlut-photos/welcome-2.jpg'];
+var linkTexIdx=0;
 function renderLinks(){
+  linkTexIdx=0;
   var html='<div class="links-cat-title"><span class="bar-sm"></span>官方网站</div><div class="grid grid-2">';
   html+=linksData.map(l=>linkTileHtml(l.name,l.desc,l.url,l.color,l.bg,l.icon)).join('');
   html+='</div>';
@@ -1285,7 +1446,8 @@ function renderLinks(){
   document.getElementById('linksContainer').innerHTML=html;
 }
 function linkTileHtml(name,desc,url,color,bg,icon){
-  return '<a class="link-tile" href="'+url+'" target="_blank">'+
+  var tex=LINK_TEX[(linkTexIdx++)%LINK_TEX.length];
+  return '<a class="link-tile tex" style="--tex:url(\''+tex+'\');--tex-o:.12" href="'+url+'" target="_blank">'+
     '<div class="lt-icon" style="background:'+bg+';color:'+color+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+icon+'</svg></div>'+
     '<div class="lt-text"><div class="lt-name">'+name+'</div><div class="lt-desc">'+desc+'</div></div>'+
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:var(--text-3)"><path d="M9 18l6-6-6-6"/></svg>'+
@@ -1821,8 +1983,8 @@ const TRANSIT_DATA={
 };
 function renderTransit(key){
   const cards=TRANSIT_DATA[key];
-  document.getElementById('transitCards').innerHTML=cards.map(c=>`
-    <div class="card">
+  document.getElementById('transitCards').innerHTML=cards.map((c,i)=>`
+    <div class="card tex" style="--tex:url('${LINK_TEX[i%LINK_TEX.length]}');--tex-o:.13">
       <div class="card-icon" style="background:${c.bg};color:${c.color}">${c.ico}</div>
       <h3>${c.title}</h3>
       <p>${c.desc}</p>
@@ -1875,9 +2037,21 @@ if(savedChat&&savedChat.length){
   }
   window.addEventListener('dlut:favchange',render);
   window.addEventListener('storage',function(e){if(!e.key||e.key===KEY)render();});
+  window.addEventListener('dlut:accountchange',render);
   render();
 })();
 </script>
+<script>
+/* ===== 账号绑定：换账号后重渲染报到清单 =====
+   必须注册在 account.js 之前，才能收到它启动时发出的第一次广播 */
+(function(){
+  'use strict';
+  window.addEventListener('dlut:accountchange',function(){
+    try{if(typeof renderChecklist==='function')renderChecklist();}catch(e){}
+  });
+})();
+</script>
+<script src="account.js"></script>
 <script src="favorites.js"></script>
 </body>
 </html>
