@@ -28,7 +28,16 @@
       return Object.prototype.toString.call(a)==='[object Array]'?a:[];
     }catch(e){return [];}
   }
+  /* 账号绑定：未验证姓名时，禁止写入个人收藏数据（读取不受影响） */
+  function permitted(){
+    if(global.DLUTAccount&&typeof global.DLUTAccount.active==='function'&&!global.DLUTAccount.active()){
+      try{global.DLUTAccount.guard();}catch(e){}
+      return false;
+    }
+    return true;
+  }
   function write(arr){
+    if(!permitted())return;
     try{localStorage.setItem(KEY,JSON.stringify(arr));}catch(e){}
     emit();
   }
@@ -305,6 +314,8 @@
   global.addEventListener('storage',function(e){
     if(!e.key||e.key===KEY){syncAll();emit();}
   });
+  /* 切换账号后收藏数据整批换人，星标状态需要跟着校正 */
+  global.addEventListener('dlut:favchange',syncAll);
 
   emit();
 })(window);
