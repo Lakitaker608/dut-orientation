@@ -271,7 +271,7 @@ body{font-family:var(--font);color:var(--text-1);overflow:hidden}
     if(!bindBox||!A())return;
     var acc=A(),n=acc.name(),act=acc.active(),list=acc.names(),html='';
     if(act){
-      html='<b>✓ 已绑定并验证：'+esc(n)+'</b><br>本机收藏、报到清单进度、MBTI 结果等个人数据已与该姓名绑定。换一个姓名＝换一套独立数据。';
+      html='<b>✓ 已绑定并验证：'+esc(n)+'</b><br>本机个人数据已与姓名信息绑定';
     }else if(n){
       html='<b>姓名「'+esc(n)+'」尚未生效</b><br>点击「保存」或按回车完成验证后，各页面才会显示属于该姓名的个人数据。';
     }else{
