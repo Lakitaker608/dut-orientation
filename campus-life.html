@@ -214,6 +214,42 @@ svg{display:block}
 @media(max-width:1100px){.smart-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:720px){.smart-grid{grid-template-columns:1fr}.cb-banner{flex-wrap:wrap}}
 
+/* ===== 大学四年时间轴（职业及未来规划 · 分栏目） ===== */
+.tl-code{padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);font-size:12.5px;font-weight:700;letter-spacing:.06em;flex-shrink:0}
+.tl-code[hidden]{display:none!important}
+.tl-dirs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tl-dir{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--primary-light);border:1px solid rgba(0,63,136,.18);color:var(--primary);font-size:12.5px;font-weight:600}
+.tl-dir svg{width:13px;height:13px;flex-shrink:0}
+.tl-lead{font-size:13px;line-height:1.85;color:var(--text-2);margin-bottom:16px}
+.tl-lead b{color:var(--text-1)}
+.tl-wrap{position:relative;padding-left:26px}
+.tl-wrap::before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--primary),var(--accent));opacity:.35}
+.tl-year{position:relative;margin-bottom:20px}
+.tl-year:last-child{margin-bottom:0}
+.tl-year::before{content:"";position:absolute;left:-22px;top:6px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--primary);box-shadow:0 0 0 3px rgba(0,63,136,.12)}
+.tl-y-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.tl-y-name{font-size:15px;font-weight:700;color:var(--text-1);letter-spacing:.01em}
+.tl-y-theme{font-size:12.5px;font-weight:600;color:var(--primary)}
+.tl-y-desc{font-size:12px;line-height:1.75;color:var(--text-3);margin-bottom:10px}
+.tl-items{margin:0;padding:0;list-style:none}
+.tl-items li{position:relative;padding-left:19px;font-size:12.5px;line-height:1.85;color:var(--text-2);margin-bottom:5px}
+.tl-items li::before{content:"";position:absolute;left:5px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.tl-items li b{color:var(--text-1);font-weight:600;margin-right:4px}
+.tl-node{margin-top:10px;padding:8px 12px;border-radius:9px;background:var(--surface-2);border:1px dashed var(--border-strong);font-size:11.5px;line-height:1.75;color:var(--text-3)}
+.tl-node b{color:var(--primary);font-weight:600}
+/* 未测评时的引导 */
+.tl-gate{text-align:center;padding:18px 20px;border-radius:14px;background:var(--primary-light);border:1px dashed rgba(0,63,136,.32)}
+.tl-gate-ico{width:44px;height:44px;margin:0 auto 10px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:flex;align-items:center;justify-content:center}
+.tl-gate-ico svg{width:22px;height:22px}
+.tl-gate-t{font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:6px}
+.tl-gate-d{font-size:12.5px;line-height:1.8;color:var(--text-2);max-width:430px;margin:0 auto}
+.tl-gate-btn{margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;background:var(--primary);color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .18s}
+.tl-gate-btn svg{width:15px;height:15px}
+.tl-gate-btn:hover{background:var(--primary-2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,63,136,.28)}
+.tl-redo{margin-top:14px;font-size:12px;color:var(--text-3);text-align:center}
+.tl-redo button{border:none;background:none;color:var(--primary);font-weight:600;cursor:pointer;font-size:12px;font-family:inherit;padding:0}
+.tl-redo button:hover{text-decoration:underline}
+
 /* ===== 大工校招信息（职业及未来规划 · 分栏目） ===== */
 .job-portal{display:flex;align-items:center;gap:16px;padding:16px 18px;margin-bottom:18px;border-radius:12px;background:var(--primary-light);border:1px solid rgba(0,63,136,.2);position:relative}
 .job-portal.fav-host{padding-right:52px}
@@ -1356,7 +1392,20 @@ svg{display:block}
       </div>
     </div>
 
-    <div class="cb-more tex" style="--tex:url('dlut-photos/jobfair-4.jpg');--tex-o:.20">更多分栏目（如「职业方向探索」「个人能力盘点」「大学四年时间轴」「求职与升学路径」）将在后续补充</div>
+    <!-- 分栏目：大学四年时间轴（依据 MBTI 测评结果生成） -->
+    <div class="career-block tex" style="--tex:url('dlut-photos/welcome-2.jpg');--tex-o:.12" id="timelineBlock" data-account-zone="大学四年时间轴">
+      <div class="cb-banner">
+        <span class="cb-banner-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.6"/><circle cx="3.5" cy="12" r="1.6"/><circle cx="3.5" cy="18" r="1.6"/></svg>
+        </span>
+        <div class="cb-banner-txt">
+          <div class="cb-banner-title">大学四年时间轴</div>
+          <div class="cb-banner-sub">依据你的 MBTI 性格类型与推荐职业方向，给出分年级的行动建议</div>
+        </div>
+        <span class="tl-code" id="tlCode" hidden></span>
+      </div>
+      <div class="cb-body" id="tlBody"></div>
+    </div>
   </section>
 
 </div>
@@ -2960,6 +3009,8 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c,ci){
         typeName:t.n,one:t.one,en:t.en,desc:t.d,
         s:t.s||[],w:t.w||[],c:t.c||[],a:t.a||[],f:firmsOf(code),detail:detail
       }));
+      /* 通知「大学四年时间轴」等下游模块按新结果重绘 */
+      try{window.dispatchEvent(new CustomEvent('dlut:mbtichange',{detail:{code:code}}));}catch(e2){}
     }catch(e){}
     renderSaved();
   }
@@ -3021,6 +3072,162 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c,ci){
 
   /* 账号绑定：换账号后按新数据重绘结果卡 */
   window.addEventListener('dlut:accountchange',function(){renderSaved();});
+})();
+</script>
+<script>
+/* ============================================================
+   大学四年时间轴（职业及未来规划 · 分栏目）
+   - 依赖本地 MBTI 测评结果（localStorage: dut_mbti_result）
+   - 未测评时显示引导，而不是空白
+   - 建议由四个维度的倾向组合而成：E/I、S/N、T/F、J/P
+     每年取其中三个维度各一条，四年覆盖各有侧重
+   - ES5 语法，无外部依赖
+   ============================================================ */
+(function(){
+  'use strict';
+  var KEY='dut_mbti_result';
+  var body=document.getElementById('tlBody');
+  var codeEl=document.getElementById('tlCode');
+  if(!body)return;
+
+  var ICO_DIR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a1 1 0 00-1 1v11a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><path d="M4 12h16"/></svg>';
+  var ICO_GO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  var ICO_BULB='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V18h8v-3.3A7 7 0 0012 2z"/></svg>';
+
+  /* ---------- 四维倾向在「大一~大四」各做什么 ---------- */
+  var TRAIT={
+    E:['多参加社团与班级活动，在和人协作的过程里摸清自己的兴趣点',
+       '主动组队打比赛或做项目，把"聊得来"变成"能一起干成事"',
+       '争取对外角色（队长、负责人、答辩人），练公开表达与推动他人的能力',
+       '主动参加宣讲会、行业交流并大方自我介绍，别只靠投递等回音'],
+    I:['给自己留出独处和沉淀的时间，先把课业与阅读习惯立住',
+       '找 1~2 位志同道合的伙伴深交，比泛泛社交更有助于长期成长',
+       '选一个能独立啃下来的课题或项目，做深做透，形成可展示的成果',
+       '提前用文字把自己的经历与思考梳理清楚，面试前把想讲的故事准备好'],
+    S:['把数学、编程、实验这类基础课学扎实，实操手感比概念更重要',
+       '进实验室或工作室，从具体的工具、仪器、代码开始积累经验',
+       '用可量化的成果说话——跑通的数据、做成的样机、上线的功能',
+       '求职材料突出具体做过什么、达到什么指标，少写空泛的自我描述'],
+    N:['广泛涉猎不同领域的课程与讲座，先建立一张知识地图',
+       '认准一个前沿方向后，开始系统性地读论文与一手资料',
+       '尝试跨学科组合，把看似不相关的知识连成自己独有的视角',
+       '向目标院校或岗位讲清楚"我看到了什么趋势、想解决什么问题"'],
+    T:['用逻辑拆解学习任务，建自己的知识结构，而不是死记硬背',
+       '以客观标准选方向（前景、能力匹配度），减少从众',
+       '在竞赛或科研中打磨分析与建模能力，用结果检验自己的判断',
+       '用数据对比 offer 与去向，把决策依据写下来再拍板'],
+    F:['留意自己在什么事情上真正有成就感，这比"热门"更重要',
+       '选方向时把"和谁一起做、对谁有影响"一并纳入考虑',
+       '参与有社会价值的项目（志愿、支教、助研），让经历有温度',
+       '选择时兼顾团队氛围与价值认同，做得开心才做得久'],
+    J:['开学就排出学期计划表，把大目标拆成可以检查的小节点',
+       '定下方向后尽早锁定导师、实验室或实习，别拖到截止日期',
+       '按时间轴推进升学或求职准备，每个季度复盘一次进度',
+       '提前半年完成材料、投递与面试排期，给自己留出缓冲'],
+    P:['先多尝试几种可能，允许自己在第一年里"还没想清楚"',
+       '用低成本试错（短期项目、旁听、暑期实践）快速排除不适合的',
+       '至少收敛到一条主线，避免四处开花却没有代表作',
+       '给自己设硬截止日期，把开放式探索收束成确定的去向']
+  };
+  var TRAIT_NAME={E:'外向 E',I:'内向 I',S:'实感 S',N:'直觉 N',T:'思考 T',F:'情感 F',J:'判断 J',P:'知觉 P'};
+  var DIM_LABEL={EI:'人际与能量',SN:'学习与信息',TF:'判断与选择',JP:'节奏与执行'};
+
+  /* 每年取哪三个维度：四年下来每个维度各出现三次，侧重不同 */
+  var YEARS=[
+    {n:'大一',t:'适应与探索',d:'把大学这张地图跑通，先找到自己的节奏，不必急着定型。',
+     p:['EI','SN','JP'],node:'关键节点：GPA 起步 · 英语四级 · 班级与社团融入'},
+    {n:'大二',t:'定向与积累',d:'在两三个候选方向里做减法，开始攒以后拿得出手的"硬通货"。',
+     p:['EI','SN','TF'],node:'关键节点：专业分流 · 六级 · 进实验室 / 第一次竞赛'},
+    {n:'大三',t:'深耕与实战',d:'用项目、竞赛和科研，把能力变成别人看得见的成果。',
+     p:['SN','TF','JP'],node:'关键节点：竞赛 / 科研出成果 · 暑期实习 · 定下升学 or 就业'},
+    {n:'大四',t:'冲刺与落地',d:'把前三年的积累兑换成一个确定的去向。',
+     p:['EI','TF','JP'],node:'关键节点：推免 / 考研 / 秋招 · 毕业设计'}
+  ];
+
+  function esc(s){
+    return (s||'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function load(){
+    try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}
+  }
+
+  /* 跳到性格测评：切到职业视图 → 滚动定位 → 直接打开测评弹层 */
+  function goMbti(){
+    try{if(typeof switchView==='function')switchView('career');}catch(e){}
+    setTimeout(function(){
+      var b=document.getElementById('mbStartBtn');
+      if(!b)return;
+      try{b.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){}
+      setTimeout(function(){b.click();},420);
+    },240);
+  }
+
+  function renderGate(){
+    body.innerHTML=
+      '<div class="tl-gate">'+
+        '<div class="tl-gate-ico">'+ICO_BULB+'</div>'+
+        '<div class="tl-gate-t">先完成性格测评，再生成你的时间轴</div>'+
+        '<div class="tl-gate-d">时间轴会按你的 MBTI 四个维度倾向（外向/内向、实感/直觉、思考/情感、判断/知觉）'+
+          '分别给出大一到大四的行动建议，并对照推荐职业方向来安排节奏。</div>'+
+        '<button class="tl-gate-btn" type="button" id="tlGoBtn">去做性格测评'+ICO_GO+'</button>'+
+      '</div>';
+    var b=document.getElementById('tlGoBtn');
+    if(b)b.onclick=goMbti;
+    if(codeEl){codeEl.hidden=true;codeEl.textContent='';}
+  }
+
+  function renderTimeline(d){
+    var code=d.code,i,y,items,html='';
+    var dims={EI:code.charAt(0),SN:code.charAt(1),TF:code.charAt(2),JP:code.charAt(3)};
+
+    if(codeEl){codeEl.textContent=code;codeEl.hidden=false;}
+
+    /* 推荐职业方向 */
+    var dirs=d.c||[];
+    if(dirs.length){
+      html+='<div class="tl-dirs">'+dirs.map(function(x){
+        return '<span class="tl-dir">'+ICO_DIR+esc(x)+'</span>';
+      }).join('')+'</div>';
+    }
+    html+='<div class="tl-lead">以上方向对应 <b>'+esc(code)+'　'+esc(d.name||'')+'</b> 的常见去处。'+
+      '下面按你的四个维度倾向（'+Object.keys(dims).map(function(k){return TRAIT_NAME[dims[k]];}).join(' · ')+
+      '）逐学年拆解，每学年三条，兼顾人际、学习、选择与节奏。</div>';
+
+    html+='<div class="tl-wrap">';
+    for(i=0;i<YEARS.length;i++){
+      y=YEARS[i];
+      items=y.p.map(function(k){
+        var letter=dims[k],t=TRAIT[letter];
+        if(!t)return '';   /* 结果里出现非预期字母时跳过该条，不整块崩掉 */
+        return '<li><b>'+DIM_LABEL[k]+' · '+TRAIT_NAME[letter]+'</b>：'+esc(t[i])+'</li>';
+      }).join('');
+      html+=
+        '<div class="tl-year">'+
+          '<div class="tl-y-head"><span class="tl-y-name">'+y.n+'</span><span class="tl-y-theme">'+y.t+'</span></div>'+
+          '<div class="tl-y-desc">'+y.d+'</div>'+
+          '<ul class="tl-items">'+items+'</ul>'+
+          '<div class="tl-node"><b>'+y.node+'</b></div>'+
+        '</div>';
+    }
+    html+='</div>';
+    html+='<div class="tl-redo">结果会随测评更新 · <button type="button" id="tlRedoBtn">重新测评</button></div>';
+    body.innerHTML=html;
+    var rb=document.getElementById('tlRedoBtn');
+    if(rb)rb.onclick=goMbti;
+  }
+
+  function render(){
+    var d=load();
+    if(!d||!d.code||d.code.length!==4){renderGate();return;}
+    renderTimeline(d);
+  }
+
+  window.addEventListener('dlut:mbtichange',render);
+  window.addEventListener('dlut:accountchange',render);
+  window.addEventListener('storage',function(e){if(!e.key||e.key===KEY)render();});
+  render();
 })();
 </script>
 <script>
