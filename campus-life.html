@@ -214,6 +214,19 @@ svg{display:block}
 @media(max-width:1100px){.smart-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:720px){.smart-grid{grid-template-columns:1fr}.cb-banner{flex-wrap:wrap}}
 
+/* ===== 直接输入 MBTI 类型码 ===== */
+.mb-manual{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--surface-2);border:1px dashed var(--border-strong)}
+.mb-m-l{font-size:12.5px;color:var(--text-2);flex-shrink:0}
+.mb-m-input{width:98px;height:36px;padding:0 12px;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-1);background:var(--surface);border:1.5px solid var(--border-strong);border-radius:9px;outline:none;transition:all .18s}
+.mb-m-input::placeholder{color:var(--text-3);font-weight:400;letter-spacing:.1em}
+.mb-m-input:hover{border-color:#C9D4E4}
+.mb-m-input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,63,136,.10)}
+.mb-m-btn{height:36px;padding:0 16px;border:none;border-radius:9px;background:var(--primary);color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;flex-shrink:0}
+.mb-m-btn:hover{background:var(--primary-2);transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,63,136,.26)}
+.mb-m-tip{font-size:12px;color:var(--text-3);line-height:1.5}
+.mb-m-tip.ok{color:#0E9F6E;font-weight:600}
+.mb-m-tip.err{color:#D64545;font-weight:600}
+
 /* ===== 大学四年时间轴（职业及未来规划 · 分栏目） ===== */
 .tl-code{padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.34);font-size:12.5px;font-weight:700;letter-spacing:.06em;flex-shrink:0}
 .tl-code[hidden]{display:none!important}
@@ -1306,7 +1319,15 @@ svg{display:block}
           <button class="mb-sv-btn" id="mbSvBtn" type="button">查看结果</button>
         </div>
 
-        <div class="cb-note">说明：本测评以 MBTI 四维度框架为参考设计，用于自我探索与职业方向启发，结果仅反映答题时的状态，不构成任何专业心理测评或就业建议。</div>
+        <!-- 不做题，直接填写自己已知的类型 -->
+        <div class="mb-manual">
+          <span class="mb-m-l">已经知道自己的类型？直接输入</span>
+          <input class="mb-m-input" id="mbCodeInput" type="text" maxlength="4" placeholder="INTP" autocomplete="off" spellcheck="false" aria-label="直接输入 MBTI 四字母类型">
+          <button class="mb-m-btn" id="mbCodeBtn" type="button">确定</button>
+          <span class="mb-m-tip" id="mbCodeTip"></span>
+        </div>
+
+        <div class="cb-note">说明：本测评以 MBTI 四维度框架为参考设计，用于自我探索与职业方向启发，结果仅反映答题时的状态，不构成任何专业心理测评或就业建议。<br>直接输入类型时不会生成倾向强度百分比，如需查看每一维的具体占比，请完成上面的 24 道情境题。</div>
       </div>
     </div>
 
@@ -2992,27 +3013,61 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c,ci){
   }
 
   /* ---------- 本地保存 + 入口卡片 ---------- */
-  function save(code,t){
-    /* 账号绑定：未验证姓名时不写入个人测评结果 */
-    if(window.DLUTAccount&&!window.DLUTAccount.active()){window.DLUTAccount.guard();return;}
+
+  /* 按类型码拼出四维 detail（没有答题就没有真实占比，pa/pb 置 0） */
+  function detailFromCode(code){
+    var out=[],i,k,d,win;
+    for(i=0;i<DIM_ORDER.length;i++){
+      k=DIM_ORDER[i];
+      d=DIMS[k];
+      win=(code.charAt(i)===d.a)?d.a:d.b;
+      out.push({k:k,name:d.name,an:d.an,bn:d.bn,a:d.a,b:d.b,
+                desc:(win===d.a?d.adesc:d.bdesc),
+                pa:0,pb:0,win:win,tie:false});
+    }
+    return out;
+  }
+
+  /* 组装完整结果对象：profile.html（个人中心 · 我的性格特征）会读取并还原展示 */
+  function buildResult(code,detail,extra){
+    var t=TYPES[code]||{};
+    var o={
+      ver:2,code:code,name:t.n+'　'+t.one,ts:Date.now(),
+      typeName:t.n,one:t.one,en:t.en,desc:t.d,
+      s:t.s||[],w:t.w||[],c:t.c||[],a:t.a||[],f:firmsOf(code),detail:detail
+    };
+    if(extra)for(var k in extra){if(Object.prototype.hasOwnProperty.call(extra,k))o[k]=extra[k];}
+    return o;
+  }
+  function persist(obj){
+    if(window.DLUTAccount&&!window.DLUTAccount.active()){window.DLUTAccount.guard();return false;}
     try{
-      /* 保存完整结果：profile.html（个人中心 · 我的性格特征）会读取并还原展示 */
-      var r=calc();
-      var detail=r.detail.map(function(x){
-        var d=DIMS[x.k];
-        return {k:x.k,name:d.name,an:d.an,bn:d.bn,a:d.a,b:d.b,
-                desc:(x.win===d.a?d.adesc:d.bdesc),
-                pa:x.pa,pb:x.pb,win:x.win,tie:!!x.tie};
-      });
-      localStorage.setItem(KEY,JSON.stringify({
-        ver:2,code:code,name:t.n+'　'+t.one,ts:Date.now(),
-        typeName:t.n,one:t.one,en:t.en,desc:t.d,
-        s:t.s||[],w:t.w||[],c:t.c||[],a:t.a||[],f:firmsOf(code),detail:detail
-      }));
+      localStorage.setItem(KEY,JSON.stringify(obj));
       /* 通知「大学四年时间轴」等下游模块按新结果重绘 */
-      try{window.dispatchEvent(new CustomEvent('dlut:mbtichange',{detail:{code:code}}));}catch(e2){}
-    }catch(e){}
+      try{window.dispatchEvent(new CustomEvent('dlut:mbtichange',{detail:{code:obj.code,manual:!!obj.manual}}));}catch(e2){}
+    }catch(e){return false;}
+    return true;
+  }
+
+  function save(code,t){
+    if(window.DLUTAccount&&!window.DLUTAccount.active()){window.DLUTAccount.guard();return;}
+    var r=calc();
+    var detail=r.detail.map(function(x){
+      var d=DIMS[x.k];
+      return {k:x.k,name:d.name,an:d.an,bn:d.bn,a:d.a,b:d.b,
+              desc:(x.win===d.a?d.adesc:d.bdesc),
+              pa:x.pa,pb:x.pb,win:x.win,tie:!!x.tie};
+    });
+    persist(buildResult(code,detail,null));
     renderSaved();
+  }
+
+  /* 直接输入类型码：结果同样写进 dut_mbti_result 并广播，
+     但标 manual:true —— 没有答题就没有真实的倾向强度百分比 */
+  function saveManual(code){
+    var ok=persist(buildResult(code,detailFromCode(code),{manual:true,src:'manual'}));
+    if(ok){renderSaved();}
+    return ok;
   }
   function load(){
     try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}
@@ -3036,7 +3091,7 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c,ci){
     box.classList.add('show');
     document.getElementById('mbSvCode').textContent=d.code;
     document.getElementById('mbSvName').textContent=d.name;
-    document.getElementById('mbSvDate').textContent='上次测评：'+(d.ts?fmtDate(d.ts):'—');
+    document.getElementById('mbSvDate').textContent=(d.manual?'手动填写：':'上次测评：')+(d.ts?fmtDate(d.ts):'—');
     document.getElementById('mbStartTxt').textContent='重新测评';
   }
 
@@ -3059,6 +3114,45 @@ document.getElementById('contests').innerHTML=CONTESTS.map(function(c,ci){
   };
   var svBtn=document.getElementById('mbSvBtn');
   if(svBtn)svBtn.onclick=function(){if(startBtn)startBtn.click();};
+
+  /* ---------- 直接输入类型码（不做题） ---------- */
+  var mInput=document.getElementById('mbCodeInput');
+  var mBtn=document.getElementById('mbCodeBtn');
+  var mTip=document.getElementById('mbCodeTip');
+  function mTipMsg(msg,cls){
+    if(!mTip)return;
+    mTip.className='mb-m-tip'+(cls?' '+cls:'');
+    mTip.textContent=msg||'';
+  }
+  function normCode(v){
+    return (v||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,4);
+  }
+  function applyManual(){
+    if(!mInput)return;
+    var v=normCode(mInput.value);
+    mInput.value=v;
+    if(v.length!==4){mTipMsg('请输入 4 位类型码，如 INTP','err');mInput.focus();return;}
+    if(!TYPES[v]){mTipMsg('「'+v+'」不是有效的 MBTI 类型','err');mInput.focus();return;}
+    /* persist() 内部会在未验证姓名时拦截并提示 */
+    var before=load()?load().code:'';
+    if(!saveManual(v)){mTipMsg('');return;}
+    mTipMsg('已保存：'+v+'　'+TYPES[v].n+'　'+TYPES[v].one+(before===v?'':' · 时间轴已更新'),'ok');
+  }
+  if(mInput){
+    mInput.addEventListener('input',function(){
+      var v=normCode(mInput.value);
+      if(v!==mInput.value){
+        var pos=mInput.selectionStart;
+        mInput.value=v;
+        try{mInput.setSelectionRange(pos,pos);}catch(e){}
+      }
+      if(mTip&&mTip.className.indexOf('err')>=0)mTipMsg('');
+    });
+    mInput.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){e.preventDefault();applyManual();}
+    });
+  }
+  if(mBtn)mBtn.onclick=applyManual;
 
   document.getElementById('mgClose').onclick=close;
   document.addEventListener('keydown',function(e){
