@@ -1663,7 +1663,8 @@ function updatePlacesSub(){
 }
 document.getElementById('campusSelect').addEventListener('change',function(){
   curCampus=this.value;
-  curTab='food';
+  /* 切换校区时保留当前分类；仅当新校区没有该分类时才退回「餐饮美食」 */
+  if(!curPlaces()||!curPlaces()[curTab])curTab='food';
   updatePlacesSub();
   renderTabs();renderPlaces();
 });
